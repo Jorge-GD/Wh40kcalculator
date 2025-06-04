@@ -8,6 +8,7 @@ export const routes: Routes = [
       import('./components/calculator/calculator.component').then(
         (m) => m.CalculatorComponent
       ),
+    data: { animation: 'CalculatorPage' },
   },
   {
     path: 'attacker-profile',
@@ -15,6 +16,7 @@ export const routes: Routes = [
       import('./components/attacker-profile/attacker-profile.component').then(
         (m) => m.AttackerProfileComponent
       ),
+    data: { animation: 'AttackerProfilePage' },
   },
   {
     path: 'defender-profile',
@@ -22,5 +24,6 @@ export const routes: Routes = [
       import('./components/defender-profile/defender-profile.component').then(
         (m) => m.DefenderProfileComponent
       ),
+    data: { animation: 'DefenderProfilePage' },
   },
 ];
