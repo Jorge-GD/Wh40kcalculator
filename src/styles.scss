@@ -8,6 +8,13 @@ $mat-theme-ignore-duplication-warnings: true; // Keep for now, aim to remove if 
 @use './app/styles/utilities.scss' as utilities;
 @use './app/styles/shared-components.scss' as shared;
 
+// Use Material Symbols Outlined for all mat-icon elements
+.mat-icon,
+mat-icon {
+  font-family: 'Material Symbols Outlined';
+  font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+}
+
 // Include the core styles for Angular Material only once.
 // This renders all common structural styles.
 @include mat.core();
