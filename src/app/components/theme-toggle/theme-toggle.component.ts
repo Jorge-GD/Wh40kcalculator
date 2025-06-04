@@ -16,12 +16,13 @@ export class ThemeToggleComponent implements OnInit {
   constructor(private themeService: ThemeService) {}
 
   ngOnInit(): void {
-    this.isDarkMode = this.themeService.getCurrentTheme() !== 'light-theme';
+    this.isDarkMode =
+      this.themeService.getCurrentTheme() !== 'theme-imperium-light';
   }
 
   toggleTheme(checked: boolean): void {
     this.isDarkMode = checked;
-    const newTheme = checked ? 'theme-imperium-dark' : 'light-theme';
+    const newTheme = checked ? 'theme-chaos-dark' : 'theme-imperium-light';
     this.themeService.setTheme(newTheme);
   }
 }

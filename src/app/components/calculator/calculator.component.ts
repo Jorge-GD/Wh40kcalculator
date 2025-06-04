@@ -28,7 +28,6 @@ import { FormsModule } from '@angular/forms';
 import { AttackerProfileComponent } from '../attacker-profile/attacker-profile.component';
 import { DefenderProfileComponent } from '../defender-profile/defender-profile.component';
 import { ResultsComponent } from '../results/results.component';
-import { SectionDividerComponent } from '../section-divider/section-divider.component';
 import { ThemeService } from '../../services/theme.service';
 import { Observable } from 'rxjs';
 
@@ -45,7 +44,6 @@ import { Observable } from 'rxjs';
     FormsModule,
     AttackerProfileComponent,
     DefenderProfileComponent,
-    SectionDividerComponent,
     ResultsComponent,
   ],
   templateUrl: './calculator.component.html',

@@ -83,13 +83,12 @@ $mathhammer-ng-light-theme: mat.m2-define-light-theme(
 
 // --- APPLY THEMES ---
 
-// Apply the base (dark) theme globally.
-@include mat.all-component-themes($mathhammer-ng-theme);
+// Apply the base (light) theme globally.
+@include mat.all-component-themes($mathhammer-ng-light-theme);
 
-// Apply the light theme when .light-theme or .theme-imperium-light class is present.
-.light-theme,
-.theme-imperium-light {
-  @include mat.all-component-themes($mathhammer-ng-light-theme);
+// Apply only the color theme for dark variants to avoid duplication
+.theme-chaos-dark {
+  @include mat.all-component-colors($mathhammer-ng-theme);
 
   // Your existing light theme CSS variable overrides:
   .mat-mdc-card {
@@ -119,7 +118,7 @@ $mathhammer-ng-light-theme: mat.m2-define-light-theme(
 
 // Apply theme variables to Angular Material components for other themes
 // (This section seems to use CSS variables directly, which is fine)
-.theme-imperium-dark {
+.theme-chaos-dark {
   // You might need to override specific component styles if the Material theme mixins
   // don't pick up all CSS variables as expected, or if you want finer control.
   .mat-mdc-card {
@@ -142,76 +141,6 @@ $mathhammer-ng-light-theme: mat.m2-define-light-theme(
   /* .mat-mdc-button.mat-primary, .mat-mdc-button.mat-accent, .mat-mdc-button.mat-warn {
     // Example: Customize button colors if needed beyond the theme palette
   } */
-  .mat-expansion-panel {
-    background-color: var(--color-background-panel);
-    color: var(--color-primary-text);
-  }
-  .mat-expansion-panel-header {
-    color: var(--color-text-title);
-  }
-  .mat-mdc-slide-toggle .mdc-switch__track::after {
-    background-color: var(--color-metal-interactive-hover);
-  }
-  .mat-mdc-slide-toggle
-    .mdc-switch.mdc-switch--selected
-    .mdc-switch__track::after {
-    background-color: var(--color-accent-green-cogitator) !important;
-  }
-}
-
-.theme-ork-rust {
-  .mat-mdc-card {
-    background-color: var(--color-background-panel);
-    color: var(--color-primary-text);
-    border: 1px solid var(--color-border-panel);
-  }
-  .mat-mdc-text-field-wrapper,
-  .mat-mdc-select .mdc-text-field {
-    background-color: var(--color-input-bg) !important;
-  }
-  .mat-mdc-select-value,
-  .mat-mdc-form-field input,
-  .mat-mdc-form-field textarea {
-    color: var(--color-text-screen) !important;
-  }
-  .mat-mdc-form-field .mdc-floating-label {
-    color: var(--color-secondary-text) !important;
-  }
-  .mat-expansion-panel {
-    background-color: var(--color-background-panel);
-    color: var(--color-primary-text);
-  }
-  .mat-expansion-panel-header {
-    color: var(--color-text-title);
-  }
-  .mat-mdc-slide-toggle .mdc-switch__track::after {
-    background-color: var(--color-metal-interactive-hover);
-  }
-  .mat-mdc-slide-toggle
-    .mdc-switch.mdc-switch--selected
-    .mdc-switch__track::after {
-    background-color: var(--color-accent-green-cogitator) !important;
-  }
-}
-
-.theme-necrontyr-green {
-  .mat-mdc-card {
-    background-color: var(--color-background-panel);
-    color: var(--color-primary-text);
-    border: 1px solid var(--color-border-panel);
-  }
-  .mat-mdc-text-field-wrapper,
-  .mat-mdc-select .mdc-text-field {
-    background-color: var(--color-input-bg) !important;
-  }
-  .mat-mdc-select-value,
-  .mat-mdc-form-field input,
-  .mat-mdc-form-field textarea {
-    color: var(--color-text-screen) !important;
-  }
-  .mat-mdc-form-field .mdc-floating-label {
-    color: var(--color-secondary-text) !important;
-  }
   .mat-expansion-panel {
     background-color: var(--color-background-panel);
     color: var(--color-primary-text);

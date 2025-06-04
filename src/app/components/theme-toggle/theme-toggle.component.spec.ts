@@ -4,7 +4,7 @@ import { ThemeToggleComponent } from './theme-toggle.component';
 import { ThemeService } from '../../services/theme.service';
 
 class MockThemeService {
-  theme = 'light-theme';
+  theme = 'theme-imperium-light';
   getCurrentTheme() {
     return this.theme;
   }
@@ -42,15 +42,15 @@ describe('ThemeToggleComponent', () => {
 
   it('should toggle to dark mode and persist', () => {
     component.toggleTheme(true);
-    expect(service.theme).toBe('theme-imperium-dark');
-    expect(localStorage.getItem('mathhammer-theme')).toBe(
-      'theme-imperium-dark'
-    );
+    expect(service.theme).toBe('theme-chaos-dark');
+    expect(localStorage.getItem('mathhammer-theme')).toBe('theme-chaos-dark');
   });
 
   it('should toggle to light mode and persist', () => {
     component.toggleTheme(false);
-    expect(service.theme).toBe('light-theme');
-    expect(localStorage.getItem('mathhammer-theme')).toBe('light-theme');
+    expect(service.theme).toBe('theme-imperium-light');
+    expect(localStorage.getItem('mathhammer-theme')).toBe(
+      'theme-imperium-light'
+    );
   });
 });

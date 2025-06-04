@@ -13,7 +13,7 @@ import { BehaviorSubject } from 'rxjs';
 })
 export class ThemeService {
   private renderer: Renderer2;
-  private currentThemeClassName = 'theme-imperium-dark';
+  private currentThemeClassName = 'theme-imperium-light';
   private currentThemeSubject = new BehaviorSubject<string>(
     this.currentThemeClassName
   );
@@ -22,11 +22,8 @@ export class ThemeService {
   public currentTheme$ = this.currentThemeSubject.asObservable();
 
   public readonly availableThemes: { name: string; value: string }[] = [
-    { name: 'Imperium Dark', value: 'theme-imperium-dark' },
-    { name: 'Ork Rust', value: 'theme-ork-rust' },
-    { name: 'Necrontyr Green', value: 'theme-necrontyr-green' },
-    { name: 'Light Theme', value: 'light-theme' },
-    { name: 'Imperium Light', value: 'theme-imperium-light' },
+    { name: 'Light Imperial', value: 'theme-imperium-light' },
+    { name: 'Dark Chaos', value: 'theme-chaos-dark' },
   ];
 
   constructor(

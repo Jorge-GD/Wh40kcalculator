@@ -6,7 +6,7 @@ export interface ThemeState {
 }
 
 const initialState: ThemeState = {
-  currentTheme: 'theme-imperium-dark',
+  currentTheme: 'theme-imperium-light',
 };
 
 export const themeFeature = createFeature({
