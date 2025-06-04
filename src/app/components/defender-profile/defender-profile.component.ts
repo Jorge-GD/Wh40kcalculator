@@ -13,8 +13,8 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatCardModule } from '@angular/material/card';
 import { MatChipsModule } from '@angular/material/chips';
-import { MatTabsModule } from '@angular/material/tabs'; // Import MatTabsModule
-import { MatMenuModule, MatMenuTrigger } from '@angular/material/menu'; // Added MatMenuModule and MatMenuTrigger
+import { MatTabsModule } from '@angular/material/tabs'; // Provides tab functionality
+import { MatMenuModule, MatMenuTrigger } from '@angular/material/menu'; // Menu support
 import { ThemeService } from '../../services/theme.service';
 
 @Component({
@@ -33,8 +33,8 @@ import { ThemeService } from '../../services/theme.service';
     MatToolbarModule,
     MatCardModule,
     MatChipsModule,
-    MatTabsModule, // Add MatTabsModule here
-    MatMenuModule   // Added MatMenuModule
+    MatTabsModule, // Provides tab functionality
+    MatMenuModule   // Menu support
   ],
   templateUrl: './defender-profile.component.html',
   styleUrls: ['./defender-profile.component.scss']
