@@ -5,7 +5,7 @@ import { CommonModule } from '@angular/common';
   selector: 'app-tab',
   standalone: true,
   imports: [CommonModule],
-  template: '<ng-template><ng-content></ng-content></ng-template>'
+  template: '<ng-template><ng-content></ng-content></ng-template>',
 })
 export class TabComponent {
   @Input() label = '';

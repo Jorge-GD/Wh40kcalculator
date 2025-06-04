@@ -1,4 +1,10 @@
-import { Component, AfterContentInit, ContentChildren, QueryList, HostBinding } from '@angular/core';
+import {
+  Component,
+  AfterContentInit,
+  ContentChildren,
+  QueryList,
+  HostBinding,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TabComponent } from './tab.component';
 
@@ -7,7 +13,7 @@ import { TabComponent } from './tab.component';
   standalone: true,
   imports: [CommonModule, TabComponent],
   templateUrl: './tabs.component.html',
-  styleUrls: ['./tabs.component.scss']
+  styleUrls: ['./tabs.component.scss'],
 })
 export class TabsComponent implements AfterContentInit {
   @ContentChildren(TabComponent) tabs!: QueryList<TabComponent>;
@@ -18,7 +24,7 @@ export class TabsComponent implements AfterContentInit {
   }
 
   ngAfterContentInit(): void {
-    const active = this.tabs.toArray().findIndex(tab => tab.active);
+    const active = this.tabs.toArray().findIndex((tab) => tab.active);
     this.activeIndex = active >= 0 ? active : 0;
   }
 
