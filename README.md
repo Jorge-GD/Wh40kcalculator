@@ -59,12 +59,37 @@ npm run lint:fix
 npm run format
 ```
 
+### Git Hooks
+
+Pre-commit hooks are managed with [Husky](https://typicode.github.io/husky). Run `npm install` after cloning to install the hooks. They will automatically execute `npm run lint` and `npm test` before each commit.
+
 ## Project Structure
 
 - `src/app/components/` - Angular components for UI
 - `src/app/models/` - TypeScript models for data structures
 - `src/app/services/` - Services for business logic and calculations
 - `src/app/styles/` - Shared styles and utilities
+
+## Publicar en GitHub Pages
+
+Sigue estos pasos para desplegar la aplicación usando GitHub Pages:
+
+1. Ejecuta el comando de compilación con la ruta base adecuada:
+
+   ```bash
+   ng build --base-href /Wh40kcalculator/
+   ```
+
+   Esto generará los archivos estáticos en la carpeta `dist/wh40kcalculator`.
+2. Entra a la sección **Settings** del repositorio en GitHub y abre la pestaña **Pages**.
+3. Selecciona la rama principal (por ejemplo `main`) y la carpeta `/dist/wh40kcalculator` como origen del sitio.
+4. Guarda la configuración para activar la publicación.
+
+Una vez completado el proceso, la aplicación estará disponible en:
+
+```
+https://<tu-usuario>.github.io/Wh40kcalculator/
+```
 
 ## Additional Resources
 
