@@ -7,6 +7,7 @@ $mat-theme-ignore-duplication-warnings: true; // Keep for now, aim to remove if 
 @use './app/themes.scss' as themes;
 @use './app/styles/utilities.scss' as utilities;
 @use './app/styles/shared-components.scss' as shared;
+@use './styles/mixins.scss' as mixins;
 
 // Use Material Symbols Outlined for all mat-icon elements
 .mat-icon,
