@@ -1,0 +1,227 @@
+// Design tokens for spacing and colors
+
+// --- Spacing Maps ---
+$spacing: (
+  xs: 0.25rem,
+  sm: 0.5rem,
+  md: 0.75rem,
+  lg: 1rem,
+  xl: 1.25rem,
+  xxl: 1.5rem,
+  xxxl: 2rem,
+);
+
+$mobile-spacing: (
+  xs: 0.375rem,
+  sm: 0.75rem,
+  md: 1rem,
+  lg: 1.25rem,
+  xl: 1.5rem,
+  xxl: 2rem,
+  xxxl: 2.5rem,
+);
+
+@mixin spacing-vars($map) {
+  @each $name, $value in $map {
+    --spacing-#{$name}: #{$value};
+  }
+}
+
+// --- Color Maps ---
+$base-colors: (
+  primary-text: #c5c5c5,
+  secondary-text: #9e8a74,
+  background-main: #1a1a1a,
+  background-panel: #2a2a2a,
+  border-panel: #444,
+  input-bg: #333322,
+  metal-interactive: #5a5a5a,
+  metal-interactive-hover: #7a7a7a,
+  accent-glow: #ff8c00,
+  accent-red: #b71c1c,
+  accent-red-dark: #8a0000,
+  accent-green-cogitator: #4caf50,
+  accent-orange: #ff9800,
+  accent-orange-rgb: 255, 152, 0,
+);
+
+$imperium-dark-colors: (
+  primary-text: #e0dac5,
+  secondary-text: #b0a58f,
+  background-main: #1f1a15,
+  background-panel: rgba(40, 35, 30, 0.95),
+  border-panel: #6d5f47,
+  input-bg: #3a3028,
+  metal-interactive: #8c785b,
+  metal-interactive-hover: #a8906f,
+  accent-glow: #ff8c00,
+  accent-red: #d93025,
+  accent-red-dark: #a02018,
+  accent-green-cogitator: #3e8e41,
+  text-header-main: #f5e6c8,
+  text-title: #dccaa8,
+  text-parchment: #e0dac5,
+  text-screen: #b2f7b2,
+  metal-panel: #28231e,
+  metal-panel-border: #504538,
+  metal-section: #302a25,
+  metal-section-border: #5f503f,
+  metal-dark-bg: #1a1612,
+  accent-blue-cogitator-hover: #6ebff7,
+  background-dropdown: #3a3028,
+  border-dropdown: #6d5f47,
+  text-dropdown-item: #e0dac5,
+  text-dropdown-item-hover: #f5e6c8,
+  background-dropdown-hover: #4a3830,
+  protocol-card-bg: rgba(40, 35, 30, 0.8),
+  protocol-card-border: #6d5f47,
+  protocol-card-title: #dccaa8,
+  protocol-card-description: #b0a58f,
+);
+
+$ork-rust-colors: (
+  primary-text: #d1c7b7,
+  secondary-text: #a39887,
+  background-main: #4a3b2a,
+  background-panel: rgba(60, 45, 30, 0.92),
+  border-panel: #8c5a2b,
+  input-bg: #524030,
+  metal-interactive: #7d6a55,
+  metal-interactive-hover: #9e866d,
+  accent-glow: #ff4500,
+  accent-red: #e53935,
+  accent-red-dark: #b71c1c,
+  accent-green-cogitator: #689f38,
+  text-header-main: #efd7b1,
+  text-title: #d1bfa0,
+  text-parchment: #d1c7b7,
+  text-screen: #ffeb3b,
+  metal-panel: #3d2f21,
+  metal-panel-border: #6b4a20,
+  metal-section: #453828,
+  metal-section-border: #7a5c30,
+  metal-dark-bg: #2e2215,
+  accent-blue-cogitator-hover: #ffcc00,
+  background-dropdown: #524030,
+  border-dropdown: #8c5a2b,
+  text-dropdown-item: #d1c7b7,
+  text-dropdown-item-hover: #efd7b1,
+  background-dropdown-hover: #6a5040,
+  protocol-card-bg: rgba(60, 45, 30, 0.8),
+  protocol-card-border: #8c5a2b,
+  protocol-card-title: #d1bfa0,
+  protocol-card-description: #a39887,
+);
+
+$necrontyr-green-colors: (
+  primary-text: #a2f5b4,
+  secondary-text: #7bc48c,
+  background-main: #08140a,
+  background-panel: rgba(10, 40, 20, 0.93),
+  border-panel: #0a5c15,
+  input-bg: #0f2915,
+  metal-interactive: #2a7a3e,
+  metal-interactive-hover: #3db056,
+  accent-glow: #00ff41,
+  accent-red: #c62828,
+  accent-red-dark: #8e0000,
+  accent-green-cogitator: #00e676,
+  text-header-main: #c8f7d0,
+  text-title: #b0f0c0,
+  text-parchment: #a2f5b4,
+  text-screen: #e0ffe0,
+  metal-panel: #0c200e,
+  metal-panel-border: #15401a,
+  metal-section: #103015,
+  metal-section-border: #1a5020,
+  metal-dark-bg: #050f06,
+  accent-blue-cogitator-hover: #00ffea,
+  background-dropdown: #0f2915,
+  border-dropdown: #0a5c15,
+  text-dropdown-item: #a2f5b4,
+  text-dropdown-item-hover: #c8f7d0,
+  background-dropdown-hover: #1a3520,
+  protocol-card-bg: rgba(10, 40, 20, 0.8),
+  protocol-card-border: #0a5c15,
+  protocol-card-title: #b0f0c0,
+  protocol-card-description: #7bc48c,
+);
+
+$light-theme-colors: (
+  primary-text: #333333,
+  secondary-text: #555555,
+  background-main: #f0f0f0,
+  background-panel: #ffffff,
+  border-panel: #dcdcdc,
+  input-bg: #f8f8f8,
+  metal-interactive: #e0e0e0,
+  metal-interactive-hover: #c0c0c0,
+  accent-glow: #007bff,
+  accent-red: #dc3545,
+  accent-red-dark: #c82333,
+  accent-green-cogitator: #28a745,
+  text-header-main: #212529,
+  text-title: #495057,
+  text-parchment: #333333,
+  text-screen: #0056b3,
+  metal-panel: #fdfdfd,
+  metal-panel-border: #cccccc,
+  metal-section: #fafafa,
+  metal-section-border: #dddddd,
+  metal-dark-bg: #e9ecef,
+  accent-blue-cogitator-hover: #0056b3,
+  background-dropdown: #ffffff,
+  border-dropdown: #dcdcdc,
+  text-dropdown-item: #333333,
+  text-dropdown-item-hover: #212529,
+  background-dropdown-hover: #f8f9fa,
+  protocol-card-bg: #ffffff,
+  protocol-card-border: #dcdcdc,
+  protocol-card-title: #495057,
+  protocol-card-description: #555555,
+);
+
+@mixin color-vars($map) {
+  @each $name, $value in $map {
+    --color-#{$name}: #{$value};
+  }
+}
+
+@mixin generate-theme($selector, $map) {
+  #{$selector} {
+    @include color-vars($map);
+  }
+}
+
+@mixin font-vars() {
+  :root {
+    --font-gothic: 'Uncial Antiqua', cursive;
+    --font-serif-main: 'EB Garamond', serif;
+    --font-sans-condensed: 'Roboto Condensed', sans-serif;
+  }
+}
+
+// Emit tokens
+@include font-vars();
+:root {
+  @include spacing-vars($spacing);
+  --border-radius-sm: 3px;
+  --border-radius-md: 6px;
+  --border-radius-lg: 8px;
+  --shadow-subtle: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+  --shadow-medium: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+  --shadow-strong: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
+}
+
+@media (max-width: 768px) {
+  :root {
+    @include spacing-vars($mobile-spacing);
+  }
+}
+
+@include generate-theme(body, $base-colors);
+@include generate-theme('.theme-imperium-dark', $imperium-dark-colors);
+@include generate-theme('.theme-ork-rust', $ork-rust-colors);
+@include generate-theme('.theme-necrontyr-green', $necrontyr-green-colors);
+@include generate-theme('.light-theme', $light-theme-colors);
+
