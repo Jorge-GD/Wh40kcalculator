@@ -1,0 +1,42 @@
+:host {
+  display: block;
+}
+
+.tabs {
+  display: flex;
+  border-bottom: 1px solid currentColor;
+  position: relative;
+}
+
+.tab-label {
+  flex: 1 1 auto;
+  background: none;
+  border: 0;
+  padding: 0.75rem 1rem;
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+  text-align: center;
+}
+
+.tab-label[aria-selected='true'] {
+  font-weight: 600;
+}
+
+.tab-label:focus {
+  outline: 2px solid currentColor;
+  outline-offset: 2px;
+}
+
+.active-underline {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  height: 2px;
+  background-color: currentColor;
+  transition: transform 0.3s ease;
+}
+
+.tab-panels {
+  padding-top: 1rem;
+}

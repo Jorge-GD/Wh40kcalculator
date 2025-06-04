@@ -1,0 +1,29 @@
+<div class="tabs" role="tablist">
+  <button
+    *ngFor="let tab of tabs; let i = index"
+    class="tab-label"
+    role="tab"
+    [attr.id]="'tab-' + i"
+    [attr.aria-selected]="i === activeIndex"
+    [attr.aria-controls]="'panel-' + i"
+    (click)="selectTab(i)"
+    (keydown)="onKeydown($event, i)"
+  >
+    {{ tab.label }}
+  </button>
+  <span class="active-underline" [style.transform]="'translateX(' + activeIndex * 100 + '%)'" [style.width]="'calc(100% / ' + tabs.length + ')'" aria-hidden="true"></span>
+</div>
+
+<div class="tab-panels">
+  <ng-container *ngFor="let tab of tabs; let i = index">
+    <div
+      class="tab-panel"
+      role="tabpanel"
+      *ngIf="i === activeIndex"
+      [attr.id]="'panel-' + i"
+      [attr.aria-labelledby]="'tab-' + i"
+    >
+      <ng-container *ngTemplateOutlet="tab.content"></ng-container>
+    </div>
+  </ng-container>
+</div>
