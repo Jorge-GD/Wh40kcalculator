@@ -18,7 +18,8 @@ export class ThemeService {
     { name: 'Imperium Dark', value: 'theme-imperium-dark' },
     { name: 'Ork Rust', value: 'theme-ork-rust' },
     { name: 'Necrontyr Green', value: 'theme-necrontyr-green' },
-    { name: 'Light Theme', value: 'light-theme' }
+    { name: 'Light Theme', value: 'light-theme' },
+    { name: 'Imperium Light', value: 'theme-imperium-light' }
   ];
 
   constructor(

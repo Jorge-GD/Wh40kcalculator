@@ -156,5 +156,44 @@
   --color-protocol-card-description: #555555;
 }
 
+// Imperium Light Theme (alternative light mode)
+.theme-imperium-light {
+  --color-primary-text: #4a3a2b; // Dark parchment text
+  --color-secondary-text: #6b5a44;
+  --color-background-main: #faf7f2; // Warm parchment background
+  --color-background-panel: #f5f0e6;
+  --color-border-panel: #d0c0a0;
+  --color-input-bg: #ffffff;
+  --color-metal-interactive: #c8b37a;
+  --color-metal-interactive-hover: #d8c48a;
+  --color-accent-glow: #ff9900;
+  --color-accent-red: #cc2a2a;
+  --color-accent-red-dark: #b02020;
+  --color-accent-green-cogitator: #4da256;
+  --color-text-header-main: #3a3028;
+  --color-text-title: #5f503f;
+  --color-text-parchment: #4a3a2b;
+  --color-text-screen: #4a3a2b;
+  --color-metal-panel: #f2ece0;
+  --color-metal-panel-border: #d8c5a1;
+  --color-metal-section: #f7f2e6;
+  --color-metal-section-border: #e8dcc7;
+  --color-metal-dark-bg: #eae3d2;
+  --color-accent-blue-cogitator-hover: #708bd2;
+
+  // Dropdown/menu variables
+  --color-background-dropdown: #ffffff;
+  --color-border-dropdown: #d0c0a0;
+  --color-text-dropdown-item: #4a3a2b;
+  --color-text-dropdown-item-hover: #333333;
+  --color-background-dropdown-hover: #f1e9d8;
+
+  // Protocol card variables
+  --color-protocol-card-bg: #ffffff;
+  --color-protocol-card-border: #d0c0a0;
+  --color-protocol-card-title: #5f503f;
+  --color-protocol-card-description: #6b5a44;
+}
+
 // Ensure this file is imported into styles.scss
 // @import 'themes.scss'; // Add this line to your main styles.scss
