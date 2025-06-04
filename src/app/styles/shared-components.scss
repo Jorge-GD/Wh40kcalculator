@@ -223,6 +223,20 @@
   // text-transform: uppercase;
 }
 
+// Generic card container styling for profile components
+@mixin profile-card-base {
+  background-color: var(--color-background-panel);
+  border: 1px solid var(--color-border-panel);
+  border-radius: var(--border-radius-md);
+  box-shadow: var(--shadow-subtle);
+  margin-bottom: var(--spacing-lg);
+  transition: box-shadow 0.3s ease-in-out;
+
+  &:hover {
+    box-shadow: var(--shadow-medium);
+  }
+}
+
 // Apply the styles directly in the global stylesheet
 .section-title-font {
   @include section-title;
@@ -246,6 +260,10 @@
   .profile-actions .icon-button {
     @include profile-actions;
   }
+}
+
+.profile-card {
+  @include profile-card-base;
 }
 
 // Optional: define these classes if needed

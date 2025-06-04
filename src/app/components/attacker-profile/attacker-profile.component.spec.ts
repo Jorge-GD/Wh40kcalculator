@@ -69,7 +69,7 @@ describe('AttackerProfileComponent', () => {
 
   it('should render the attacker profile card', () => {
     const compiled = fixture.nativeElement as HTMLElement;
-    const card = compiled.querySelector('.attacker-profile-card') as HTMLElement;
+    const card = compiled.querySelector('.profile-card') as HTMLElement;
     expect(card).toBeTruthy();
   });
 
