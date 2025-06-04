@@ -1,60 +1,42 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { of } from 'rxjs';
+
 import { CalculatorComponent } from './calculator.component';
 import { AttackerProfileService } from '../../services/attacker-profile.service';
 import { DefenderProfileService } from '../../services/defender-profile.service';
 import { CalculationService } from '../../services/calculation.service';
-import { AttackerProfile, DEFAULT_ATTACKER_PROFILE_DATA } from '../../models/attacker-profile.model';
-import { DefenderProfile, DEFAULT_DEFENDER_PROFILE } from '../../models/defender-profile.model';
+import {
+  AttackerProfile,
+  DEFAULT_ATTACKER_PROFILE_DATA,
+} from '../../models/attacker-profile.model';
 import { TotalResults } from '../../models/calculation-result.model';
-import { of } from 'rxjs';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { ThemeService } from '../../services/theme.service';
 
 describe('CalculatorComponent', () => {
   let component: CalculatorComponent;
   let fixture: ComponentFixture<CalculatorComponent>;
 
-  const mockAttackerProfile: AttackerProfile = {
-    id: 1,
-    name: 'Test Profile',
-    data: { ...DEFAULT_ATTACKER_PROFILE_DATA }
-  };
-
-  const mockDefenderProfile: DefenderProfile = { ...DEFAULT_DEFENDER_PROFILE };
-
-  const mockTotalResults: TotalResults = {
+  const dummyResults: TotalResults = {
+    totalDamage: 5,
+    totalModelsKilled: 1,
     profileResults: [],
-    totalDamage: 10,
-    totalModelsKilled: 2
   };
-
-  const mockAttackerProfileService = {
-    attackerProfiles$: of([mockAttackerProfile]),
-    getProfiles: jasmine.createSpy('getProfiles').and.returnValue([mockAttackerProfile]),
-    addProfile: jasmine.createSpy('addProfile'),
-    removeProfile: jasmine.createSpy('removeProfile'),
-    resetAllProfiles: jasmine.createSpy('resetAllProfiles')
-  };
-
-  const mockDefenderProfileService = {
-    defenderProfile$: of(mockDefenderProfile),
-    resetProfile: jasmine.createSpy('resetProfile')
-  };
-
-  const mockCalculationService = {
-    calculateTotalDamage: jasmine.createSpy('calculateTotalDamage').and.returnValue(mockTotalResults)
+  const calcServiceStub = {
+    calculateTotalDamage: jasmine
+      .createSpy('calculateTotalDamage')
+      .and.returnValue(dummyResults),
   };
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [
-        CalculatorComponent,
-        NoopAnimationsModule
-      ],
+      imports: [CalculatorComponent, NoopAnimationsModule],
       providers: [
-        { provide: AttackerProfileService, useValue: mockAttackerProfileService },
-        { provide: DefenderProfileService, useValue: mockDefenderProfileService },
-        { provide: CalculationService, useValue: mockCalculationService }
-      ]
+        { provide: AttackerProfileService, useValue: {} },
+        { provide: DefenderProfileService, useValue: {} },
+        { provide: ThemeService, useValue: { currentTheme$: of('light') } },
+        { provide: CalculationService, useValue: calcServiceStub },
+      ],
     }).compileComponents();
 
     fixture = TestBed.createComponent(CalculatorComponent);
@@ -66,40 +48,61 @@ describe('CalculatorComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should initialize with attacker profiles', () => {
-    expect(component.attackerProfiles).toEqual([mockAttackerProfile]);
+  it('should initialize with one attacker and one defender profile', () => {
+    expect(component.attackerProfiles.length).toBe(1);
+    expect(component.defenderProfiles.length).toBe(1);
   });
 
-  it('should initialize with defender profile', () => {
-    expect(component.defenderProfile).toEqual(mockDefenderProfile);
+  it('should add attacker profiles up to the limit', () => {
+    for (let i = 0; i < 5; i++) {
+      component.addAttackerProfile();
+    }
+    expect(component.attackerProfiles.length).toBe(
+      component.maxAttackerProfiles
+    );
   });
 
-  it('should add attacker profile', () => {
+  it('should duplicate attacker profile', () => {
+    const original = component.attackerProfiles[0];
+    component.duplicateAttackerProfile(0);
+    expect(component.attackerProfiles.length).toBe(2);
+    expect(component.attackerProfiles[1].data).toEqual(original.data);
+  });
+
+  it('should delete all profiles but keep one', () => {
     component.addAttackerProfile();
-    expect(mockAttackerProfileService.addProfile).toHaveBeenCalled();
+    component.deleteAllProfiles();
+    expect(component.attackerProfiles.length).toBe(1);
   });
 
-  it('should remove attacker profile', () => {
-    component.removeAttackerProfile(1);
-    expect(mockAttackerProfileService.removeProfile).toHaveBeenCalledWith(1);
+  it('should copy all profiles without exceeding max', () => {
+    component.addAttackerProfile();
+    component.copyAllProfiles();
+    expect(component.attackerProfiles.length).toBe(3);
+    component.copyAllProfiles();
+    expect(component.attackerProfiles.length).toBe(
+      component.maxAttackerProfiles
+    );
   });
 
-  it('should calculate results', () => {
+  it('should calculate results when profiles exist', () => {
     component.calculate();
-    expect(mockCalculationService.calculateTotalDamage).toHaveBeenCalledWith([mockAttackerProfile], mockDefenderProfile);
-    expect(component.calculationResults).toEqual(mockTotalResults);
-    expect(component.showResults).toBe(true);
+    expect(calcServiceStub.calculateTotalDamage).toHaveBeenCalled();
+    expect(component.calculationResults).toEqual(dummyResults);
   });
 
-  it('should reset calculator', () => {
-    component.resetCalculator();
-    expect(mockAttackerProfileService.resetAllProfiles).toHaveBeenCalled();
-    expect(mockDefenderProfileService.resetProfile).toHaveBeenCalled();
+  it('should not calculate when no defender profiles', () => {
+    component.defenderProfiles = [];
+    component.calculate();
     expect(component.calculationResults).toBeNull();
-    expect(component.showResults).toBe(false);
   });
+
   it('should track profiles by id', () => {
-    const result = component.trackByProfileId(0, mockAttackerProfile);
-    expect(result).toBe(mockAttackerProfile.id);
+    const profile: AttackerProfile = {
+      id: 99,
+      name: 'X',
+      data: { ...DEFAULT_ATTACKER_PROFILE_DATA },
+    };
+    expect(component.trackByProfileId(0, profile)).toBe(99);
   });
 });
