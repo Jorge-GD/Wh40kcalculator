@@ -1,7 +1,26 @@
 import { Routes } from '@angular/router';
-import { CalculatorComponent } from './components/calculator/calculator.component';
 
 export const routes: Routes = [
-    { path: '', redirectTo: '/calculator', pathMatch: 'full' },
-    { path: 'calculator', component: CalculatorComponent }
+  { path: '', redirectTo: '/calculator', pathMatch: 'full' },
+  {
+    path: 'calculator',
+    loadComponent: () =>
+      import('./components/calculator/calculator.component').then(
+        (m) => m.CalculatorComponent
+      ),
+  },
+  {
+    path: 'attacker-profile',
+    loadComponent: () =>
+      import('./components/attacker-profile/attacker-profile.component').then(
+        (m) => m.AttackerProfileComponent
+      ),
+  },
+  {
+    path: 'defender-profile',
+    loadComponent: () =>
+      import('./components/defender-profile/defender-profile.component').then(
+        (m) => m.DefenderProfileComponent
+      ),
+  },
 ];
