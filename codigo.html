@@ -1,0 +1,1472 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora de Daño Esperado - Warhammer 40k</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Uncial+Antiqua&family=EB+Garamond:wght@400;700&family=Roboto+Condensed:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --color-metal-dark-bg: #1e1c1a;
+            --color-metal-panel: #3a322d;
+            --color-metal-panel-border: #5c4e44;
+            --color-metal-section: #2f2a25;
+            --color-metal-section-border: #4a4038;
+            --color-metal-interactive: #52463c;
+            --color-metal-interactive-hover: #6a5a4e;
+            --color-text-parchment: #c5b8a5;
+            --color-text-screen: #bfae98; 
+            --color-text-title: #a47c48;
+            --color-text-header-main: #d4ac6e;
+            --color-accent-red: #8c1c1c;
+            --color-accent-red-dark: #6b1414;
+            --color-accent-green-cogitator: #4a6b40; 
+            --color-accent-blue-cogitator-hover: #3a5a7a; 
+            --color-input-bg: #1a1613;
+            --font-gothic: 'Uncial Antiqua', cursive;
+            --font-serif-main: 'EB Garamond', serif;
+            --font-sans-condensed: 'Roboto Condensed', sans-serif;
+        }
+
+        body {
+            font-family: var(--font-serif-main);
+            background-color: var(--color-metal-dark-bg);
+            color: var(--color-text-parchment);
+            padding: 1rem;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
+            background-image: linear-gradient(45deg, rgba(0,0,0,0.05) 25%, transparent 25%, transparent 75%, rgba(0,0,0,0.05) 75%, rgba(0,0,0,0.05)),
+                              linear-gradient(-45deg, rgba(0,0,0,0.05) 25%, transparent 25%, transparent 75%, rgba(0,0,0,0.05) 75%, rgba(0,0,0,0.05));
+            background-size: 30px 30px;
+        }
+
+        .cogitator-panel {
+            background-color: var(--color-metal-panel);
+            border: 3px solid var(--color-metal-panel-border);
+            box-shadow: 0 0 25px rgba(0,0,0,0.6), inset 0 0 15px rgba(0,0,0,0.4);
+            border-radius: 8px;
+            width: 100%;
+            max-width: 900px; 
+            margin-top: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .cogitator-header {
+            background-color: var(--color-metal-section);
+            padding: 1.25rem 1.75rem;
+            text-align: center;
+            border-bottom: 3px solid var(--color-metal-panel-border);
+            border-radius: 6px 6px 0 0;
+            position: relative;
+            box-shadow: inset 0 -5px 10px rgba(0,0,0,0.3);
+        }
+        .cogitator-header::before, .cogitator-header::after {
+            content: ''; position: absolute; top: 0.75rem; width: 10px; height: 10px;
+            background-color: var(--color-metal-interactive); border-radius: 50%;
+            box-shadow: inset 1px 1px 3px rgba(0,0,0,0.7), 0 0 2px var(--color-metal-interactive);
+        }
+        .cogitator-header::before { left: 0.75rem; }
+        .cogitator-header::after { right: 0.75rem; }
+
+        .main-title {
+            font-family: var(--font-gothic); color: var(--color-text-header-main);
+            font-size: 2.5rem; letter-spacing: 1.5px;
+            text-shadow: 1px 1px 0px #000, 2px 2px 3px var(--color-accent-red-dark), 0 0 10px var(--color-text-header-main);
+            margin-bottom: 0.25rem;
+        }
+        .subtitle {
+            font-family: var(--font-sans-condensed); color: var(--color-text-parchment);
+            font-size: 0.9rem; letter-spacing: 1px; text-transform: uppercase;
+        }
+
+        .main-content-area {
+             padding: 1.75rem; 
+             display: flex;
+             flex-direction: column;
+             gap: 1.75rem;
+        }
+
+        .data-section {
+            background-color: var(--color-metal-section);
+            border: 2px solid var(--color-metal-section-border);
+            border-radius: 4px; padding: 1.25rem;
+            box-shadow: inset 0 0 10px rgba(0,0,0,0.5);
+        }
+        
+        .attacker-profile-block { 
+            margin-bottom: 1.5rem;
+            border: 1px solid var(--color-metal-interactive);
+            border-radius: 4px;
+            padding: 1rem;
+            background-color: rgba(0,0,0,0.1);
+        }
+        .attacker-profile-block:last-of-type {
+            margin-bottom: 0;
+        }
+        .profile-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.75rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid var(--color-metal-interactive);
+        }
+        .profile-name {
+            font-family: var(--font-gothic);
+            color: var(--color-text-header-main);
+            font-size: 1.2rem;
+        }
+        .profile-actions button {
+            background: none;
+            border: 1px solid var(--color-metal-interactive);
+            color: var(--color-text-parchment);
+            padding: 0.25rem 0.5rem;
+            margin-left: 0.5rem;
+            border-radius: 3px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            transition: background-color 0.2s, color 0.2s;
+        }
+        .profile-actions button:hover {
+            background-color: var(--color-metal-interactive-hover);
+            color: #fff;
+        }
+        .profile-actions button.remove-profile-btn:hover {
+            background-color: var(--color-accent-red-dark);
+        }
+         .profile-actions button.duplicate-profile-btn:hover {
+            background-color: var(--color-accent-green-cogitator);
+        }
+
+        .add-profile-button-container {
+            text-align: center;
+            margin-top: 1.5rem; 
+            padding-top: 1rem;
+            border-top: 1px dashed var(--color-metal-interactive);
+        }
+        .add-attacker-profile-button {
+            font-family: var(--font-gothic);
+            background-color: var(--color-accent-green-cogitator);
+            color: var(--color-text-parchment);
+            padding: 0.6rem 1.2rem;
+            border: 2px solid var(--color-metal-section-border);
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 1.1rem;
+            transition: background-color 0.2s, transform 0.1s;
+            box-shadow: 1px 1px 3px rgba(0,0,0,0.4);
+        }
+        .add-attacker-profile-button:hover {
+            background-color: #5a7b50;
+            transform: translateY(-1px);
+        }
+        .add-attacker-profile-button:disabled {
+            background-color: var(--color-metal-interactive);
+            color: #7a6e5d;
+            cursor: not-allowed;
+            opacity: 0.6;
+        }
+
+
+        .section-title-font {
+            font-family: var(--font-gothic); color: var(--color-text-title);
+            font-size: 1.75rem; border-bottom: 2px solid var(--color-metal-interactive);
+            padding-bottom: 0.6rem; margin-bottom: 1.25rem;
+            text-shadow: 1px 1px 2px #000;
+        }
+
+        .input-label-container { display: flex; align-items: center; margin-bottom: 0.25rem; position: relative; }
+        .input-label-font {
+            font-family: var(--font-sans-condensed); color: var(--color-text-parchment);
+            font-size: 0.9rem; text-transform: uppercase; letter-spacing: 0.75px;
+        }
+        .tooltip-trigger { 
+            position: relative;
+            display: inline-flex; 
+        }
+        .tooltip-icon {
+            width: 14px; height: 14px; margin-left: 0.5rem; cursor: help;
+            background-color: var(--color-metal-interactive); color: var(--color-text-parchment);
+            border-radius: 50%; display: inline-flex; justify-content: center; align-items: center;
+            font-size: 0.7rem; font-weight: bold;
+            box-shadow: inset 1px 1px 2px rgba(0,0,0,0.5);
+            transition: background-color 0.2s, color 0.2s;
+        }
+        .tooltip-icon:hover { background-color: var(--color-text-title); color: var(--color-metal-dark-bg); }
+
+        .tooltip-text {
+            visibility: hidden; opacity: 0; position: absolute;
+            bottom: 100%; left: 50%; transform: translateX(-50%) translateY(-5px); 
+            background-color: var(--color-input-bg); color: var(--color-text-parchment);
+            border: 1px solid var(--color-text-title); border-radius: 3px;
+            padding: 0.5rem 0.75rem; font-size: 0.8rem; font-family: var(--font-serif-main);
+            z-index: 100; transition: opacity 0.2s, visibility 0.2s;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.5);
+            width: max-content; max-width: 250px; pointer-events: none; 
+        }
+        .tooltip-trigger:hover .tooltip-text { visibility: visible; opacity: 1; }
+
+
+        .input-field-font, .input-field-text-font { 
+            background-color: var(--color-input-bg); border: 1px solid var(--color-metal-interactive);
+            color: var(--color-text-screen); font-family: var(--font-sans-condensed);
+            font-size: 1.05rem; padding: 0.6rem 0.8rem;
+            border-radius: 2px; width: 100%;
+            box-shadow: inset 1px 1px 4px rgba(0,0,0,0.6);
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+        .input-field-font:hover, .input-field-text-font:hover { border-color: var(--color-metal-interactive-hover); }
+        .input-field-font:focus, .input-field-text-font:focus {
+            outline: none; border-color: var(--color-accent-blue-cogitator-hover);
+            box-shadow: inset 1px 1px 4px rgba(0,0,0,0.6), 0 0 8px var(--color-accent-blue-cogitator-hover);
+        }
+        .input-field-font::placeholder, .input-field-text-font::placeholder { color: #7a6e5d; }
+
+        .select-field-font {
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23c5b8a5'%3E%3Cpath d='M7 10l5 5 5-5H7z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat; background-position: right 0.6rem center; background-size: 1.6em 1.6em;
+        }
+        .select-field-font option { background-color: var(--color-input-bg); color: var(--color-text-screen); }
+
+        .collapsible-header {
+            background-color: var(--color-metal-interactive);
+            color: var(--color-text-header-main);
+            font-family: var(--font-gothic);
+            font-size: 1.1rem; letter-spacing: 0.5px;
+            padding: 0.6rem 1rem; margin-top: 1.25rem;
+            border: 1px solid var(--color-metal-section-border); border-radius: 3px;
+            cursor: pointer; display: flex; justify-content: space-between; align-items: center;
+            transition: background-color 0.2s;
+            box-shadow: 1px 1px 3px rgba(0,0,0,0.4);
+        }
+        .collapsible-header:hover { background-color: var(--color-metal-interactive-hover); }
+        .collapsible-header .arrow { transition: transform 0.3s ease-out; }
+        .collapsible-header.open .arrow { transform: rotate(180deg); }
+        .collapsible-content {
+            max-height: 0; overflow: hidden;
+            transition: max-height 0.4s ease-out, padding 0.4s ease-out; 
+            background-color: rgba(0,0,0,0.1);
+            border: 1px dashed var(--color-metal-interactive);
+            border-top: none; border-radius: 0 0 3px 3px;
+            padding: 0 1rem;
+        }
+        .collapsible-content.open { padding: 1rem; }
+
+
+        .ability-group-font { padding: 0.75rem 0; }
+        .ability-group-font .input-label-font { font-size: 0.85rem; }
+        .ability-sub-input-group { display: flex; align-items: center; gap: 0.5rem; margin-top: 0.25rem; }
+        .ability-sub-input-group .input-field-font,
+        .ability-sub-input-group .input-field-text-font { width: auto; flex-grow: 1; min-width: 60px; }
+
+
+        .switch-label {
+            display: flex; align-items: center; cursor: pointer;
+            font-family: var(--font-serif-main); font-size: 0.95rem;
+            color: var(--color-text-parchment); margin-bottom: 0.5rem;
+        }
+        .switch-input { display: none; }
+        .switch-slider {
+            position: relative; width: 48px; height: 26px;
+            background-color: var(--color-accent-red-dark);
+            border: 1px solid var(--color-metal-interactive); border-radius: 2px;
+            transition: background-color 0.2s; margin-right: 0.75rem;
+            box-shadow: inset 1px 1px 4px rgba(0,0,0,0.7);
+        }
+        .switch-slider::before {
+            content: ""; position: absolute; width: 20px; height: 20px;
+            left: 2px; bottom: 2px;
+            background-color: var(--color-metal-interactive-hover);
+            border: 1px solid var(--color-metal-panel-border); border-radius: 1px;
+            transition: transform 0.2s; box-shadow: 1px 1px 3px rgba(0,0,0,0.5);
+        }
+        .switch-input:checked + .switch-slider { background-color: var(--color-accent-green-cogitator); }
+        .switch-input:checked + .switch-slider::before { transform: translateX(22px); }
+        .switch-text { font-family: var(--font-sans-condensed); font-size: 0.8rem; color: #9e8a74; margin-left: 0.5rem; }
+
+
+        .action-buttons-container {
+            display: flex; flex-direction: column; sm:flex-direction-row;
+            justify-content: center; align-items: center; gap: 1rem;
+            margin: 2rem auto 1.5rem auto; padding: 0 1rem; max-width: 600px;
+        }
+        .button-cogitator {
+            font-family: var(--font-gothic);
+            color: var(--color-text-header-main);
+            border: 2px solid var(--color-metal-panel-border);
+            padding: 0.85rem 1.75rem; border-radius: 4px;
+            text-transform: uppercase; letter-spacing: 1.5px;
+            font-size: 1.25rem; cursor: pointer; transition: all 0.2s ease-in-out;
+            box-shadow: 3px 3px 6px rgba(0,0,0,0.6), inset 0 0 0px rgba(255,255,255,0);
+            width: 100%; sm:w-auto;
+        }
+        .button-calculate {
+            background-color: var(--color-accent-red-dark);
+            border-color: var(--color-accent-red);
+            color: var(--color-text-parchment);
+            text-shadow: 1px 1px 1px #000;
+        }
+        .button-calculate:hover {
+            background-color: var(--color-accent-red); border-color: var(--color-text-title); color: #fff;
+            transform: translateY(-2px);
+            box-shadow: 4px 6px 8px rgba(0,0,0,0.7), inset 1px 1px 3px rgba(0,0,0,0.2), 0 0 10px var(--color-accent-red);
+        }
+        .button-calculate:active {
+            background-color: var(--color-accent-red-dark); transform: translateY(1px);
+            box-shadow: inset 3px 3px 6px rgba(0,0,0,0.7);
+        }
+
+        /* El botón de Purgar global se elimina, ahora está por perfil */
+        /* .button-reset { ... } */
+        
+
+        .results-panel {
+            background-color: var(--color-metal-dark-bg); border: 3px solid var(--color-text-title);
+            border-radius: 4px; padding: 1.5rem; margin-top: 1.5rem;
+            box-shadow: inset 0 0 15px rgba(0,0,0,0.6), 0 0 10px var(--color-text-title);
+        }
+        .results-panel .section-title-font {
+             color: var(--color-text-header-main); border-bottom-color: var(--color-text-title);
+        }
+        .results-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 0.75rem; } 
+        .results-text-font {
+            font-family: var(--font-serif-main); font-size: 1rem;
+            color: var(--color-text-parchment); margin-bottom: 0.25rem;
+        }
+        .results-value-font {
+            font-family: var(--font-sans-condensed); font-weight: 700;
+            color: var(--color-text-screen); font-size: 1.15rem;
+        }
+        .final-damage-container { margin-top: 1.5rem; padding-top: 1.5rem; border-top: 1px solid var(--color-metal-interactive); }
+        .final-damage-label {
+            font-family: var(--font-gothic); color: var(--color-text-title);
+            font-size: 1.5rem; text-align: center; text-transform: uppercase;
+        }
+        .final-damage-value {
+            font-family: var(--font-gothic); color: var(--color-accent-red);
+            font-size: 3rem; text-shadow: 1px 1px 0px #000, 2px 2px 5px var(--color-accent-red-dark), 0 0 15px var(--color-accent-red);
+            text-align: center; display: block; margin-top: 0.25rem;
+        }
+        .profile-result-card { 
+            margin-bottom: 1.5rem;
+            padding: 1rem;
+            border: 1px solid var(--color-metal-interactive-hover);
+            border-radius: 4px;
+            background-color: rgba(0,0,0,0.15);
+        }
+        .profile-result-card:last-child {
+            margin-bottom: 0;
+        }
+        .profile-result-card h3 {
+            font-family: var(--font-gothic);
+            color: var(--color-text-header-main);
+            font-size: 1.3rem;
+            margin-bottom: 0.75rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid var(--color-metal-interactive);
+        }
+        .total-results-summary {
+            margin-top: 2rem;
+            padding-top: 1rem;
+            border-top: 2px solid var(--color-text-title);
+        }
+        .total-results-summary h3 {
+            font-family: var(--font-gothic);
+            color: var(--color-text-header-main);
+            font-size: 1.5rem;
+            text-align: center;
+            margin-bottom: 0.75rem;
+        }
+
+
+        .cogitator-footer {
+            text-align: center; padding: 0.75rem; font-family: var(--font-sans-condensed);
+            font-size: 0.75rem; color: #7a6e5d;
+            border-top: 2px solid var(--color-metal-interactive); margin-top: 1.75rem;
+            background-color: var(--color-metal-section); border-radius: 0 0 6px 6px;
+        }
+        .hidden-by-default { display: none; }
+        input:disabled, select:disabled, .input-field-text-font:disabled {
+            background-color: #2a2521 !important; border-color: #403831 !important;
+            color: #7a6e5d !important; cursor: not-allowed !important;
+            box-shadow: inset 1px 1px 3px rgba(0,0,0,0.7) !important;
+        }
+        .ability-group-font input[type="checkbox"]:disabled + .switch-slider,
+        .collapsible-content input[type="checkbox"]:disabled + .switch-slider {
+            background-color: #2a2521; cursor: not-allowed;
+            box-shadow: inset 1px 1px 3px rgba(0,0,0,0.7) !important;
+        }
+        .ability-group-font input[type="checkbox"]:disabled + .switch-slider::before,
+        .collapsible-content input[type="checkbox"]:disabled + .switch-slider::before {
+            background-color: #403831;
+        }
+        /* Estilo para los campos base en horizontal */
+        .base-stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); 
+            gap: 0.75rem; 
+        }
+        .base-stats-grid > div {
+            display: flex;
+            flex-direction: column; 
+        }
+    </style>
+</head>
+<body>
+    <div class="cogitator-panel">
+        <header class="cogitator-header">
+            <h1 class="main-title">CALCULADORA DE DAÑO</h1>
+            <p class="subtitle">Warhammer 40,000 - 10ª Edición</p>
+        </header>
+
+        <form id="calculatorFormConcept" class="p-6 sm:p-8">
+            <div class="main-content-area"> 
+                <section class="data-section attacker-profile-section">
+                    <h2 class="section-title-font">PERFILES DEL ATACANTE</h2>
+                    <div id="attackerProfileContainer">
+                        {/* Los perfiles de atacante se generarán aquí */}
+                    </div>
+                    <div class="add-profile-button-container">
+                        <button type="button" id="addAttackerProfileButtonGlobal" class="add-attacker-profile-button">⊕ AÑADIR PERFIL DE ATACANTE</button>
+                    </div>
+                </section>
+
+                <section class="data-section">
+                    <h2 class="section-title-font">PERFIL DEL DEFENSOR</h2>
+                     <div class="base-stats-grid mb-4"> 
+                        <div>
+                            <div class="input-label-container">
+                                <label for="num_models_concept" class="input-label-font">Nº MINIATURAS:</label>
+                                <span class="tooltip-trigger">
+                                    <span class="tooltip-icon">?</span>
+                                    <span class="tooltip-text">Total de miniaturas en la unidad objetivo. Relevante para BLAST.</span>
+                                </span>
+                            </div>
+                            <input type="number" id="num_models_concept" value="10" min="1" class="input-field-font" data-default-value="10">
+                        </div>
+                        <div>
+                            <div class="input-label-container">
+                                <label for="wounds_per_model_concept" class="input-label-font">H. POR MINIATURA:</label>
+                                <span class="tooltip-trigger">
+                                    <span class="tooltip-icon">?</span>
+                                    <span class="tooltip-text">Número de heridas de cada miniatura objetivo.</span>
+                                </span>
+                            </div>
+                            <input type="number" id="wounds_per_model_concept" value="1" min="1" class="input-field-font" data-default-value="1">
+                        </div>
+                        <div>
+                            <div class="input-label-container">
+                                <label for="toughness_concept" class="input-label-font">RESISTENCIA (R):</label>
+                                <span class="tooltip-trigger">
+                                    <span class="tooltip-icon">?</span>
+                                    <span class="tooltip-text">La Resistencia del objetivo.</span>
+                                </span>
+                            </div>
+                            <input type="number" id="toughness_concept" value="4" class="input-field-font" data-default-value="4">
+                        </div>
+                        <div>
+                            <div class="input-label-container">
+                                <label for="save_sv_concept" class="input-label-font">SALVACIÓN (TS X+):</label>
+                                <span class="tooltip-trigger">
+                                    <span class="tooltip-icon">?</span>
+                                    <span class="tooltip-text">Tirada de Salvación normal del objetivo.</span>
+                                </span>
+                            </div>
+                            <input type="number" id="save_sv_concept" value="4" min="2" max="7" class="input-field-font" data-default-value="4">
+                        </div>
+                        <div>
+                            <div class="input-label-container">
+                                <label for="invuln_save_concept" class="input-label-font">SALV. INVULN. (TI X+):</label>
+                                <span class="tooltip-trigger">
+                                    <span class="tooltip-icon">?</span>
+                                    <span class="tooltip-text">Salvación Invulnerable. No se modifica por PA. 0 si no tiene.</span>
+                                </span>
+                            </div>
+                            <input type="number" id="invuln_save_concept" value="0" min="0" max="6" class="input-field-font" data-default-value="0">
+                        </div>
+                        </div>
+                    
+                    <div id="advancedDefensiveProtocolsToggle" class="collapsible-header mt-4">
+                        <span>PROTOCOLOS DEFENSIVOS AVANZADOS</span>
+                        <span class="arrow">▼</span>
+                    </div>
+                    <div id="advancedDefensiveProtocolsContent" class="collapsible-content">
+                        <div class="ability-group-font"> 
+                             <label class="switch-label">
+                                <input type="checkbox" id="defender_in_cover_concept" class="switch-input">
+                                <span class="switch-slider"></span>
+                                UNIDAD DEFENSORA EN COBERTURA
+                            </label>
+                        </div>
+                        <div class="ability-group-font">
+                            <label class="switch-label">
+                                <input type="checkbox" id="defender_mod_to_be_hit_concept" class="switch-input">
+                                <span class="switch-slider"></span>
+                                -1 A SER IMPACTADO POR EL ATACANTE
+                            </label>
+                        </div>
+                        <div class="ability-group-font">
+                            <label class="switch-label">
+                                <input type="checkbox" id="defender_mod_to_be_wounded_concept" class="switch-input">
+                                <span class="switch-slider"></span>
+                                -1 A LA TIRADA PARA HERIR DEL ATACANTE
+                            </label>
+                        </div>
+                        <div class="ability-group-font">
+                            <label class="switch-label">
+                                <input type="checkbox" id="defender_reduce_ap_concept" class="switch-input">
+                                <span class="switch-slider"></span>
+                                REDUCCIÓN DE PENETRACIÓN (PA del Atacante -1)
+                            </label>
+                        </div>
+                        <div class="ability-group-font">
+                            <label class="switch-label">
+                                <input type="checkbox" id="defender_halve_damage_concept" class="switch-input">
+                                <span class="switch-slider"></span>
+                                DAÑO REDUCIDO A LA MITAD (Redondeo Arriba)
+                            </label>
+                        </div>
+                        <div class="ability-group-font">
+                            <label class="switch-label">
+                                <input type="checkbox" id="defender_reduce_damage_flat_concept" class="switch-input">
+                                <span class="switch-slider"></span>
+                                REDUCCIÓN DE DAÑO (-1 al Daño, mín. 1)
+                            </label>
+                        </div>
+                         <div class="ability-group-font">
+                            <label class="switch-label">
+                                <input type="checkbox" id="fnp_active_concept" class="switch-input ability-toggle-concept" data-target="fnp_general_group_concept">
+                                <span class="switch-slider"></span>
+                                ACTIVAR NO HAY DOLOR (FNP)
+                            </label>
+                        </div>
+                        <div id="fnp_general_group_concept" class="mt-1 pl-10 hidden-by-default">
+                            <div class="ability-group-font has-tooltip">
+                                <div class="input-label-container">
+                                    <label for="fnp_save_concept" class="input-label-font">FNP GENERAL (X+):</label>
+                                    <span class="tooltip-trigger">
+                                        <span class="tooltip-icon">?</span>
+                                        <span class="tooltip-text">Permite ignorar heridas sufridas (normal y mortal si no hay FNP específico). 0 si no tiene.</span>
+                                    </span>
+                                </div>
+                                <input type="number" id="fnp_save_concept" value="0" min="0" max="6" class="input-field-font w-1/2 sm:w-1/3" data-default-value="0" disabled>
+                            </div>
+                            <div class="ability-group-font">
+                                <label class="switch-label">
+                                    <input type="checkbox" id="fnp_vs_mortals_active_concept" class="switch-input ability-toggle-concept" data-target="fnp_vs_mortals_value_group_concept" disabled>
+                                    <span class="switch-slider"></span>
+                                    ¿USAR FNP DIFERENTE PARA HERIDAS MORTALES?
+                                </label>
+                                 <div id="fnp_vs_mortals_value_group_concept" class="mt-1 pl-10 hidden-by-default ability-sub-input-group">
+                                    <label for="fnp_vs_mortals_value_concept" class="input-label-font text-xs">FNP vs MORTALES (X+):</label>
+                                    <input type="number" id="fnp_vs_mortals_value_concept" value="0" min="0" max="6" class="input-field-font w-1/2 sm:w-1/3" data-default-value="0" disabled>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            
+                <div class="action-buttons-container col-span-full"> 
+                    <button type="button" id="calculateButtonConcept" class="button-cogitator button-calculate">
+                        INICIAR ANÁLISIS
+                    </button>
+                    {/* El botón de Purgar global se elimina, ahora está por perfil */}
+                </div>
+            </div>
+        </form>
+
+        <section class="results-panel">
+            <h2 class="section-title-font">PROYECCIÓN DE COMBATE</h2>
+            <div id="results-output-concept" class="space-y-3">
+                <p class="results-text-font">SISTEMA INERTE. INGRESE DATOS Y ACTIVE EL COGITATOR...</p>
+            </div>
+        </section>
+        <footer class="cogitator-footer">
+            <p>&copy; M41.999 - LA VERDAD DEL EMPERADOR ILUMINA NUESTROS DATOS - ABHORRE AL XENO, AL MUTANTE, AL HEREJE.</p>
+        </footer>
+    </div>
+
+    <script>
+    // Constantes y Funciones Auxiliares
+    const DICE_SIDES = 6;
+    const MAX_ATTACKER_PROFILES = 4;
+    let attackerProfiles = []; 
+    let nextProfileInternalId = 1; 
+    let currentFocusedProfileId = 1; 
+
+
+    // --- Funciones de utilidad para obtener valores de la UI ---
+    function getIntValue(elementId, defaultValue = 0) {
+        const element = document.getElementById(elementId);
+        return element ? parseInt(element.value) || defaultValue : defaultValue;
+    }
+    function getStringValue(elementId, defaultValue = "") {
+        const element = document.getElementById(elementId);
+        return element ? element.value.trim() : defaultValue;
+    }
+    function getCheckedValue(elementId) {
+        const element = document.getElementById(elementId);
+        return element ? element.checked : false;
+    }
+    function getSelectValue(elementId, defaultValue = 'none') {
+        const element = document.getElementById(elementId);
+        return element ? element.value : defaultValue;
+    }
+
+    // --- Funciones de Cálculo de Probabilidades ---
+    function interpretarValorDado(diceString) {
+        if (!diceString || typeof diceString !== 'string') return 0;
+        diceString = diceString.trim().toUpperCase();
+        if (diceString.match(/^D\d+$/) && diceString.includes("D")) { 
+             const numSides = parseInt(diceString.substring(1));
+             if (numSides > 0) return (numSides + 1) / 2;
+        }
+        if (diceString.match(/^\d+D\d+$/)) { 
+            const parts = diceString.split('D');
+            const numDice = parseInt(parts[0]);
+            const numSides = parseInt(parts[1]);
+            if (numDice > 0 && numSides > 0) return numDice * (numSides + 1) / 2;
+        }
+        if (diceString.match(/^D\d+[\+\-]\d+$/)) { 
+            const match = diceString.match(/D(\d+)([\+\-])(\d+)/);
+            if (match) {
+                const numSides = parseInt(match[1]);
+                const operator = match[2];
+                const modifier = parseInt(match[3]);
+                let expected = (numSides + 1) / 2;
+                return operator === '+' ? expected + modifier : expected - modifier;
+            }
+        }
+         if (diceString.match(/^\d+D\d+[\+\-]\d+$/)) { 
+            const match = diceString.match(/(\d+)D(\d+)([\+\-])(\d+)/);
+            if (match) {
+                const numDice = parseInt(match[1]);
+                const numSides = parseInt(match[2]);
+                const operator = match[3];
+                const modifier = parseInt(match[4]);
+                let expected = numDice * (numSides + 1) / 2;
+                return operator === '+' ? expected + modifier : expected - modifier;
+            }
+        }
+        if (!isNaN(parseFloat(diceString))) { 
+             return parseFloat(diceString);
+        }
+        console.warn(`Formato de dado no reconocido: ${diceString}`);
+        return 0; 
+    }
+
+
+    function getRawProb(targetRoll, diceSides = DICE_SIDES) {
+        if (targetRoll <= 1) return 1.0; 
+        if (targetRoll > diceSides) return 0.0;
+        return (diceSides - targetRoll + 1) / diceSides;
+    }
+
+    function getHitProbabilities(baseTarget, critThreshold, rerollType) {
+        let effectiveBaseTarget = Math.max(2, Math.min(DICE_SIDES, baseTarget));
+        let effectiveCritThreshold = Math.max(2, Math.min(DICE_SIDES, critThreshold));
+        effectiveCritThreshold = Math.max(effectiveBaseTarget, effectiveCritThreshold); 
+
+        let pCritRaw = getRawProb(effectiveCritThreshold);
+        let pNormalRaw = Math.max(0, getRawProb(effectiveBaseTarget) - pCritRaw);
+        let pFailRaw = 1 - (pCritRaw + pNormalRaw);
+
+        let pCritFinal = pCritRaw;
+        let pNormalFinal = pNormalRaw;
+
+        if (rerollType === 'ones') {
+            const probOfRollingOne = 1 / DICE_SIDES;
+            if (1 < effectiveBaseTarget) { 
+                 pCritFinal += probOfRollingOne * pCritRaw;
+                 pNormalFinal += probOfRollingOne * pNormalRaw;
+            }
+        } else if (rerollType === 'all') { 
+            pCritFinal += pFailRaw * pCritRaw;
+            pNormalFinal += pFailRaw * pNormalRaw;
+        }
+        
+        pCritFinal = Math.max(0, Math.min(1, pCritFinal));
+        pNormalFinal = Math.max(0, Math.min(1, pNormalFinal));
+        
+        let totalSuccess = pCritFinal + pNormalFinal;
+        if (totalSuccess > 1) {
+            pCritFinal = pCritFinal / totalSuccess; 
+            pNormalFinal = pNormalFinal / totalSuccess;
+            totalSuccess = 1;
+        }
+        return { probNormal: pNormalFinal, probCrit: pCritFinal, probTotalSuccess: totalSuccess };
+    }
+
+    // --- Funciones de Gestión de Perfiles ---
+    function getDefaultProfileData() { 
+        return {
+            attacks_concept: 10, skill_concept: 3, strength_concept: 5, ap_concept: 1, damage_concept: "1",
+            reroll_hits_concept: "none", 
+            crit_hit_mod_active_concept: false, crit_hit_mod_value_concept: 5,
+            sustained_hits_x_concept: false, sustained_hits_x_value_concept: 1, 
+            lethal_hits_concept_adv: false,
+            rapid_fire_x_concept: false, rapid_fire_x_value_concept: 1, 
+            heavy_concept_adv: false, attacker_stationary_concept_adv: false,
+            torrent_concept_adv: false, 
+            blast_concept: false,
+            wound_modifiers_concept: "none", lance_charged_concept: false, 
+            reroll_wounds_concept: "none", 
+            devastating_wounds_concept: false,
+            anti_x_y_concept: false, anti_x_keyword_concept: "INFANTERÍA", anti_y_value_concept: 4,
+            melta_x_concept: false, melta_x_value_concept: "D3", melta_in_range_concept: false,
+            extra_mortals_trigger_concept: false, extra_mortals_on_concept: 6, extra_mortals_amount_concept: "D3"
+        };
+    }
+    
+    function generateProfileHTML(profileId, profileData, profileVisualName) {
+        return `
+            <div class="profile-header">
+                <span class="profile-name" id="profile_name_p${profileId}">${profileVisualName}</span>
+                <div class="profile-actions">
+                    <button type="button" class="duplicate-profile-btn attacker-action-button" data-profile-id="${profileId}" title="Duplicar Perfil">❐</button>
+                    <button type="button" class="remove-profile-btn attacker-action-button" data-profile-id="${profileId}" title="Eliminar Perfil">&times;</button>
+                    <button type="button" class="reset-profile-btn attacker-action-button" data-profile-id="${profileId}" title="Purgar Este Perfil">PURGAR</button>
+                </div>
+            </div>
+            <div class="base-stats-grid mb-4">
+                <div>
+                    <div class="input-label-container">
+                        <label for="attacks_concept_p${profileId}" class="input-label-font">Nº ATAQUES:</label>
+                        <span class="tooltip-trigger"><span class="tooltip-icon">?</span><span class="tooltip-text">Número total de dados que lanza esta arma/unidad para impactar.</span></span>
+                    </div>
+                    <input type="number" id="attacks_concept_p${profileId}" value="${profileData.attacks_concept}" class="input-field-font attacker-input" data-profile-id="${profileId}" data-field="attacks_concept" data-default-value="${profileData.attacks_concept}">
+                </div>
+                <div>
+                     <div class="input-label-container">
+                        <label for="skill_concept_p${profileId}" class="input-label-font">HAB. (X+):</label>
+                        <span class="tooltip-trigger"><span class="tooltip-icon">?</span><span class="tooltip-text">El resultado necesario en un D6 para impactar.</span></span>
+                    </div>
+                    <input type="number" id="skill_concept_p${profileId}" value="${profileData.skill_concept}" min="2" max="6" class="input-field-font attacker-input" data-profile-id="${profileId}" data-field="skill_concept" data-default-value="${profileData.skill_concept}">
+                </div>
+                <div>
+                    <div class="input-label-container">
+                        <label for="strength_concept_p${profileId}" class="input-label-font">FZA (F):</label>
+                         <span class="tooltip-trigger"><span class="tooltip-icon">?</span><span class="tooltip-text">La Fuerza del ataque.</span></span>
+                    </div>
+                    <input type="number" id="strength_concept_p${profileId}" value="${profileData.strength_concept}" class="input-field-font attacker-input" data-profile-id="${profileId}" data-field="strength_concept" data-default-value="${profileData.strength_concept}">
+                </div>
+                <div>
+                     <div class="input-label-container">
+                        <label for="ap_concept_p${profileId}" class="input-label-font">PA:</label>
+                        <span class="tooltip-trigger"><span class="tooltip-icon">?</span><span class="tooltip-text">Penetración de Armadura. Reduce la salvación del objetivo.</span></span>
+                    </div>
+                    <input type="number" id="ap_concept_p${profileId}" value="${profileData.ap_concept}" min="0" class="input-field-font attacker-input" data-profile-id="${profileId}" data-field="ap_concept" data-default-value="${profileData.ap_concept}">
+                </div>
+                <div>
+                    <div class="input-label-container">
+                        <label for="damage_concept_p${profileId}" class="input-label-font">DAÑO (D):</label>
+                        <span class="tooltip-trigger"><span class="tooltip-icon">?</span><span class="tooltip-text">FORMATO: '3', 'D6', '2D3', 'D3+1'.</span></span>
+                    </div>
+                    <input type="text" id="damage_concept_p${profileId}" value="${profileData.damage_concept}" class="input-field-text-font attacker-input" data-profile-id="${profileId}" data-field="damage_concept" data-default-value="${profileData.damage_concept}">
+                </div>
+            </div>
+            
+            <h3 class="section-title-font text-base mt-6 mb-3">CONFIGURACIÓN DE PROTOCOLOS</h3>
+            
+            <div id="advancedHitProtocolsToggle_p${profileId}" class="collapsible-header mt-4">
+                <span>PROTOCOLOS DE IMPACTO AVANZADOS</span><span class="arrow">▼</span>
+            </div>
+            <div id="advancedHitProtocolsContent_p${profileId}" class="collapsible-content">
+                <div class="ability-group-font has-tooltip">
+                    <div class="input-label-container">
+                        <label for="reroll_hits_concept_p${profileId}" class="input-label-font">REPETIR TIRADAS PARA IMPACTAR:</label>
+                         <span class="tooltip-trigger"><span class="tooltip-icon">?</span><span class="tooltip-text">Permite repetir tiradas fallidas para impactar.</span></span>
+                    </div>
+                    <select id="reroll_hits_concept_p${profileId}" class="input-field-font select-field-font attacker-input" data-profile-id="${profileId}" data-field="reroll_hits_concept" data-default-value="none">
+                        <option value="none" ${profileData.reroll_hits_concept === "none" ? "selected" : ""}>NINGUNA</option>
+                        <option value="ones" ${profileData.reroll_hits_concept === "ones" ? "selected" : ""}>SOLO 1S</option>
+                        <option value="all" ${profileData.reroll_hits_concept === "all" ? "selected" : ""}>TODOS LOS FALLOS</option>
+                    </select>
+                </div>
+                <div class="ability-group-font">
+                    <label class="switch-label">
+                        <input type="checkbox" id="crit_hit_mod_active_concept_p${profileId}" class="switch-input ability-toggle-concept attacker-input" data-profile-id="${profileId}" data-field="crit_hit_mod_active_concept" data-target="crit_hit_mod_value_group_concept_p${profileId}" ${profileData.crit_hit_mod_active_concept ? "checked" : ""}>
+                        <span class="switch-slider"></span> MODIFICAR UMBRAL DE IMPACTO CRÍTICO
+                    </label>
+                    <div id="crit_hit_mod_value_group_concept_p${profileId}" class="mt-1 pl-10 hidden-by-default ability-sub-input-group">
+                        <label for="crit_hit_mod_value_concept_p${profileId}" class="input-label-font text-xs">NUEVO UMBRAL (X+):</label>
+                        <input type="number" id="crit_hit_mod_value_concept_p${profileId}" value="${profileData.crit_hit_mod_value_concept}" min="2" max="6" class="input-field-font attacker-input" data-profile-id="${profileId}" data-field="crit_hit_mod_value_concept" data-default-value="${profileData.crit_hit_mod_value_concept}" disabled>
+                    </div>
+                </div>
+                ${generateAbilitySwitchHTML(`sustained_hits_x_concept_p${profileId}`, `IMPACTOS SOSTENIDOS [X]`, `sustained_hits_x_value_group_concept_p${profileId}`, `X:`, `sustained_hits_x_value_concept_p${profileId}`, profileData.sustained_hits_x_value_concept, profileId, "sustained_hits_x_concept", "sustained_hits_x_value_concept", false, profileData.sustained_hits_x_concept)}
+                ${generateSimpleSwitchHTML(`lethal_hits_concept_adv_p${profileId}`, `IMPACTOS LETALES`, `(Auto-hiere en crítico)`, profileId, "lethal_hits_concept_adv", profileData.lethal_hits_concept_adv)}
+                ${generateAbilitySwitchHTML(`rapid_fire_x_concept_p${profileId}`, `DISPARO RÁPIDO [X]`, `rapid_fire_x_value_group_concept_p${profileId}`, `X (Ataq. Adic.):`, `rapid_fire_x_value_concept_p${profileId}`, profileData.rapid_fire_x_value_concept, profileId, "rapid_fire_x_concept", "rapid_fire_x_value_concept", false, profileData.rapid_fire_x_concept)}
+                ${generateAbilitySwitchHTML(`heavy_concept_adv_p${profileId}`, `PESADA`, `attacker_stationary_group_concept_adv_p${profileId}`, `¿Atacante estacionario?`, `attacker_stationary_concept_adv_p${profileId}`, null, profileId, "heavy_concept_adv", "attacker_stationary_concept_adv", true, profileData.heavy_concept_adv, profileData.attacker_stationary_concept_adv)}
+                ${generateSimpleSwitchHTML(`torrent_concept_adv_p${profileId}`, `TORRENTE`, `(Auto-impacta)`, profileId, "torrent_concept_adv", profileData.torrent_concept_adv)}
+                ${generateSimpleSwitchHTML(`blast_concept_p${profileId}`, `BLAST`, `(+1 Ataque por c/5 miniaturas objetivo)`, profileId, "blast_concept", profileData.blast_concept)}
+            </div>
+
+            <div id="advancedWoundProtocolsToggle_p${profileId}" class="collapsible-header mt-4">
+                <span>PROTOCOLOS DE HERIDA AVANZADOS</span><span class="arrow">▼</span>
+            </div>
+            <div id="advancedWoundProtocolsContent_p${profileId}" class="collapsible-content">
+                <div class="ability-group-font has-tooltip">
+                    <div class="input-label-container">
+                        <label for="wound_modifiers_concept_p${profileId}" class="input-label-font">MOD. AL HERIR:</label>
+                        <span class="tooltip-trigger"><span class="tooltip-icon">?</span><span class="tooltip-text">Modificadores directos a la tirada para herir.</span></span>
+                    </div>
+                    <select id="wound_modifiers_concept_p${profileId}" class="input-field-font select-field-font attacker-input" data-profile-id="${profileId}" data-field="wound_modifiers_concept" data-default-value="none">
+                        <option value="none" ${profileData.wound_modifiers_concept === "none" ? "selected" : ""}>NINGUNO</option>
+                        <option value="lance" ${profileData.wound_modifiers_concept === "lance" ? "selected" : ""}>+1 AL HERIR (LANZA - SI CARGA)</option>
+                        <option value="plus_one_general" ${profileData.wound_modifiers_concept === "plus_one_general" ? "selected" : ""}>+1 AL HERIR (GENERAL)</option>
+                    </select>
+                     <div id="lance_charged_group_concept_p${profileId}" class="mt-1 pl-2 hidden-by-default">
+                        <label class="switch-label">
+                            <input type="checkbox" id="lance_charged_concept_p${profileId}" class="switch-input attacker-input" data-profile-id="${profileId}" data-field="lance_charged_concept" ${profileData.lance_charged_concept ? "checked" : ""} disabled>
+                            <span class="switch-slider"></span> ¿Atacante cargó (para Lanza)?
+                        </label>
+                    </div>
+                </div>
+                <div class="ability-group-font has-tooltip">
+                    <div class="input-label-container">
+                        <label for="reroll_wounds_concept_p${profileId}" class="input-label-font">REPETIR PARA HERIR:</label>
+                        <span class="tooltip-trigger"><span class="tooltip-icon">?</span><span class="tooltip-text">Permite repetir tiradas fallidas para herir.</span></span>
+                    </div>
+                    <select id="reroll_wounds_concept_p${profileId}" class="input-field-font select-field-font attacker-input" data-profile-id="${profileId}" data-field="reroll_wounds_concept" data-default-value="none">
+                        <option value="none" ${profileData.reroll_wounds_concept === "none" ? "selected" : ""}>NINGUNO</option>
+                        <option value="failures" ${profileData.reroll_wounds_concept === "failures" ? "selected" : ""}>REPETIR FALLOS (EMPAREJADO)</option>
+                        <option value="ones" ${profileData.reroll_wounds_concept === "ones" ? "selected" : ""}>REPETIR 1S</option>
+                    </select>
+                </div>
+                ${generateSimpleSwitchHTML(`devastating_wounds_concept_p${profileId}`, `HERIDAS DEVASTADORAS`, `(Mortales en críticos al herir)`, profileId, "devastating_wounds_concept", profileData.devastating_wounds_concept)}
+                ${generateAntiXYHTML(`anti_x_y_concept_p${profileId}`, `ANTI- [X] [Y+]`, `anti_x_y_value_group_concept_p${profileId}`, `anti_x_keyword_concept_p${profileId}`, `anti_y_value_concept_p${profileId}`, profileId, profileData.anti_x_y_concept, profileData.anti_x_keyword_concept, profileData.anti_y_value_concept)}
+                ${generateMeltaHTML(`melta_x_concept_p${profileId}`, `FUSIÓN [X]`, `melta_x_value_group_concept_p${profileId}`, `melta_x_value_concept_p${profileId}`, `melta_in_range_concept_p${profileId}`, profileId, profileData.melta_x_concept, profileData.melta_x_value_concept, profileData.melta_in_range_concept)}
+            </div>
+
+            <div id="additionalDamageProtocolsToggle_p${profileId}" class="collapsible-header mt-4">
+                <span>HABILIDADES DE DAÑO ADICIONAL / MORTALES</span><span class="arrow">▼</span>
+            </div>
+            <div id="additionalDamageProtocolsContent_p${profileId}" class="collapsible-content">
+                ${generateExtraMortalsHTML(`extra_mortals_trigger_concept_p${profileId}`, `MORTALES ADICIONALES POR DESENCADENANTE`, `extra_mortals_details_group_concept_p${profileId}`, `extra_mortals_on_concept_p${profileId}`, `extra_mortals_amount_concept_p${profileId}`, profileId, profileData.extra_mortals_trigger_concept, profileData.extra_mortals_on_concept, profileData.extra_mortals_amount_concept)}
+            </div>
+        `;
+    }
+    
+    function generateAbilitySwitchHTML(checkboxId, labelText, targetGroupId, subLabelText, subInputId, subInputDefault, profileId, mainField, subField, isSubCheckbox = false, mainChecked = false, subChecked = false) {
+        const subInputType = isSubCheckbox ? "checkbox" : "number";
+        const subInputClass = isSubCheckbox ? "switch-input attacker-input" : "input-field-font attacker-input";
+        const subInputExtraAttrs = isSubCheckbox ? (subChecked ? "checked" : "") : `value="${subInputDefault}" min="1"`;
+        const mainInputChecked = mainChecked ? "checked" : "";
+
+        return `
+            <div class="ability-group-font">
+                <label class="switch-label">
+                    <input type="checkbox" id="${checkboxId}" class="switch-input ability-toggle-concept attacker-input" data-profile-id="${profileId}" data-field="${mainField}" data-target="${targetGroupId}" ${mainInputChecked}>
+                    <span class="switch-slider"></span> ${labelText}
+                </label>
+                <div id="${targetGroupId}" class="mt-1 pl-10 ${mainChecked ? '' : 'hidden-by-default'} ${isSubCheckbox ? '' : 'ability-sub-input-group'}">
+                    ${isSubCheckbox ? 
+                        `<label class="switch-label">
+                            <input type="checkbox" id="${subInputId}" class="${subInputClass}" data-profile-id="${profileId}" data-field="${subField}" ${subInputExtraAttrs} ${mainChecked ? '' : 'disabled'}>
+                            <span class="switch-slider"></span> ${subLabelText}
+                         </label>` :
+                        `<label for="${subInputId}" class="input-label-font text-xs">${subLabelText}</label>
+                         <input type="${subInputType}" id="${subInputId}" class="${subInputClass}" data-profile-id="${profileId}" data-field="${subField}" ${subInputExtraAttrs} data-default-value="${subInputDefault}" ${mainChecked ? '' : 'disabled'}>`
+                    }
+                </div>
+            </div>
+        `;
+    }
+
+    function generateSimpleSwitchHTML(checkboxId, labelText, switchText, profileId, field, checked = false) {
+        const isChecked = checked ? "checked" : "";
+        return `
+            <div class="ability-group-font">
+                <label class="switch-label">
+                    <input type="checkbox" id="${checkboxId}" class="switch-input attacker-input" data-profile-id="${profileId}" data-field="${field}" ${isChecked}>
+                    <span class="switch-slider"></span> ${labelText} <span class="switch-text">${switchText}</span>
+                </label>
+            </div>
+        `;
+    }
+    function generateAntiXYHTML(checkboxId, labelText, targetGroupId, keywordInputId, thresholdInputId, profileId, mainChecked = false, keywordDefault = "INFANTERÍA", thresholdDefault = 4) {
+        const isMainChecked = mainChecked ? "checked" : "";
+         return `
+            <div class="ability-group-font">
+                <label class="switch-label">
+                    <input type="checkbox" id="${checkboxId}" class="switch-input ability-toggle-concept attacker-input" data-profile-id="${profileId}" data-field="anti_x_y_concept" data-target="${targetGroupId}" ${isMainChecked}>
+                    <span class="switch-slider"></span> ${labelText}
+                </label>
+                <div id="${targetGroupId}" class="mt-1 pl-10 ${mainChecked ? '' : 'hidden-by-default'} grid grid-cols-2 gap-2">
+                    <div>
+                        <label for="${keywordInputId}" class="input-label-font text-xs">KEYWORD [X]:</label>
+                        <input type="text" id="${keywordInputId}" value="${keywordDefault}" placeholder="INFANTERÍA" class="input-field-text-font attacker-input" data-profile-id="${profileId}" data-field="anti_x_keyword_concept" data-default-value="${keywordDefault}" ${mainChecked ? '' : 'disabled'}>
+                    </div>
+                    <div>
+                        <label for="${thresholdInputId}" class="input-label-font text-xs">UMBRAL [Y+]:</label>
+                        <input type="number" id="${thresholdInputId}" value="${thresholdDefault}" min="2" max="6" class="input-field-font attacker-input" data-profile-id="${profileId}" data-field="anti_y_value_concept" data-default-value="${thresholdDefault}" ${mainChecked ? '' : 'disabled'}>
+                    </div>
+                </div>
+            </div>
+        `;
+    }
+    function generateMeltaHTML(checkboxId, labelText, targetGroupId, damageInputId, rangeCheckboxId, profileId, mainChecked = false, damageDefault = "D3", rangeChecked = false) {
+        const isMainChecked = mainChecked ? "checked" : "";
+        const isRangeChecked = rangeChecked ? "checked" : "";
+        return `
+            <div class="ability-group-font">
+                <label class="switch-label">
+                    <input type="checkbox" id="${checkboxId}" class="switch-input ability-toggle-concept attacker-input" data-profile-id="${profileId}" data-field="melta_x_concept" data-target="${targetGroupId}" ${isMainChecked}>
+                    <span class="switch-slider"></span> ${labelText} <span class="switch-text">(Daño adicional a corto alcance)</span>
+                </label>
+                <div id="${targetGroupId}" class="mt-1 pl-10 ${mainChecked ? '' : 'hidden-by-default'}">
+                    <div class="ability-sub-input-group mb-2">
+                        <label for="${damageInputId}" class="input-label-font text-xs">DAÑO ADIC. [X]:</label>
+                        <input type="text" id="${damageInputId}" value="${damageDefault}" class="input-field-text-font attacker-input" data-profile-id="${profileId}" data-field="melta_x_value_concept" data-default-value="${damageDefault}" ${mainChecked ? '' : 'disabled'}>
+                    </div>
+                    <label class="switch-label">
+                        <input type="checkbox" id="${rangeCheckboxId}" class="switch-input attacker-input" data-profile-id="${profileId}" data-field="melta_in_range_concept" ${isRangeChecked} ${mainChecked ? '' : 'disabled'}>
+                        <span class="switch-slider"></span> ¿A corto alcance?
+                    </label>
+                </div>
+            </div>
+        `;
+    }
+    function generateExtraMortalsHTML(checkboxId, labelText, targetGroupId, onRollInputId, amountInputId, profileId, mainChecked = false, onRollDefault = 6, amountDefault = "D3") {
+        const isMainChecked = mainChecked ? "checked" : "";
+        return `
+            <div class="ability-group-font">
+                <label class="switch-label">
+                    <input type="checkbox" id="${checkboxId}" class="switch-input ability-toggle-concept attacker-input" data-profile-id="${profileId}" data-field="extra_mortals_trigger_concept" data-target="${targetGroupId}" ${isMainChecked}>
+                    <span class="switch-slider"></span> ${labelText}
+                </label>
+                <div id="${targetGroupId}" class="mt-1 pl-10 ${mainChecked ? '' : 'hidden-by-default'} grid grid-cols-1 md:grid-cols-2 gap-2">
+                    <div>
+                        <label for="${onRollInputId}" class="input-label-font text-xs">EN (X+) PARA ACTIVAR:</label>
+                        <input type="number" id="${onRollInputId}" value="${onRollDefault}" min="2" max="6" class="input-field-font attacker-input" data-profile-id="${profileId}" data-field="extra_mortals_on_concept" data-default-value="${onRollDefault}" ${mainChecked ? '' : 'disabled'}>
+                    </div>
+                    <div>
+                        <label for="${amountInputId}" class="input-label-font text-xs">CANTIDAD MORTALES:</label>
+                        <input type="text" id="${amountInputId}" value="${amountDefault}" class="input-field-text-font attacker-input" data-profile-id="${profileId}" data-field="extra_mortals_amount_concept" data-default-value="${amountDefault}" ${mainChecked ? '' : 'disabled'}>
+                    </div>
+                </div>
+            </div>
+        `;
+    }
+    
+    function renderAttackerProfilesUI() {
+        const attackerProfileContainer = document.getElementById('attackerProfileContainer');
+        if (!attackerProfileContainer) {
+            console.error("CRITICAL ERROR: Attacker profile container 'attackerProfileContainer' not found in DOM.");
+            return;
+        }
+        attackerProfileContainer.innerHTML = ''; 
+
+        attackerProfiles.forEach((profile, index) => {
+            const profileBlock = document.createElement('div');
+            profileBlock.className = 'attacker-profile-block';
+            profileBlock.id = `attacker_profile_block_p${profile.id}`;
+            
+            const visualName = `Perfil de Atacante ${index + 1}`;
+            profile.name = visualName; 
+
+            profileBlock.innerHTML = generateProfileHTML(profile.id, profile.data, visualName);
+            
+            attackerProfileContainer.appendChild(profileBlock);
+            initializeTogglesForProfile(profile.id);
+            addInputListenersForProfile(profile.id);
+
+            profileBlock.querySelector(`.duplicate-profile-btn[data-profile-id="${profile.id}"]`)
+                .addEventListener('click', () => duplicateAttackerProfile(profile.id));
+            profileBlock.querySelector(`.remove-profile-btn[data-profile-id="${profile.id}"]`)
+                .addEventListener('click', () => removeAttackerProfile(profile.id));
+            profileBlock.querySelector(`.reset-profile-btn[data-profile-id="${profile.id}"]`)
+                .addEventListener('click', () => resetSingleProfile(profile.id));
+
+            const removeBtn = profileBlock.querySelector(`.remove-profile-btn[data-profile-id="${profile.id}"]`);
+            if (removeBtn) removeBtn.style.display = attackerProfiles.length <= 1 ? 'none' : 'inline-block';
+            
+            const duplicateBtn = profileBlock.querySelector(`.duplicate-profile-btn[data-profile-id="${profile.id}"]`);
+            if (duplicateBtn) duplicateBtn.style.display = attackerProfiles.length >= MAX_ATTACKER_PROFILES ? 'none' : 'inline-block';
+        });
+        
+        const globalAddButton = document.getElementById('addAttackerProfileButtonGlobal');
+        if (globalAddButton) {
+            globalAddButton.disabled = attackerProfiles.length >= MAX_ATTACKER_PROFILES;
+        }
+    }
+    
+    function handleAddAttackerProfile() {
+        if (attackerProfiles.length >= MAX_ATTACKER_PROFILES) return;
+        
+        const newProfileData = getDefaultProfileData();
+        const newProfileEntry = { 
+            id: nextProfileInternalId, 
+            name: `Perfil de Atacante ${attackerProfiles.length + 1}`, 
+            data: JSON.parse(JSON.stringify(newProfileData)) 
+        };
+        attackerProfiles.push(newProfileEntry);
+        currentFocusedProfileId = nextProfileInternalId; 
+        nextProfileInternalId++;
+        
+        renderAttackerProfilesUI(); 
+    }
+
+    function duplicateAttackerProfile(originalProfileId) {
+        if (attackerProfiles.length >= MAX_ATTACKER_PROFILES) {
+            alert("Máximo número de perfiles alcanzado.");
+            return;
+        }
+        const originalProfile = attackerProfiles.find(p => p.id === originalProfileId);
+        if (!originalProfile) return;
+
+        const duplicatedData = JSON.parse(JSON.stringify(originalProfile.data)); 
+        const newProfileEntry = {
+            id: nextProfileInternalId,
+            name: `Perfil de Atacante ${attackerProfiles.length + 1}`, 
+            data: duplicatedData
+        };
+        attackerProfiles.push(newProfileEntry);
+        currentFocusedProfileId = nextProfileInternalId; 
+        nextProfileInternalId++;
+
+        renderAttackerProfilesUI();
+    }
+
+
+    function removeAttackerProfile(profileIdToRemove) {
+        if (attackerProfiles.length <= 1) {
+            alert("No se puede eliminar el último perfil.");
+            return;
+        }
+        const removedIndex = attackerProfiles.findIndex(p => p.id === profileIdToRemove);
+        attackerProfiles = attackerProfiles.filter(p => p.id !== profileIdToRemove);
+        
+        if (currentFocusedProfileId === profileIdToRemove) {
+            if (attackerProfiles.length > 0) {
+                currentFocusedProfileId = removedIndex > 0 && removedIndex <= attackerProfiles.length ? attackerProfiles[removedIndex - 1].id : attackerProfiles[0].id;
+            } else {
+                currentFocusedProfileId = null; 
+            }
+        }
+        renderAttackerProfilesUI();
+    }
+
+    function resetSingleProfile(profileId) {
+        const profileToReset = attackerProfiles.find(p => p.id === profileId);
+        if (profileToReset && profileToReset.data) {
+            const defaultData = getDefaultProfileData();
+            Object.keys(defaultData).forEach(key => {
+                profileToReset.data[key] = defaultData[key];
+            });
+            renderAttackerProfilesUI(); 
+        }
+    }
+        
+    function initializeTogglesForProfile(profileId) {
+        const profileContent = document.getElementById(`attacker_profile_block_p${profileId}`);
+        if (!profileContent) return;
+
+        const collapsibleHeaders = profileContent.querySelectorAll('.collapsible-header');
+        collapsibleHeaders.forEach(header => {
+            if (header.dataset.listenerAttached === `true_coll_p${profileId}`) return;
+            header.addEventListener('click', function() {
+                this.classList.toggle('open');
+                const content = this.nextElementSibling;
+                if (content.style.maxHeight && content.style.maxHeight !== "0px") {
+                    content.style.maxHeight = null;
+                    content.classList.remove('open');
+                } else {
+                    setTimeout(() => { content.style.maxHeight = content.scrollHeight + "px"; }, 0);
+                    content.classList.add('open');
+                }
+            });
+            header.dataset.listenerAttached = `true_coll_p${profileId}`;
+        });
+
+        const abilityToggles = profileContent.querySelectorAll('.ability-toggle-concept');
+        abilityToggles.forEach(toggle => {
+            if (toggle.dataset.listenerAttached === `true_abil_p${profileId}`) return;
+            toggle.addEventListener('change', function() {
+                const targetGroupId = this.dataset.target;
+                const targetGroup = document.getElementById(targetGroupId); 
+                if (!targetGroup) return;
+                const inputsInGroup = targetGroup.querySelectorAll('input, select');
+                if (this.checked) {
+                    targetGroup.classList.remove('hidden-by-default');
+                    inputsInGroup.forEach(input => input.disabled = false);
+                    if (this.id === `crit_hit_mod_active_concept_p${profileId}`) {
+                        const critValueInput = document.getElementById(`crit_hit_mod_value_concept_p${profileId}`);
+                        if (critValueInput && (critValueInput.value === "" || critValueInput.value === "6")) critValueInput.value = "5";
+                    }
+                } else {
+                    targetGroup.classList.add('hidden-by-default');
+                    inputsInGroup.forEach(input => {
+                        input.disabled = true;
+                        if (input.type === 'checkbox') input.checked = false;
+                        if (input.type === 'number' || input.type === 'text') {
+                            input.value = input.dataset.defaultValue || input.defaultValue || '';
+                        }
+                        if (input.type === 'select-one') {
+                            input.value = input.dataset.defaultValue || (input.options.length > 0 ? input.options[0].value : '');
+                        }
+                    });
+                }
+            });
+            toggle.dataset.listenerAttached = `true_abil_p${profileId}`;
+            const event = new Event('change'); 
+            toggle.dispatchEvent(event);
+        });
+
+        const woundModifiersSelect = profileContent.querySelector(`#wound_modifiers_concept_p${profileId}`);
+        const lanceChargedGroup = profileContent.querySelector(`#lance_charged_group_concept_p${profileId}`);
+        const lanceChargedCheckbox = profileContent.querySelector(`#lance_charged_concept_p${profileId}`);
+
+        if (woundModifiersSelect && lanceChargedGroup && lanceChargedCheckbox) {
+            if (woundModifiersSelect.dataset.listenerAttached !== `true_woundmod_p${profileId}`) {
+                 woundModifiersSelect.addEventListener('change', function() {
+                    if (this.value === 'lance') {
+                        lanceChargedGroup.classList.remove('hidden-by-default');
+                        lanceChargedCheckbox.disabled = false;
+                    } else {
+                        lanceChargedGroup.classList.add('hidden-by-default');
+                        lanceChargedCheckbox.disabled = true;
+                        lanceChargedCheckbox.checked = false;
+                    }
+                });
+                woundModifiersSelect.dataset.listenerAttached = `true_woundmod_p${profileId}`;
+                const event = new Event('change'); 
+                woundModifiersSelect.dispatchEvent(event);
+            }
+        }
+    }
+    
+    function addInputListenersForProfile(profileId) {
+        const inputs = document.querySelectorAll(`#attacker_profile_block_p${profileId} .attacker-input`);
+        inputs.forEach(input => {
+            if (input.dataset.listenerAttached === `true_input_p${profileId}`) return;
+
+            const eventType = (input.type === 'checkbox' || input.tagName === 'SELECT') ? 'change' : 'input';
+            input.addEventListener(eventType, () => saveProfileDataFromUI(profileId));
+            if (eventType === 'input' && input.type !== 'text' && input.type !== 'number') { 
+                 input.addEventListener('change', () => saveProfileDataFromUI(profileId));
+            }
+             if (input.type === 'number') { 
+                input.addEventListener('change', () => saveProfileDataFromUI(profileId));
+            }
+            input.dataset.listenerAttached = `true_input_p${profileId}`;
+        });
+    }
+
+
+    document.addEventListener('DOMContentLoaded', function() {
+        const calculateBtn = document.getElementById('calculateButtonConcept');
+        const resultsOut = document.getElementById('results-output-concept');
+        const addProfileBtnGlobal = document.getElementById('addAttackerProfileButtonGlobal');
+        
+        if (addProfileBtnGlobal) {
+            addProfileBtnGlobal.addEventListener('click', handleAddAttackerProfile);
+        }
+        
+        renderAttackerProfilesUI(); 
+        if (attackerProfiles.length === 0) { 
+            handleAddAttackerProfile();
+        } else {
+            currentFocusedProfileId = attackerProfiles[0].id; 
+        }
+        
+        const defCollapsibleToggle = document.getElementById('advancedDefensiveProtocolsToggle');
+        const defCollapsibleContent = document.getElementById('advancedDefensiveProtocolsContent');
+        if (defCollapsibleToggle && defCollapsibleContent) {
+            if (defCollapsibleToggle.dataset.listenerAttached !== 'true_global_def_listener') { 
+                defCollapsibleToggle.addEventListener('click', function() {
+                    this.classList.toggle('open');
+                    const currentContent = this.nextElementSibling; 
+                    if (currentContent.style.maxHeight && currentContent.style.maxHeight !== "0px") {
+                        currentContent.style.maxHeight = null;
+                        currentContent.classList.remove('open');
+                    } else {
+                        setTimeout(() => { currentContent.style.maxHeight = currentContent.scrollHeight + "px"; }, 0);
+                        currentContent.classList.add('open');
+                    }
+                });
+                defCollapsibleToggle.dataset.listenerAttached = 'true_global_def_listener';
+            }
+        }
+        
+        const mainFnpToggle = document.getElementById('fnp_active_concept');
+        const fnpGeneralGroup = document.getElementById('fnp_general_group_concept');
+        const fnpGeneralInput = document.getElementById('fnp_save_concept');
+        const fnpVsMortalsSubToggle = document.getElementById('fnp_vs_mortals_active_concept'); 
+        const fnpVsMortalsValueGroup = document.getElementById('fnp_vs_mortals_value_group_concept');
+        const fnpVsMortalsInput = document.getElementById('fnp_vs_mortals_value_concept');
+
+        if (mainFnpToggle && fnpGeneralGroup && fnpGeneralInput && fnpVsMortalsSubToggle && fnpVsMortalsValueGroup && fnpVsMortalsInput) {
+            if (mainFnpToggle.dataset.listenerAttached !== 'true_main_fnp_toggle') {
+                mainFnpToggle.addEventListener('change', function() {
+                    if (this.checked) {
+                        fnpGeneralGroup.classList.remove('hidden-by-default');
+                        fnpGeneralInput.disabled = false;
+                        fnpVsMortalsSubToggle.disabled = false; 
+                        fnpVsMortalsSubToggle.dispatchEvent(new Event('change')); 
+                    } else {
+                        fnpGeneralGroup.classList.add('hidden-by-default');
+                        fnpGeneralInput.disabled = true;
+                        fnpVsMortalsSubToggle.disabled = true;
+                        fnpVsMortalsSubToggle.checked = false; 
+                        fnpVsMortalsSubToggle.dispatchEvent(new Event('change')); 
+                    }
+                });
+                mainFnpToggle.dataset.listenerAttached = 'true_main_fnp_toggle';
+            }
+            if (fnpVsMortalsSubToggle.dataset.listenerAttached !== 'true_fnp_mortals_sub_toggle') {
+                 fnpVsMortalsSubToggle.addEventListener('change', function() { 
+                    if (this.checked && !this.disabled) { 
+                        fnpVsMortalsValueGroup.classList.remove('hidden-by-default');
+                        fnpVsMortalsInput.disabled = false;
+                        if (fnpVsMortalsInput.value === "0" || fnpVsMortalsInput.value === "") fnpVsMortalsInput.value = "5";
+                    } else {
+                        fnpVsMortalsValueGroup.classList.add('hidden-by-default');
+                        fnpVsMortalsInput.disabled = true;
+                    }
+                });
+                fnpVsMortalsSubToggle.dataset.listenerAttached = 'true_fnp_mortals_sub_toggle';
+            }
+            mainFnpToggle.dispatchEvent(new Event('change'));
+        }
+
+
+        if (calculateBtn) {
+            calculateBtn.addEventListener('click', function calculateAllProfilesDamage() {
+                resultsOut.innerHTML = ''; 
+                let totalDamageAllProfiles = 0;
+                let totalModelsKilledAllProfilesSum = 0; 
+
+                attackerProfiles.forEach(profileContainer => {
+                    const profileId = profileContainer.id;
+                    const currentProfileData = profileContainer.data;
+
+                    if (!currentProfileData) {
+                        const errorHTML = `<div class="profile-result-card"><h3>Error en ${profileContainer.name || `Perfil ID ${profileId}`}</h3><p class="text-sm text-red-300">No se pudieron cargar los datos para este perfil.</p></div>`;
+                        resultsOut.innerHTML += errorHTML;
+                        return; 
+                    }
+                    
+                    let numAtaquesBase = currentProfileData.attacks_concept || 0;
+                    // El campo "bonus_attacks_concept" fue eliminado
+                    if (currentProfileData.rapid_fire_x_concept) numAtaquesBase += currentProfileData.rapid_fire_x_value_concept || 0;
+                    if (currentProfileData.blast_concept) numAtaquesBase += Math.floor(getIntValue('num_models_concept', 0) / 5);
+
+                    let habilidadObjetivo = currentProfileData.skill_concept || 7; 
+                    let modImpactoNeto = 0;
+                    if (currentProfileData.heavy_concept_adv && currentProfileData.attacker_stationary_concept_adv) modImpactoNeto += 1;
+                    if (getCheckedValue('defender_mod_to_be_hit_concept')) modImpactoNeto -= 1;
+                    modImpactoNeto = Math.max(-1, Math.min(1, modImpactoNeto));
+                    let habilidadModificada = Math.max(2, Math.min(DICE_SIDES + 1, habilidadObjetivo - modImpactoNeto)); 
+
+                    let umbralCriticoImpacto = 6; 
+                    if (currentProfileData.crit_hit_mod_active_concept) umbralCriticoImpacto = currentProfileData.crit_hit_mod_value_concept || 5;
+                    umbralCriticoImpacto = Math.max(2, Math.min(DICE_SIDES, umbralCriticoImpacto));
+                    
+                    const rerollHitsType = currentProfileData.reroll_hits_concept || "none";
+                    let eImpactosCriticos = 0, eImpactosNormales = 0, eImpactosTotales = 0;
+
+                    if (currentProfileData.torrent_concept_adv) {
+                        eImpactosTotales = eImpactosNormales = numAtaquesBase; 
+                    } else {
+                        const hitProbs = getHitProbabilities(habilidadModificada, umbralCriticoImpacto, rerollHitsType);
+                        eImpactosCriticos = numAtaquesBase * hitProbs.probCrit;
+                        eImpactosNormales = numAtaquesBase * hitProbs.probNormal;
+                        eImpactosTotales = eImpactosCriticos + eImpactosNormales;
+                    }
+
+                    let eAutoHeridasPorLetales = 0;
+                    let impactosQueHieren = eImpactosNormales; 
+                    if (currentProfileData.lethal_hits_concept_adv && !currentProfileData.torrent_concept_adv) eAutoHeridasPorLetales = eImpactosCriticos;
+                    else impactosQueHieren += eImpactosCriticos; 
+                    if (currentProfileData.sustained_hits_x_concept && !currentProfileData.torrent_concept_adv) impactosQueHieren += eImpactosCriticos * (currentProfileData.sustained_hits_x_value_concept || 1);
+                    
+                    const fuerzaAtacante = currentProfileData.strength_concept || 0;
+                    const resistenciaDefensor = getIntValue('toughness_concept', 0);
+                    let heridaObjetivoBase;
+                    if (fuerzaAtacante >= resistenciaDefensor * 2) heridaObjetivoBase = 2;
+                    else if (fuerzaAtacante > resistenciaDefensor) heridaObjetivoBase = 3;
+                    else if (fuerzaAtacante === resistenciaDefensor) heridaObjetivoBase = 4;
+                    else if (fuerzaAtacante * 2 <= resistenciaDefensor) heridaObjetivoBase = 6; 
+                    else heridaObjetivoBase = 5; 
+
+                    let modHerirNeto = 0;
+                    const woundModifierType = currentProfileData.wound_modifiers_concept || "none";
+                    if (woundModifierType === 'lance' && currentProfileData.lance_charged_concept) modHerirNeto += 1;
+                    else if (woundModifierType === 'plus_one_general') modHerirNeto += 1;
+                    if (getCheckedValue('defender_mod_to_be_wounded_concept')) modHerirNeto -= 1;
+                    modHerirNeto = Math.max(-1, Math.min(1, modHerirNeto));
+                    let heridaModificada = Math.max(2, Math.min(DICE_SIDES + 1, heridaObjetivoBase - modHerirNeto));
+
+                    let umbralCriticoHerida = DICE_SIDES; 
+                    if (currentProfileData.anti_x_y_concept) umbralCriticoHerida = Math.min(umbralCriticoHerida, currentProfileData.anti_y_value_concept || DICE_SIDES);
+                    umbralCriticoHerida = Math.max(2, Math.min(DICE_SIDES, umbralCriticoHerida));
+
+                    const rerollWoundsType = currentProfileData.reroll_wounds_concept || "none";
+                    const woundProbs = getHitProbabilities(heridaModificada, umbralCriticoHerida, rerollWoundsType);
+                    let eHeridasCriticasWound = impactosQueHieren * woundProbs.probCrit;
+                    let eHeridasNormalesWound = impactosQueHieren * woundProbs.probNormal;
+
+                    let eHeridasMortalesDevastadoras = 0;
+                    let heridasQueRequierenSalvacion = eHeridasNormalesWound + eAutoHeridasPorLetales;
+                    
+                    let dañoPorDevastadoraOriginal = interpretarValorDado(currentProfileData.damage_concept || "1");
+                    let dañoPorDevastadoraModificado = dañoPorDevastadoraOriginal;
+                    if(getCheckedValue('defender_halve_damage_concept')) dañoPorDevastadoraModificado = Math.ceil(dañoPorDevastadoraModificado / 2);
+                    if(getCheckedValue('defender_reduce_damage_flat_concept')) dañoPorDevastadoraModificado = Math.max(1, dañoPorDevastadoraModificado - 1);
+                    
+                    if (currentProfileData.devastating_wounds_concept) eHeridasMortalesDevastadoras = eHeridasCriticasWound * dañoPorDevastadoraModificado;
+                    else heridasQueRequierenSalvacion += eHeridasCriticasWound; 
+
+                    let eHeridasMortalesPorHabilidad = 0;
+                    if (currentProfileData.extra_mortals_trigger_concept) {
+                        let cantidadMortalesHabilidadOriginal = interpretarValorDado(currentProfileData.extra_mortals_amount_concept || "0");
+                        let cantidadMortalesHabilidadModificada = cantidadMortalesHabilidadOriginal;
+                        if(getCheckedValue('defender_halve_damage_concept')) cantidadMortalesHabilidadModificada = Math.ceil(cantidadMortalesHabilidadModificada / 2);
+                        if(getCheckedValue('defender_reduce_damage_flat_concept')) cantidadMortalesHabilidadModificada = Math.max(1, cantidadMortalesHabilidadModificada - 1);
+                        eHeridasMortalesPorHabilidad = numAtaquesBase * getRawProb(currentProfileData.extra_mortals_on_concept || 7) * cantidadMortalesHabilidadModificada;
+                    }
+                    const eHeridasMortalesTotales_PreFNP = eHeridasMortalesDevastadoras + eHeridasMortalesPorHabilidad;
+
+                    let paAplicado = currentProfileData.ap_concept || 0;
+                    if (getCheckedValue('defender_reduce_ap_concept')) paAplicado = Math.max(0, paAplicado - 1);
+                    
+                    let salvacionModificadaPA = getIntValue('save_sv_concept', 7) + paAplicado;
+                    if (getCheckedValue('defender_in_cover_concept')) salvacionModificadaPA -= 1;
+                    let salvacionFinalObjetivo = salvacionModificadaPA;
+                    const invulnSaveDefensor = getIntValue('invuln_save_concept', 0);
+                    if (invulnSaveDefensor > 0 && invulnSaveDefensor < salvacionModificadaPA) salvacionFinalObjetivo = invulnSaveDefensor;
+                    salvacionFinalObjetivo = Math.max(2, Math.min(DICE_SIDES + 1, salvacionFinalObjetivo)); 
+                    const eSalvacionesFalladas = heridasQueRequierenSalvacion * (1 - getRawProb(salvacionFinalObjetivo));
+
+                    let eDañoArmaBase = interpretarValorDado(currentProfileData.damage_concept || "1"); 
+                    if (currentProfileData.melta_x_concept && currentProfileData.melta_in_range_concept) eDañoArmaBase += interpretarValorDado(currentProfileData.melta_x_value_concept || "0"); 
+                    
+                    let eDañoPorInstanciaNormalModificado = eDañoArmaBase;
+                    if(getCheckedValue('defender_halve_damage_concept')) eDañoPorInstanciaNormalModificado = Math.ceil(eDañoPorInstanciaNormalModificado / 2);
+                    if(getCheckedValue('defender_reduce_damage_flat_concept')) eDañoPorInstanciaNormalModificado = Math.max(1, eDañoPorInstanciaNormalModificado - 1);
+
+                    const eDañoNormalTotal_PreFNP = eSalvacionesFalladas * eDañoPorInstanciaNormalModificado; 
+                    
+                    const fnpGeneralActive = getCheckedValue('fnp_active_concept');
+                    const fnpGeneralTarget = fnpGeneralActive ? getIntValue('fnp_save_concept', 0) : 0;
+                    let probPasarFNPGral = 0;
+                    if (fnpGeneralTarget > 0 && fnpGeneralTarget <= DICE_SIDES) probPasarFNPGral = getRawProb(fnpGeneralTarget);
+
+                    let eDañoNormal_PostFNP = eDañoNormalTotal_PreFNP * (1 - probPasarFNPGral);
+                    let eHeridasMortales_PostFNP = eHeridasMortalesTotales_PreFNP;
+
+                    if (fnpGeneralActive && getCheckedValue('fnp_vs_mortals_active_concept')) {
+                        const fnpMortalesTarget = getIntValue('fnp_vs_mortals_value_concept', 0);
+                        let probPasarFNPMortales = 0;
+                        if (fnpMortalesTarget > 0 && fnpMortalesTarget <= DICE_SIDES) probPasarFNPMortales = getRawProb(fnpMortalesTarget);
+                        eHeridasMortales_PostFNP = eHeridasMortalesTotales_PreFNP * (1 - probPasarFNPMortales);
+                    } else if (fnpGeneralActive) { 
+                        eHeridasMortales_PostFNP = eHeridasMortalesTotales_PreFNP * (1 - probPasarFNPGral);
+                    } else { 
+                         eHeridasMortales_PostFNP = eHeridasMortalesTotales_PreFNP; 
+                    }
+                    const eDañoFinalDespuesFNP = eDañoNormal_PostFNP + eHeridasMortales_PostFNP;
+
+                    const heridasPorMiniatura = getIntValue('wounds_per_model_concept', 1);
+                    let eMiniaturasEliminadasEstePerfil = 0;
+                    if (heridasPorMiniatura > 0 && eDañoFinalDespuesFNP > 0) {
+                         eMiniaturasEliminadasEstePerfil = Math.floor(eDañoFinalDespuesFNP / heridasPorMiniatura);
+                    }
+                    
+                    totalDamageAllProfiles += eDañoFinalDespuesFNP;
+                    totalModelsKilledAllProfilesSum += eMiniaturasEliminadasEstePerfil; 
+
+                    let profileResultsHTML = `<div class="profile-result-card">
+                                    <h3>Resultados para ${profileContainer.name}</h3>
+                                    <div class="results-grid">
+                                        <div><p class="results-text-font">IMPACTOS MEDIOS:</p><p class="results-value-font">${eImpactosTotales.toFixed(2)}</p></div>
+                                        <div><p class="results-text-font">HERIDAS MEDIAS (Post-Letales, Antes Devastadoras):</p><p class="results-value-font">${(eHeridasNormalesWound + eHeridasCriticasWound + eAutoHeridasPorLetales).toFixed(2)}</p></div>
+                                        <div><p class="results-text-font">SALVACIONES FALLADAS (PROMEDIO):</p><p class="results-value-font">${eSalvacionesFalladas.toFixed(2)}</p></div>`;
+                    if (eHeridasMortalesPorHabilidad > 0) profileResultsHTML += `<div><p class="results-text-font">MORTALES POR HABILIDAD (PROMEDIO):</p><p class="results-value-font">${eHeridasMortalesPorHabilidad.toFixed(2)}</p></div>`;
+                    if (currentProfileData.devastating_wounds_concept && eHeridasMortalesDevastadoras > 0) profileResultsHTML += `<div><p class="results-text-font">MORTALES POR DEVASTADORAS (PROMEDIO):</p><p class="results-value-font">${eHeridasMortalesDevastadoras.toFixed(2)}</p></div>`;
+                    profileResultsHTML += `
+                                        <div><p class="results-text-font">MINIATURAS ELIMINADAS (PROMEDIO):</p><p class="results-value-font">${eMiniaturasEliminadasEstePerfil.toFixed(0)}</p></div>
+                                    </div>
+                                    <div class="final-damage-container">
+                                        <p class="final-damage-label">DAÑO ESPERADO FINAL (Post-FNP):</p>
+                                        <p class="final-damage-value">${eDañoFinalDespuesFNP.toFixed(2)}</p>
+                                    </div>
+                                  </div>`;
+                    resultsOut.innerHTML += profileResultsHTML;
+                }); 
+
+                 if (attackerProfiles.length > 0) { 
+                    const numMiniaturasObjetivoGlobal = getIntValue('num_models_concept', 1);
+                    const cappedTotalModelsKilled = Math.min(totalModelsKilledAllProfilesSum, numMiniaturasObjetivoGlobal);
+
+                    resultsOut.innerHTML += `
+                        <div class="total-results-summary profile-result-card">
+                            <h3>SUMARIO TOTAL (Todos los Perfiles)</h3>
+                            <div class="results-grid">
+                                <div>
+                                    <p class="results-text-font">TOTAL DAÑO ASIGNADO (Post-FNP):</p>
+                                    <p class="results-value-font">${totalDamageAllProfiles.toFixed(2)}</p>
+                                </div>
+                                <div>
+                                    <p class="results-text-font">TOTAL MINIATURAS ELIMINADAS (Estimado):</p>
+                                    <p class="results-value-font">${cappedTotalModelsKilled.toFixed(0)}</p>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                }
+                 if (attackerProfiles.length === 0) {
+                     resultsOut.innerHTML = '<p class="results-text-font">No hay perfiles de atacante para analizar. Añada al menos un perfil.</p>';
+                 }
+            });
+        }
+
+        const resetBtnGlobal = document.getElementById('resetButtonConcept'); 
+        if (resetBtnGlobal) {
+            resetBtnGlobal.addEventListener('click', () => {
+                const profileToReset = attackerProfiles.find(p => p.id === currentFocusedProfileId); 
+                if (profileToReset && profileToReset.data) {
+                    const defaultData = getDefaultProfileData(); 
+                    Object.keys(defaultData).forEach(key => {
+                        profileToReset.data[key] = defaultData[key];
+                    });
+                   renderAttackerProfilesUI(); 
+                }
+                
+                const defenderFields = [
+                    'num_models_concept', 'wounds_per_model_concept', 'toughness_concept', 
+                    'save_sv_concept', 'invuln_save_concept'
+                ];
+                defenderFields.forEach(fieldId => {
+                    const element = document.getElementById(fieldId);
+                    if (element) element.value = element.dataset.defaultValue || (fieldId === 'num_models_concept' ? '10' : (fieldId === 'wounds_per_model_concept' ? '1' : (fieldId === 'toughness_concept' || fieldId === 'save_sv_concept' ? '4' : '0' )));
+                });
+                // Resetear checkboxes y FNP del defensor
+                document.getElementById('defender_in_cover_concept').checked = false;
+                document.getElementById('defender_mod_to_be_hit_concept').checked = false;
+                document.getElementById('defender_mod_to_be_wounded_concept').checked = false;
+                document.getElementById('defender_reduce_ap_concept').checked = false;
+                document.getElementById('defender_halve_damage_concept').checked = false;
+                document.getElementById('defender_reduce_damage_flat_concept').checked = false;
+                
+                document.getElementById('fnp_active_concept').checked = false;
+                document.getElementById('fnp_active_concept').dispatchEvent(new Event('change')); 
+                
+                const defCollToggle = document.getElementById('advancedDefensiveProtocolsToggle');
+                if (defCollToggle && defCollToggle.classList.contains('open')) {
+                    defCollToggle.click(); 
+                }
+                resultsOut.innerHTML = '<p class="results-text-font">SISTEMA INERTE. INGRESE DATOS Y ACTIVE EL COGITATOR...</p>';
+            });
+        }
+    });
+    </script>
+</body>
+</html>

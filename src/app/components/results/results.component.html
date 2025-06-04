@@ -1,0 +1,63 @@
+<div class="results-panel" *ngIf="calculationResults.length > 0 || totalResults">
+  <h2 class="section-title-font">PROYECCIÓN DE COMBATE</h2>
+
+  <div *ngIf="calculationResults.length === 0 && !totalResults" class="results-text-font">
+    SISTEMA INERTE. INGRESE DATOS Y ACTIVE EL COGITATOR...
+  </div>
+
+  <div *ngIf="calculationResults.length > 0">
+    <div *ngFor="let result of calculationResults" class="profile-result-card">
+      <h3>{{ result.profileName }}</h3>
+      <div class="results-grid">
+        <div>
+          <p class="results-text-font u-font-md u-font-weight-medium">Impactos Esperados:</p>
+          <p class="results-value-font">{{ formatNumber(result.expectedHits) }}</p>
+        </div>
+        <div>
+          <p class="results-text-font u-font-md u-font-weight-medium">Heridas Esperadas:</p>
+          <p class="results-value-font">{{ formatNumber(result.expectedWounds) }}</p>
+        </div>
+        <div>
+          <p class="results-text-font u-font-md u-font-weight-medium">Salvaciones Falladas:</p>
+          <p class="results-value-font">{{ formatNumber(result.failedSaves) }}</p>
+        </div>
+        <div>
+          <p class="results-text-font u-font-md u-font-weight-medium">Heridas Mortales (Habilidad):</p>
+          <p class="results-value-font">{{ formatNumber(result.mortalWoundsByAbility) }}</p>
+        </div>
+        <div>
+          <p class="results-text-font u-font-md u-font-weight-medium">Heridas Mortales (Devastadoras):</p>
+          <p class="results-value-font">{{ formatNumber(result.mortalWoundsByDevastating) }}</p>
+        </div>
+        <div>
+          <p class="results-text-font u-font-md u-font-weight-medium">Daño Final (Perfil):</p>
+          <p class="results-value-font">{{ formatNumber(result.finalDamage) }}</p>
+        </div>
+        <div>
+          <p class="results-text-font u-font-md u-font-weight-medium">Miniaturas Destruidas (Perfil):</p>
+          <p class="results-value-font">{{ formatNumber(result.modelsKilled) }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="totalResults && calculationResults.length > 0" class="total-results-summary u-padding-lg u-margin-top-xl u-border u-border-radius-md u-background-color-accent-dark">
+    <h3 class="section-title-font u-text-align-center u-color-accent-contrast u-margin-bottom-lg">SUMARIO TOTAL DE PROYECCIÓN</h3>
+    <div class="final-damage-container u-margin-bottom-md">
+      <p class="final-damage-label u-font-lg u-text-uppercase u-color-secondary-text">Daño Total Estimado Combinado:</p>
+      <span class="final-damage-value u-font-xxl u-font-weight-bold u-color-accent-contrast">{{ overallTotalDamage }}</span>
+    </div>
+    <div class="final-damage-container">
+      <p class="final-damage-label u-font-lg u-text-uppercase u-color-secondary-text">Total de Miniaturas Destruidas Estimadas:</p>
+      <span class="final-damage-value u-font-xxxl u-font-weight-bold u-color-accent-contrast u-text-shadow-strong">{{ overallModelsDestroyed }}</span>
+    </div>
+  </div>
+
+</div>
+
+<div class="results-panel" *ngIf="calculationResults.length === 0 && !totalResults">
+    <h2 class="section-title-font">PROYECCIÓN DE COMBATE</h2>
+    <div class="results-text-font u-font-md">
+        SISTEMA INERTE. INGRESE DATOS Y ACTIVE EL COGITATOR...
+    </div>
+</div>

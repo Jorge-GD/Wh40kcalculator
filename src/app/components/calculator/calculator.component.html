@@ -1,0 +1,83 @@
+<div class="cogitator-panel" [ngClass]="currentTheme$ | async">
+  <header class="cogitator-header">
+    <h1 class="main-title">CALCULADORA DE DAÑO</h1>
+    <p class="subtitle">Warhammer 40,000 - 10ª Edición</p>
+  </header>
+  <form class="main-content-area">
+    <section class="data-section attacker-profile-section" [ngClass]="currentTheme$ | async">
+      <div class="section-header u-display-flex u-justify-content-start u-align-items-center u-margin-bottom-md">
+        <div class="section-title-group u-display-flex u-align-items-center u-flex-grow-1">
+          <h2 class="section-title-font u-margin-none">{{ sectionTitle }}</h2>
+        </div>
+        <button 
+          mat-icon-button
+          type="button" 
+          class="add-profile-inline-button"
+          (click)="addAttackerProfile()"
+          [disabled]="attackerProfiles.length >= maxAttackerProfiles"
+          matTooltipPosition="before"
+          matTooltip="Añadir nuevo perfil de atacante">
+          <mat-icon>add_circle_outline</mat-icon>
+        </button>
+      </div>
+      <div id="attackerProfileContainer"><app-attacker-profile
+          *ngFor="let profile of attackerProfiles; let i = index; trackBy: trackByProfileId"
+          [profile]="profile"
+          [profileIndex]="i"
+          [isOnlyProfile]="attackerProfiles.length === 1"
+          (removeProfile)="removeAttackerProfile($event)"
+          (duplicateProfile)="duplicateAttackerProfile($event)"
+          (profileChange)="updateAttackerProfile($event, i)">
+        </app-attacker-profile>
+      </div>
+    </section>
+
+    <section class="data-section defender-profile-section u-margin-top-lg" [ngClass]="currentTheme$ | async">
+      <div class="section-header u-display-flex u-justify-content-start u-align-items-center u-margin-bottom-md">
+        <div class="section-title-group u-display-flex u-align-items-center u-flex-grow-1">
+          <h2 class="section-title-font u-margin-none">PERFILES DEL DEFENSOR</h2>
+        </div>
+        <button 
+          mat-icon-button
+          type="button" 
+          class="add-profile-inline-button"
+          (click)="addDefenderProfile()"
+          [disabled]="defenderProfiles.length >= maxDefenderProfiles"
+          matTooltipPosition="before"
+          matTooltip="Añadir nuevo perfil de defensor">
+          <mat-icon>add_circle_outline</mat-icon>
+        </button>
+      </div>
+      <div id="defenderProfileContainer">
+        <app-defender-profile
+          *ngFor="let profile of defenderProfiles; let i = index; trackBy: trackByProfileId"
+          [profile]="profile"
+          [profileIndex]="i"
+          [isOnlyProfile]="defenderProfiles.length === 1"
+          (removeProfile)="removeDefenderProfile($event)"
+          (duplicateProfile)="duplicateDefenderProfile($event)"
+          (profileChange)="updateDefenderProfile($event, i)">
+        </app-defender-profile>
+      </div>
+    </section>
+
+    <div class="action-buttons-container">
+      <button 
+        type="button" 
+        class="button-cogitator button-calculate"
+        (click)="calculate()"
+        mat-raised-button>
+        INICIAR ANÁLISIS
+      </button>
+    </div>
+  </form>
+
+  <app-results 
+    [calculationResults]="calculationResults?.profileResults || []"
+    [totalResults]="calculationResults">
+  </app-results>
+
+  <footer class="cogitator-footer">
+    <p>&copy; M41.999 - LA VERDAD DEL EMPERADOR ILUMINA NUESTROS DATOS - ABHORRE AL XENO, AL MUTANTE, AL HEREJE.</p>
+  </footer>
+</div>

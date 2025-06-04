@@ -1,0 +1,993 @@
+@use './app/themes.scss' as themes;
+@use '@angular/material' as mat;
+
+// Include the core styles for Angular Material. We need this here so that you only
+// have to load a single css file for Angular Material in your app.
+// Be sure that you only ever include this mixin once!
+@include mat.core();
+
+// Define the palettes for your theme using the Material Design palettes available in palette.scss
+// (imported above). For each palette, you can optionally specify a default, lighter, and darker
+// hue. Available color palettes: https://material.io/design/color/
+$mathhammer-ng-primary: mat.m2-define-palette(mat.$m2-deep-purple-palette);
+$mathhammer-ng-accent: mat.m2-define-palette(mat.$m2-amber-palette, A200, A100, A400);
+
+// The warn palette is optional (defaults to red).
+$mathhammer-ng-warn: mat.m2-define-palette(mat.$m2-red-palette);
+
+// Create the theme object. A theme consists of configurations for individual
+// theming systems such as "color" or "typography".
+$mathhammer-ng-theme: mat.m2-define-dark-theme((
+  color: (
+    primary: $mathhammer-ng-primary,
+    accent: $mathhammer-ng-accent,
+    warn: $mathhammer-ng-warn,
+  ),
+  // Define typography for the dark theme
+  typography: mat.m2-define-typography-config(
+    $font-family: '"Roboto", "Helvetica Neue", sans-serif' // Example W40k font
+  )
+));
+
+// Define a light theme
+$mathhammer-ng-light-primary: mat.m2-define-palette(mat.$m2-blue-grey-palette, 700, 300, 900);
+$mathhammer-ng-light-accent: mat.m2-define-palette(mat.$m2-orange-palette, A400, A100, A700);
+
+$mathhammer-ng-light-theme: mat.m2-define-light-theme((
+  color: (
+    primary: $mathhammer-ng-light-primary,
+    accent: $mathhammer-ng-light-accent,
+    warn: $mathhammer-ng-warn,
+  ),
+  // Define typography for the light theme
+  typography: mat.m2-define-typography-config(
+    $font-family: '"Roboto", "Helvetica Neue", sans-serif' // Example W40k font
+  )
+));
+
+// Apply the dark theme by default
+@include mat.all-component-themes($mathhammer-ng-theme);
+
+// Apply the light theme when the 'light-theme' class is present on the body
+.light-theme {
+  @include mat.all-component-themes($mathhammer-ng-light-theme);
+  // Override Angular Material components for the light theme using CSS variables if needed
+  // Example for MatCard background, though all-component-themes should handle most of it.
+  .mat-mdc-card {
+    background-color: var(--color-background-panel);
+    color: var(--color-primary-text);
+    border: 1px solid var(--color-border-panel);
+  }
+}
+
+// Apply theme variables to Angular Material components for other themes
+.theme-imperium-dark {
+  // You might need to override specific component styles if the Material theme mixins
+  // don't pick up all CSS variables as expected, or if you want finer control.
+  .mat-mdc-card {
+    background-color: var(--color-background-panel);
+    color: var(--color-primary-text);
+    border: 1px solid var(--color-border-panel);
+  }
+  .mat-mdc-text-field-wrapper,
+  .mat-mdc-select .mdc-text-field {
+    background-color: var(--color-input-bg) !important;
+  }
+  .mat-mdc-select-value, .mat-mdc-form-field input, .mat-mdc-form-field textarea {
+    color: var(--color-text-screen) !important;
+  }
+  .mat-mdc-form-field .mdc-floating-label {
+    color: var(--color-secondary-text) !important;
+  }
+  /* .mat-mdc-button.mat-primary, .mat-mdc-button.mat-accent, .mat-mdc-button.mat-warn {
+    // Example: Customize button colors if needed beyond the theme palette
+  } */
+  .mat-expansion-panel {
+    background-color: var(--color-background-panel);
+    color: var(--color-primary-text);
+  }
+  .mat-expansion-panel-header {
+    color: var(--color-text-title);
+  }
+  .mat-mdc-slide-toggle .mdc-switch__track::after {
+    background-color: var(--color-metal-interactive-hover);
+  }
+  .mat-mdc-slide-toggle .mdc-switch.mdc-switch--selected .mdc-switch__track::after {
+    background-color: var(--color-accent-green-cogitator) !important;
+  }
+}
+
+.theme-ork-rust {
+  .mat-mdc-card {
+    background-color: var(--color-background-panel);
+    color: var(--color-primary-text);
+    border: 1px solid var(--color-border-panel);
+  }
+  .mat-mdc-text-field-wrapper,
+  .mat-mdc-select .mdc-text-field {
+    background-color: var(--color-input-bg) !important;
+  }
+  .mat-mdc-select-value, .mat-mdc-form-field input, .mat-mdc-form-field textarea {
+    color: var(--color-text-screen) !important;
+  }
+  .mat-mdc-form-field .mdc-floating-label {
+    color: var(--color-secondary-text) !important;
+  }
+  .mat-expansion-panel {
+    background-color: var(--color-background-panel);
+    color: var(--color-primary-text);
+  }
+  .mat-expansion-panel-header {
+    color: var(--color-text-title);
+  }
+  .mat-mdc-slide-toggle .mdc-switch__track::after {
+    background-color: var(--color-metal-interactive-hover);
+  }
+  .mat-mdc-slide-toggle .mdc-switch.mdc-switch--selected .mdc-switch__track::after {
+    background-color: var(--color-accent-green-cogitator) !important;
+  }
+}
+
+.theme-necrontyr-green {
+  .mat-mdc-card {
+    background-color: var(--color-background-panel);
+    color: var(--color-primary-text);
+    border: 1px solid var(--color-border-panel);
+  }
+  .mat-mdc-text-field-wrapper,
+  .mat-mdc-select .mdc-text-field {
+    background-color: var(--color-input-bg) !important;
+  }
+  .mat-mdc-select-value, .mat-mdc-form-field input, .mat-mdc-form-field textarea {
+    color: var(--color-text-screen) !important;
+  }
+  .mat-mdc-form-field .mdc-floating-label {
+    color: var(--color-secondary-text) !important;
+  }
+  .mat-expansion-panel {
+    background-color: var(--color-background-panel);
+    color: var(--color-primary-text);
+  }
+  .mat-expansion-panel-header {
+    color: var(--color-text-title);
+  }
+  .mat-mdc-slide-toggle .mdc-switch__track::after {
+    background-color: var(--color-metal-interactive-hover);
+  }
+  .mat-mdc-slide-toggle .mdc-switch.mdc-switch--selected .mdc-switch__track::after {
+    background-color: var(--color-accent-green-cogitator) !important;
+  }
+}
+
+
+/* You can add global styles to this file, and also import other style files */
+
+html, body { height: 100%; }
+body {
+  margin: 0;
+  font-family: var(--font-sans-condensed, \"Roboto\", \"Helvetica Neue\", sans-serif); // Fallback font
+  background-color: var(--color-background-main); // Use CSS variable
+  color: var(--color-primary-text); // Use CSS variable
+  transition: background-color 0.3s ease, color 0.3s ease; // Smooth theme transition
+}
+
+// Styles for the light theme (ensure body selector is specific enough if .light-theme is on body)
+.light-theme body, .light-theme { // Ensure .light-theme on body also applies these
+  background-color: var(--color-background-main) !important;
+  color: var(--color-primary-text) !important;
+}
+
+
+/* Page Header Styles */
+.page-header {
+    background-color: var(--color-background-header-main);
+    color: var(--color-text-header-main);
+    padding: var(--padding-medium) var(--padding-large);
+    margin-bottom: var(--margin-large);
+    border-bottom: 3px solid var(--color-metal-divider-heavy);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+}
+
+.page-title {
+    font-family: var(--font-gothic); /* Corrected: added closing parenthesis */
+    color: var(--color-text-header-main); /* Corrected: added closing parenthesis */
+    font-size: 2.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    margin: 0;
+    text-shadow: 2px 2px 0px var(--color-metal-shadow), 0 0 10px var(--color-accent-red-glow-soft);
+}
+
+/* Example of how to style a specific Material component for the theme
+// This is just an example, you\'ll customize components as needed
+.mat-mdc-card {
+  background-color: var(--color-background-panel); // Use CSS variable
+  color: var(--color-primary-text); // Use CSS variable
+  border: 1px solid var(--color-border-panel); // Use CSS variable
+}
+
+.light-theme .mat-mdc-card {
+  background-color: var(--color-background-panel); // CSS variable from .light-theme scope
+  color: var(--color-primary-text);
+  border: 1px solid var(--color-border-panel);
+}
+
+// General Styles for Cogitator Panel and Sections
+.cogitator-panel {
+    background-color: var(--color-metal-panel);
+    border: 3px solid var(--color-metal-panel-border);
+    box-shadow: 0 0 25px rgba(0,0,0,0.6), inset 0 0 15px rgba(0,0,0,0.4);
+    padding: var(--padding-large);
+    margin-bottom: var(--margin-large);
+    color: var(--color-text-screen);
+}
+
+.cogitator-section {
+    background-color: var(--color-background-screen);
+    border: 2px solid var(--color-metal-interactive);
+    padding: var(--padding-medium);
+    margin-bottom: var(--padding-medium);
+    box-shadow: inset 0 0 10px rgba(0,0,0,0.5);
+}
+
+.cogitator-title {
+    font-family: var(--font-display);
+    color: var(--color-text-title);
+    font-size: 1.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    border-bottom: 2px solid var(--color-accent-red-glow);
+    padding-bottom: var(--padding-small);
+    margin-bottom: var(--padding-medium);
+    text-shadow: 0 0 5px var(--color-accent-red-glow);
+}
+
+/* Input Field Styles */
+.input-field-font, .input-field-text-font {
+    background-color: var(--color-input-bg);
+    border: 1px solid var(--color-metal-interactive);
+    color: var(--color-text-screen);
+    font-family: var(--font-sans-condensed); /* Corrected: Added closing parenthesis */
+    font-size: 1.05rem;
+    padding: 0.6rem 0.8rem;
+    // transition for focus/hover effects
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.input-field-font:focus, .input-field-text-font:focus,
+.input-field-font:hover, .input-field-text-font:hover {
+    border-color: var(--color-metal-interactive-hover);
+    box-shadow: 0 0 8px var(--color-metal-interactive-glow);
+}
+
+
+/* Standard button styling - for primary, accent, and warn palettes
+.mat-mdc-button.mat-primary,
+.mat-mdc-button.mat-accent,
+.mat-mdc-button.mat-warn {
+    background-color: var(--color-primary-button-bg);
+    color: var(--color-primary-button-text);
+    border: 1px solid var(--color-primary-button-border);
+    border-radius: var(--button-border-radius);
+    padding: var(--button-padding);
+    margin: var(--button-margin);
+    font-family: var(--font-display);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    transition: background-color 0.3s ease, border-color 0.3s ease;
+
+    &:hover {
+        background-color: var(--color-primary-button-hover-bg);
+        border-color: var(--color-primary-button-hover-border);
+    }
+
+    &:active {
+        background-color: var(--color-primary-button-active-bg);
+        border-color: var(--color-primary-button-active-border);
+    }
+
+    &:disabled {
+        background-color: var(--color-button-disabled-bg);
+        color: var(--color-button-disabled-text);
+        border-color: var(--color-button-disabled-border);
+        cursor: not-allowed;
+    }
+}
+
+// Icon button styling
+.mat-mdc-icon-button {
+    color: var(--color-icon-button); // Default icon color
+
+    &.mat-primary, &.mat-accent, &.mat-warn {
+        color: var(--color-icon-button-themed); // Themed icon color (e.g., primary, accent)
+    }
+
+    &:hover {
+        background-color: var(--color-icon-button-hover-bg); // Subtle background on hover
+    }
+
+    &:active {
+        background-color: var(--color-icon-button-active-bg);
+    }
+
+    &:disabled {
+        color: var(--color-icon-button-disabled);
+        background-color: transparent; // Ensure no background for disabled icon buttons
+    }
+}
+
+/* Material Component Overrides - Using CSS Variables */
+
+// MatFormField theming
+.mat-mdc-form-field {
+    // Apply background to the container of the input
+    .mat-mdc-text-field-wrapper, .mdc-text-field {
+        background-color: var(--color-input-bg) !important; // Important to override Material's default
+        border-radius: var(--input-border-radius); // Consistent border radius
+    }
+
+    // Input text color
+    .mat-mdc-form-field-input-control, .mdc-text-field__input {
+        color: var(--color-text-screen);
+        font-family: var(--font-sans-condensed);
+        caret-color: var(--color-accent-green-glow); // Themed caret color
+    }
+
+    // Floating label color
+    .mdc-floating-label, .mat-mdc-floating-label {
+        color: var(--color-secondary-text);
+        font-family: var(--font-sans-condensed);
+    }
+    .mat-mdc-form-field.mat-focused .mdc-floating-label,
+    .mat-mdc-form-field.mat-focused .mat-mdc-floating-label {
+        color: var(--color-accent-green-glow); // Label color on focus
+    }
+
+    // Bottom border (underline)
+    .mdc-line-ripple::before, .mdc-line-ripple::after {
+        border-bottom-color: var(--color-metal-interactive) !important; // Resting and focused states
+    }
+    .mat-mdc-form-field.mat-focused .mdc-line-ripple::after {
+         border-bottom-color: var(--color-accent-green-glow) !important; // Focused underline color
+    }
+
+    // Helper/error text
+    .mat-mdc-form-field-hint, .mat-mdc-form-field-error {
+        color: var(--color-secondary-text);
+        font-family: var(--font-sans-condensed);
+    }
+    .mat-mdc-form-field-error {
+        color: var(--color-accent-red-error); // Error text color
+    }
+}
+
+// MatSelect theming (inherits some from MatFormField)
+.mat-mdc-select {
+    .mdc-text-field { // The wrapper for select
+        background-color: var(--color-input-bg) !important;
+        border-radius: var(--input-border-radius);
+    }
+    .mat-mdc-select-value { // The selected value text
+        color: var(--color-text-screen);
+        font-family: var(--font-sans-condensed);
+    }
+    .mat-mdc-select-arrow svg { // The dropdown arrow
+        fill: var(--color-text-screen);
+    }
+}
+// MatSelect Panel (dropdown)
+.mat-mdc-select-panel, .mat-mdc-menu-panel { // Also style general menu panel for consistency
+    background-color: var(--color-background-dropdown) !important;
+    border: 1px solid var(--color-border-dropdown) !important;
+
+    .mat-mdc-option {
+        color: var(--color-text-dropdown-item);
+        font-family: var(--font-sans-condensed);
+        &:hover, &.mdc-list-item--selected, &.mat-mdc-option-active {
+            background-color: var(--color-background-dropdown-hover) !important;
+            color: var(--color-text-dropdown-item-hover) !important;
+        }
+    }
+    .mat-mdc-option.mdc-list-item--selected {
+      color: var(--color-accent-green-glow) !important; // Highlight selected item
+    }
+}
+
+
+// MatExpansionPanel theming
+.mat-expansion-panel {
+    background-color: var(--color-background-panel-alt); // Slightly different from main panel if needed
+    border: 1px solid var(--color-border-panel);
+    box-shadow: none; // Remove default Material shadow if custom is preferred
+    margin-bottom: var(--padding-small) !important; // Add some space between panels
+
+    .mat-expansion-panel-header {
+        color: var(--color-text-title);
+        font-family: var(--font-display);
+        font-size: 1.2rem; // Slightly smaller than main titles
+        background-color: var(--color-background-header); // Header distinct background
+        border-bottom: 1px solid var(--color-border-panel);
+        padding: 0 var(--padding-medium); // Adjust padding
+
+        &:hover {
+            background-color: var(--color-background-header-hover);
+        }
+
+        .mat-expansion-indicator::after { // Style the arrow
+            color: var(--color-text-title);
+        }
+    }
+    .mat-expansion-panel-content {
+        background-color: var(--color-background-panel-content); // Content area background
+        color: var(--color-primary-text);
+        padding: var(--padding-medium);
+        font-family: var(--font-sans-condensed);
+    }
+}
+
+// MatSlideToggle theming
+.mat-mdc-slide-toggle {
+    .mdc-form-field label { // The label text
+        color: var(--color-secondary-text);
+        font-family: var(--font-sans-condensed);
+    }
+
+    .mdc-switch__track { // The track of the toggle
+        background-color: var(--color-metal-dark); // Off state track
+    }
+    .mdc-switch__handle { // The thumb/handle
+        background-color: var(--color-metal-interactive) !important; // Off state handle
+        box-shadow: 0 0 3px var(--color-metal-interactive-glow);
+    }
+
+    // Selected state
+    &.mat-checked {
+        .mdc-switch__track {
+            background-color: var(--color-accent-green-cogitator-transparent) !important; // On state track (semi-transparent)
+        }
+        .mdc-switch__handle {
+            background-color: var(--color-accent-green-cogitator) !important; // On state handle
+            box-shadow: 0 0 5px var(--color-accent-green-glow);
+        }
+    }
+    // Focus state (can be combined with selected or not)
+    &:focus .mdc-switch__handle, &.cdk-focused .mdc-switch__handle {
+         box-shadow: 0 0 8px var(--color-accent-green-glow); // More prominent glow on focus
+    }
+}
+
+// MatTooltip theming
+.mat-mdc-tooltip {
+    background-color: var(--color-tooltip-bg) !important;
+    color: var(--color-tooltip-text) !important;
+    font-family: var(--font-sans-condensed) !important;
+    font-size: 0.9rem !important;
+    border: 1px solid var(--color-tooltip-border) !important;
+    padding: var(--padding-small) var(--padding-medium) !important;
+    border-radius: var(--input-border-radius) !important; // Consistent border radius
+}
+
+// MatDivider
+.mat-divider {
+    border-top-color: var(--color-border-divider);
+}
+
+// MatProgressBar (if used)
+.mat-mdc-progress-bar {
+    .mdc-linear-progress__buffer-bar {
+        background-color: var(--color-progressbar-buffer-bg) !important;
+    }
+    .mdc-linear-progress__bar-inner {
+        border-color: var(--color-progressbar-main) !important; // For determinate
+    }
+    // For indeterminate, you might need to target specific animation elements if they exist
+}
+
+// MatSnackBar (if used)
+.mat-mdc-snack-bar-container {
+    background-color: var(--color-snackbar-bg) !important;
+    color: var(--color-snackbar-text) !important;
+    border: 1px solid var(--color-snackbar-border) !important;
+
+    .mdc-snackbar__label {
+        font-family: var(--font-sans-condensed) !important;
+    }
+    .mat-mdc-button.mat-mdc-snack-bar-action { // Action button in snackbar
+        color: var(--color-snackbar-action-text) !important;
+        &:hover {
+            background-color: var(--color-snackbar-action-hover-bg) !important;
+        }
+    }
+}
+
+// MatDialog (if used)
+.mat-mdc-dialog-container .mdc-dialog__surface {
+    background-color: var(--color-dialog-bg) !important;
+    color: var(--color-dialog-text) !important;
+    border: 1px solid var(--color-dialog-border) !important;
+    border-radius: var(--dialog-border-radius) !important;
+}
+.mat-mdc-dialog-title {
+    color: var(--color-dialog-title-text) !important;
+    font-family: var(--font-display) !important;
+    border-bottom: 1px solid var(--color-dialog-border) !important;
+}
+.mat-mdc-dialog-content {
+    font-family: var(--font-sans-condensed) !important;
+}
+.mat-mdc-dialog-actions {
+    border-top: 1px solid var(--color-dialog-border) !important;
+    padding-top: var(--padding-medium) !important; // Add some space above action buttons
+}
+
+
+// Ensure theme-specific overrides for Material components are applied correctly
+// These will apply the variables defined in themes.scss for each theme context
+.theme-imperium-dark, .theme-ork-rust, .theme-necrontyr-green {
+    // This block is intentionally left for future theme-specific structural overrides if needed.
+    // Most styling is handled by CSS variables.
+    // Adding a dummy rule to satisfy the linter for now if it complains about empty rulesets.
+    // Consider removing if no specific overrides are added here.
+    --dummy-variable-to-avoid-empty-ruleset: 1;
+}
+
+// Ensure that the global styles for input fields, buttons, etc.,
+// correctly use the CSS variables so they adapt to the theme.
+// The .input-field-font and button styles above are already doing this.
+
+// Final check on body styles for themes
+body.theme-imperium-dark, body.theme-ork-rust, body.theme-necrontyr-green {
+    background-color: var(--color-background-main);
+    color: var(--color-primary-text);
+}
+
+body.light-theme {
+    background-color: var(--color-background-main) !important; // Ensure override
+    color: var(--color-primary-text) !important; // Ensure override
+}
+
+/* General Styles for Cogitator Panel and Sections */
+.cogitator-panel {
+    background-color: var(--color-metal-panel);
+    border: 3px solid var(--color-metal-panel-border);
+    box-shadow: 0 0 25px rgba(0,0,0,0.6), inset 0 0 15px rgba(0,0,0,0.4);
+    border-radius: 8px;
+    width: 100%;
+    max-width: 900px; 
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+}
+
+.cogitator-header {
+    background-color: var(--color-metal-section);
+    border-bottom: 3px solid var(--color-metal-panel-border);
+    padding: 1.25rem 1.75rem;
+    text-align: center;
+    border-radius: 6px 6px 0 0;
+    position: relative;
+    box-shadow: inset 0 -5px 10px rgba(0,0,0,0.3);
+}
+.cogitator-header::before, .cogitator-header::after {
+    content: ''; position: absolute; top: 0.75rem; width: 10px; height: 10px;
+    background-color: var(--color-metal-interactive);
+    border-radius: 50%;
+    box-shadow: inset 1px 1px 3px rgba(0,0,0,0.7), 0 0 2px var(--color-metal-interactive);
+}
+.cogitator-header::before { left: 0.75rem; }
+.cogitator-header::after { right: 0.75rem; }
+
+.main-title {
+    font-family: var(--font-gothic); /* Ensure this variable is defined */
+    color: var(--color-text-header-main); /* Ensure this variable is defined */
+    text-shadow: 1px 1px 0px #000, 2px 2px 3px var(--color-accent-red-dark), 0 0 10px var(--color-text-header-main);
+    font-size: 2.5rem; letter-spacing: 1.5px;
+    margin-bottom: 0.25rem;
+}
+.subtitle {
+    font-family: var(--font-sans-condensed); color: var(--color-text-parchment);
+    font-size: 0.9rem; letter-spacing: 1px; text-transform: uppercase;
+}
+
+.main-content-area {
+     padding: 1.75rem; 
+     display: flex;
+     flex-direction: column;
+     gap: 1.75rem;
+}
+
+.data-section {
+    background-color: var(--color-metal-section);
+    border: 2px solid var(--color-metal-section-border);
+    border-radius: 4px; padding: 1.25rem;
+    box-shadow: inset 0 0 10px rgba(0,0,0,0.5);
+}
+
+.section-title-font {
+    font-family: var(--font-gothic); color: var(--color-text-title);
+    border-bottom: 2px solid var(--color-metal-interactive);
+    padding-bottom: 0.6rem; margin-bottom: 1.25rem;
+    text-shadow: 1px 1px 2px #000;
+}
+
+/* Input Fields, Labels, Tooltips */
+.input-label-container { display: flex; align-items: center; margin-bottom: 0.25rem; position: relative; }
+.input-label-font {
+    font-family: var(--font-sans-condensed); color: var(--color-text-parchment);
+    font-size: 0.9rem; text-transform: uppercase; letter-spacing: 0.75px;
+}
+.tooltip-trigger { 
+    position: relative;
+    display: inline-flex; 
+}
+.tooltip-icon {
+    background-color: var(--color-metal-interactive); color: var(--color-text-parchment);
+    border-radius: 50%; display: inline-flex; justify-content: center; align-items: center;
+    font-size: 0.7rem; font-weight: bold;
+    box-shadow: inset 1px 1px 2px rgba(0,0,0,0.5);
+    transition: background-color 0.2s, color 0.2s;
+}
+.tooltip-icon:hover { background-color: var(--color-text-title); color: var(--color-metal-dark-bg); }
+
+.tooltip-text {
+    background-color: var(--color-input-bg); color: var(--color-text-parchment);
+    border: 1px solid var(--color-text-title);
+    padding: 0.5rem 0.75rem; font-size: 0.8rem; font-family: var(--font-serif-main);
+    z-index: 100; transition: opacity 0.2s, visibility 0.2s;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.5);
+    width: max-content; max-width: 250px; pointer-events: none; 
+}
+.tooltip-trigger:hover .tooltip-text { visibility: visible; opacity: 1; }
+
+.input-field-font, .input-field-text-font { 
+    background-color: var(--color-input-bg); 
+    border: 1px solid var(--color-metal-interactive);
+    color: var(--color-text-screen); 
+    font-family: var(--font-sans-condensed); /* Corrected: Added closing parenthesis */
+    font-size: 1.05rem; 
+    padding: 0.6rem 0.8rem;
+    border-radius: 2px; width: 100%;
+    box-shadow: inset 1px 1px 4px rgba(0,0,0,0.6);
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+.input-field-font:hover, .input-field-text-font:hover { border-color: var(--color-metal-interactive-hover); }
+.input-field-font:focus, .input-field-text-font:focus {
+    outline: none; border-color: var(--color-accent-blue-cogitator-hover);
+    box-shadow: inset 1px 1px 4px rgba(0,0,0,0.6), 0 0 8px var(--color-accent-blue-cogitator-hover);
+}
+.input-field-font::placeholder, .input-field-text-font::placeholder { color: var(--color-secondary-text); } // Use variable
+
+.select-field-font {
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23c5b8a5'%3E%3Cpath d='M7 10l5 5 5-5H7z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat; background-position: right 0.6rem center; background-size: 1.6em 1.6em;
+}
+.select-field-font option { background-color: var(--color-input-bg); color: var(--color-text-screen); }
+
+/* Collapsible Sections */
+.collapsible-header {
+    background-color: var(--color-metal-interactive);
+    color: var(--color-text-header-main);
+    font-family: var(--font-gothic);
+    font-size: 1.1rem; letter-spacing: 0.5px;
+    padding: 0.6rem 1rem; margin-top: 1.25rem;
+    border: 1px solid var(--color-metal-section-border); border-radius: 3px;
+    cursor: pointer; display: flex; justify-content: space-between; align-items: center;
+    transition: background-color 0.2s;
+    box-shadow: 1px 1px 3px rgba(0,0,0,0.4);
+}
+.collapsible-header:hover { background-color: var(--color-metal-interactive-hover); }
+.collapsible-header .arrow { transition: transform 0.3s ease-out; }
+.collapsible-header.open .arrow { transform: rotate(180deg); }
+.collapsible-content {
+    max-height: 0; overflow: hidden;
+    transition: max-height 0.4s ease-out, padding 0.4s ease-out; 
+    background-color: rgba(0,0,0,0.1);
+    border: 1px dashed var(--color-metal-interactive);
+    border-top: none; border-radius: 0 0 3px 3px;
+    padding: 0 1rem;
+}
+.collapsible-content.open { padding: 1rem; }
+
+/* Ability Groups and Switches */
+.ability-group-font { padding: 0.75rem 0; }
+.ability-group-font .input-label-font { font-size: 0.85rem; }
+.ability-sub-input-group { display: flex; align-items: center; gap: 0.5rem; margin-top: 0.25rem; }
+.ability-sub-input-group .input-field-font,
+.ability-sub-input-group .input-field-text-font { width: auto; flex-grow: 1; min-width: 60px; }
+
+.switch-label {
+    display: flex; align-items: center; cursor: pointer;
+    font-family: var(--font-serif-main); font-size: 0.95rem;
+    color: var(--color-text-parchment); margin-bottom: 0.5rem;
+}
+.switch-input { display: none; }
+.switch-slider {
+    position: relative; width: 48px; height: 26px;
+    background-color: var(--color-accent-red-dark);
+    border: 1px solid var(--color-metal-interactive); border-radius: 2px;
+    transition: background-color 0.2s; margin-right: 0.75rem;
+    box-shadow: inset 1px 1px 4px rgba(0,0,0,0.7);
+}
+.switch-slider::before {
+    content: ""; position: absolute; width: 20px; height: 20px;
+    left: 2px; bottom: 2px;
+    background-color: var(--color-metal-interactive-hover);
+    border: 1px solid var(--color-metal-panel-border); border-radius: 1px;
+    transition: transform 0.2s; box-shadow: 1px 1px 3px rgba(0,0,0,0.5);
+}
+.switch-input:checked + .switch-slider { background-color: var(--color-accent-green-cogitator); }
+.switch-input:checked + .switch-slider::before { transform: translateX(22px); }
+.switch-text { font-family: var(--font-sans-condensed); color: var(--color-secondary-text); margin-left: 0.5rem; }
+
+/* Action Buttons */
+.action-buttons-container {
+    display: flex; flex-direction: column; // sm:flex-direction-row; (Tailwind class, adapt if not using Tailwind elsewhere)
+    justify-content: center; align-items: center; gap: 1rem;
+    margin: 2rem auto 1.5rem auto; padding: 0 1rem; max-width: 600px;
+}
+.button-cogitator {
+    font-family: var(--font-gothic);
+    color: var(--color-text-header-main);
+    border: 2px solid var(--color-metal-panel-border);
+    padding: 0.85rem 1.75rem; border-radius: 4px;
+    text-transform: uppercase; letter-spacing: 1.5px;
+    font-size: 1.25rem; cursor: pointer; transition: all 0.2s ease-in-out;
+    box-shadow: 3px 3px 6px rgba(0,0,0,0.6), inset 0 0 0px rgba(255,255,255,0);
+    width: 100%; // sm:w-auto; (Tailwind class)
+}
+.button-calculate {
+    background-color: var(--color-accent-red-dark);
+    border-color: var(--color-accent-red);
+    color: var(--color-text-parchment);
+    text-shadow: 1px 1px 1px #000;
+}
+.button-calculate:hover {
+    background-color: var(--color-accent-red); border-color: var(--color-text-title); color: #fff; // Consider variables for hover states too
+    box-shadow: 4px 6px 8px rgba(0,0,0,0.7), inset 1px 1px 3px rgba(0,0,0,0.2), 0 0 10px var(--color-accent-red);
+    transform: translateY(-2px);
+}
+.button-calculate:active {
+    background-color: var(--color-accent-red-dark); transform: translateY(1px);
+    box-shadow: inset 3px 3px 6px rgba(0,0,0,0.7);
+}
+
+// Standard button styling - for primary, accent, and warn palettes
+.mat-mdc-button.mat-primary,
+.mat-mdc-button.mat-accent,
+.mat-mdc-button.mat-warn {
+    background-color: var(--color-primary-button-bg);
+    color: var(--color-primary-button-text);
+    border: 1px solid var(--color-primary-button-border);
+    border-radius: var(--button-border-radius);
+    padding: var(--button-padding);
+    margin: var(--button-margin);
+    font-family: var(--font-display);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    transition: background-color 0.3s ease, border-color 0.3s ease;
+
+    &:hover {
+        background-color: var(--color-primary-button-hover-bg);
+        border-color: var(--color-primary-button-hover-border);
+    }
+
+    &:active {
+        background-color: var(--color-primary-button-active-bg);
+        border-color: var(--color-primary-button-active-border);
+    }
+
+    &:disabled {
+        background-color: var(--color-button-disabled-bg);
+        color: var(--color-button-disabled-text);
+        border-color: var(--color-button-disabled-border);
+        cursor: not-allowed;
+    }
+}
+
+// Icon button styling
+.mat-mdc-icon-button {
+    color: var(--color-icon-button); // Default icon color
+
+    &.mat-primary, &.mat-accent, &.mat-warn {
+        color: var(--color-icon-button-themed); // Themed icon color (e.g., primary, accent)
+    }
+
+    &:hover {
+        background-color: var(--color-icon-button-hover-bg); // Subtle background on hover
+    }
+
+    &:active {
+        background-color: var(--color-icon-button-active-bg);
+    }
+
+    &:disabled {
+        color: var(--color-icon-button-disabled);
+        background-color: transparent; // Ensure no background for disabled icon buttons
+    }
+}
+
+/* Results Panel */
+.results-panel {
+    background-color: var(--color-metal-dark-bg); border: 3px solid var(--color-text-title);
+    box-shadow: inset 0 0 15px rgba(0,0,0,0.6), 0 0 10px var(--color-text-title);
+    border-radius: 4px; padding: 1.5rem; margin-top: 1.5rem;
+}
+.results-panel .section-title-font {
+     color: var(--color-text-header-main); border-bottom-color: var(--color-text-title);
+}
+.results-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 0.75rem; } 
+.results-text-font {
+    color: var(--color-text-parchment);
+    font-family: var(--font-serif-main); font-size: 1rem;
+    margin-bottom: 0.25rem;
+}
+.results-value-font {
+    color: var(--color-text-screen);
+    font-family: var(--font-sans-condensed); font-weight: 700;
+    font-size: 1.15rem;
+}
+.final-damage-container { border-top: 1px solid var(--color-metal-interactive); }
+.final-damage-label {
+    color: var(--color-text-title);
+    font-family: var(--font-gothic); text-transform: uppercase;
+    font-size: 1.5rem; text-align: center;
+}
+.final-damage-value {
+    color: var(--color-accent-red);
+    font-family: var(--font-gothic); font-size: 3rem;
+    text-shadow: 1px 1px 0px #000, 2px 2px 5px var(--color-accent-red-dark), 0 0 15px var(--color-accent-red);
+    text-align: center; display: block; margin-top: 0.25rem;
+}
+
+/* Footer */
+.cogitator-footer {
+    color: var(--color-secondary-text); // Use variable
+    border-top: 2px solid var(--color-metal-interactive);
+    background-color: var(--color-metal-section);
+    text-align: center; padding: 0.75rem; font-family: var(--font-sans-condensed);
+    font-size: 0.75rem;
+    border-radius: 0 0 6px 6px;
+}
+
+/* Utility Classes */
+.hidden-by-default { display: none; } // Consider Angular [hidden] or *ngIf instead
+input:disabled, select:disabled, .input-field-text-font:disabled {
+    background-color: var(--color-input-bg) !important; // Use variable, adjust if needed for disabled state
+    border-color: var(--color-metal-interactive) !important; // Use variable
+    color: var(--color-secondary-text) !important; // Use variable
+    opacity: 0.7; // General opacity for disabled
+    cursor: not-allowed !important;
+    box-shadow: inset 1px 1px 3px rgba(0,0,0,0.7) !important;
+}
+.ability-group-font input[type="checkbox"]:disabled + .switch-slider,
+.collapsible-content input[type="checkbox"]:disabled + .switch-slider {
+    background-color: #2a2521; cursor: not-allowed;
+    box-shadow: inset 1px 1px 3px rgba(0,0,0,0.7) !important;
+}
+.ability-group-font input[type="checkbox"]:disabled + .switch-slider::before,
+.collapsible-content input[type="checkbox"]:disabled + .switch-slider::before {
+    background-color: #403831;
+}
+
+.base-stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); 
+    gap: 0.75rem; 
+}
+.base-stats-grid > div { // Or apply to a class on the div if more specific targeting is needed
+    display: flex;
+    flex-direction: column; 
+}
+
+/* Attacker Profile Specific */
+.attacker-profile-block { 
+    margin-bottom: 1.5rem;
+    border: 1px solid var(--color-metal-interactive);
+    border-radius: 4px;
+    padding: 1rem;
+    background-color: rgba(0,0,0,0.1);
+}
+.attacker-profile-block:last-of-type {
+    margin-bottom: 0;
+}
+.profile-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.75rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid var(--color-metal-interactive);
+}
+.profile-name {
+    font-family: var(--font-gothic);
+    color: var(--color-text-header-main);
+    font-size: 1.2rem;
+}
+.profile-actions button {
+    background: none;
+    border: 1px solid var(--color-metal-interactive);
+    color: var(--color-text-parchment);
+    padding: 0.25rem 0.5rem;
+    margin-left: 0.5rem;
+    border-radius: 3px;
+    cursor: pointer;
+    font-size: 0.8rem;
+    transition: background-color 0.2s, color 0.2s;
+}
+.profile-actions button:hover {
+    background-color: var(--color-metal-interactive-hover);
+    color: #fff;
+}
+.profile-actions button.remove-profile-btn:hover { // Assuming a class for specific button styling
+    background-color: var(--color-accent-red-dark);
+}
+ .profile-actions button.duplicate-profile-btn:hover { // Assuming a class
+    background-color: var(--color-accent-green-cogitator);
+}
+
+.add-profile-button-container {
+    text-align: center;
+    margin-top: 1.5rem; 
+    padding-top: 1rem;
+    border-top: 1px dashed var(--color-metal-interactive);
+}
+.add-attacker-profile-button {
+    font-family: var(--font-gothic);
+    background-color: var(--color-accent-green-cogitator);
+    color: var(--color-text-parchment);
+    padding: 0.6rem 1.2rem;
+    border: 2px solid var(--color-metal-section-border);
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 1.1rem;
+    transition: background-color 0.2s, transform 0.1s;
+    box-shadow: 1px 1px 3px rgba(0,0,0,0.4);
+}
+.add-attacker-profile-button:hover {
+    background-color: #5a7b50; // Slightly lighter green
+    transform: translateY(-1px);
+}
+.add-attacker-profile-button:disabled {
+    background-color: var(--color-metal-interactive);
+    color: #7a6e5d;
+    cursor: not-allowed;
+    opacity: 0.6;
+}
+
+/* Results Profile Card Specific */
+.profile-result-card { 
+    margin-bottom: 1.5rem;
+    padding: 1rem;
+    border: 1px solid var(--color-metal-interactive-hover);
+    border-radius: 4px;
+    background-color: rgba(0,0,0,0.15);
+}
+.profile-result-card:last-child {
+    margin-bottom: 0;
+}
+.profile-result-card h3 { // Assuming h3 is used for profile name in results
+    font-family: var(--font-gothic);
+    color: var(--color-text-header-main);
+    font-size: 1.3rem;
+    margin-bottom: 0.75rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid var(--color-metal-interactive);
+}
+.total-results-summary {
+    margin-top: 2rem;
+    padding-top: 1rem;
+    border-top: 2px solid var(--color-text-title);
+}
+.total-results-summary h3 { // Assuming h3 for total summary title
+    font-family: var(--font-gothic);
+    color: var(--color-text-header-main);
+    font-size: 1.5rem;
+    text-align: center;
+    margin-bottom: 0.75rem;
+}
+
+/* Ensure Angular component encapsulation doesn't prevent global font imports if not already handled */
+@import url('https://fonts.googleapis.com/css2?family=Uncial+Antiqua&family=EB+Garamond:wght@400;700&family=Roboto+Condensed:wght@400;700&display=swap');
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }

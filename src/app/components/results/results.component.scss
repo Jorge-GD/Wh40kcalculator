@@ -1,0 +1,37 @@
+/* Styles for ResultsComponent, largely leveraging global styles */
+
+:host {
+    display: block;
+}
+
+/* .results-panel is a global style */
+/* .section-title-font is a global style, used for the main title */
+/* .results-text-font is a global style */
+/* .results-value-font is a global style */
+/* .profile-result-card and its h3 are global styles */
+/* .results-grid is a global style */
+/* .total-results-summary and its h3 are global styles */
+/* .final-damage-container, .final-damage-label, .final-damage-value are global styles */
+
+/* Specific adjustments or additions for ResultsComponent can go here if needed */
+
+.results-panel {
+    margin-top: 1.5rem; // Consistent with codigo.html
+}
+
+// The HTML uses inline styles for the second .final-damage-container and its .final-damage-value.
+// If preferred, these could be moved to classes:
+
+/* Example of how to move inline styles to SCSS classes if desired:
+.total-models-destroyed-container {
+    margin-top: 1rem;
+}
+
+.total-models-destroyed-value {
+    font-size: 2.5rem;
+    color: var(--color-text-header-main);
+    text-shadow: 1px 1px 0px #000, 
+                 2px 2px 3px var(--color-metal-interactive-hover), 
+                 0 0 10px var(--color-text-header-main);
+}
+*/

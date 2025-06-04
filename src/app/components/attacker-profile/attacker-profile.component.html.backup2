@@ -1,0 +1,453 @@
+<mat-card class="attacker-profile-card" [ngClass]="currentTheme">
+  <!-- Toolbar for Profile Actions, Name, and Attacks Display -->
+  <mat-toolbar class="attacker-profile-toolbar">
+    <!-- Profile Name Display (Clickable to Edit) / Input Field -->
+    <div class="toolbar-section profile-name-container">
+      <h3 class="profile-name-text u-margin-none u-text-truncate" 
+          *ngIf="!isEditingName" 
+          (click)="startEditingName()" 
+          matTooltip="Editar nombre del perfil"
+          tabindex="0" 
+          (keydown.enter)="startEditingName()">
+        {{ profile.name }}
+      </h3>
+      <mat-form-field appearance="fill" class="profile-name-input" *ngIf="isEditingName" subscriptSizing="dynamic">
+        <mat-label>Nombre del perfil</mat-label>
+        <input matInput [value]="profile.name" (input)="updateProfileName($event)" (blur)="stopEditingName()" (keydown.enter)="stopEditingName()" placeholder="Nombre del perfil" autofocus>
+      </mat-form-field>
+    </div>
+
+    <!-- Spacer to push subsequent items to the right -->
+    <span class="toolbar-spacer"></span>
+
+    <!-- Action Buttons: Edit, Duplicate, Delete -->
+    <div class="toolbar-section profile-actions">
+      <button mat-icon-button (click)="startEditingName()" matTooltip="Editar nombre del perfil" class="action-button edit-button" *ngIf="!isEditingName">
+        <mat-icon>edit</mat-icon>
+      </button>
+      <button mat-icon-button (click)="onDuplicateProfile()" matTooltip="Duplicar Perfil" class="action-button duplicate-button">
+        <mat-icon>content_copy</mat-icon>
+      </button>
+      <button mat-icon-button (click)="onRemoveProfile()" [disabled]="isOnlyProfile" matTooltip="Eliminar Perfil" class="action-button remove-button">
+        <mat-icon>delete</mat-icon>
+      </button>
+    </div>
+
+  </mat-toolbar>  <!-- Main Content: Hierarchical Tab Structure by Combat Phase -->
+  <mat-card-content class="attacker-profile-content">
+    <mat-tab-group class="attacker-tabs" animationDuration="300ms">
+      <!-- Tab 1: Estadísticas Base -->
+      <mat-tab>
+        <ng-template mat-tab-label>
+          <mat-icon class="tab-icon">casino</mat-icon>
+          <span class="tab-label-text">Estadísticas Base</span>
+        </ng-template>
+        <div class="tab-content u-padding-top-lg">
+          <div class="tab-header u-margin-bottom-lg">
+            <h3 class="tab-title">Estadísticas Base del Perfil</h3>
+            <p class="tab-description u-text-muted">Configura las características fundamentales del arma o unidad.</p>
+          </div>
+          
+          <!-- Base Stats Grid: Stat Cards -->
+          <div class="base-stats-grid u-display-grid u-grid-cols-responsive u-gap-lg u-padding-sm u-margin-bottom-xl">
+          <!-- Nº ATAQUES Card -->
+          <mat-card class="stat-card-icon-display"
+                    [matMenuTriggerFor]="attacksMenu" 
+                    #attacksMenuTrigger="matMenuTrigger"
+                    tabindex="0"
+                    (click)="attacksMenuTrigger.openMenu()"
+                    (keydown.enter)="$event.preventDefault(); attacksMenuTrigger.openMenu()"
+                    matTooltip="Editar Nº Ataques" 
+                    aria-label="Editar Número de Ataques">
+            <div class="stat-card-header-content u-text-align-center u-padding-sm">
+              <mat-icon class="stat-card-icon u-margin-bottom-xs">casino</mat-icon>
+              <div class="stat-card-title u-font-sm">Nº ATAQUES</div>
+            </div>
+            <mat-card-content class="u-text-align-center u-padding-bottom-sm">
+              <span class="stat-card-value u-font-lg">{{ profileData.attacks || 'N/A' }}</span>
+            </mat-card-content>
+            <!-- mat-card-actions removed -->
+          </mat-card>
+          <mat-menu #attacksMenu="matMenu">
+            <div class="edit-stat-popover u-padding-md" (click)="$event.stopPropagation()">
+              <mat-form-field appearance="outline" class="u-width-full">
+                <mat-label>Nº ATAQUES</mat-label>
+                <input matInput type="text" 
+                       [(ngModel)]="profileData.attacks" 
+                       (ngModelChange)="onProfileDataChange()" 
+                       (keydown)="filterNumericDiceInput($event)" 
+                       (keydown.enter)="handleInputEnterKey(attacksMenuTrigger)" 
+                       placeholder="Ej: 6, D6, 2D3"
+                       appAutofocus>
+                <mat-icon matSuffix matTooltip="Número total de dados que lanza esta arma/unidad para impactar." class="tooltip-icon">help_outline</mat-icon>
+              </mat-form-field>
+            </div>
+          </mat-menu>
+
+          <!-- HABILIDAD Card -->
+          <mat-card class="stat-card-icon-display"
+                    [matMenuTriggerFor]="skillMenu"
+                    #skillMenuTrigger="matMenuTrigger"
+                    tabindex="0"
+                    (click)="skillMenuTrigger.openMenu()"
+                    (keydown.enter)="$event.preventDefault(); skillMenuTrigger.openMenu()"
+                    matTooltip="Editar Habilidad" 
+                    aria-label="Editar Habilidad">
+            <div class="stat-card-header-content u-text-align-center u-padding-sm">
+              <mat-icon class="stat-card-icon u-margin-bottom-xs">ads_click</mat-icon>
+              <div class="stat-card-title u-font-sm">HAB. (X+)</div>
+            </div>
+            <mat-card-content class="u-text-align-center u-padding-bottom-sm">
+              <span class="stat-card-value u-font-lg">{{ profileData.skill || 'N/A' }}</span>
+            </mat-card-content>
+            <!-- mat-card-actions removed -->
+          </mat-card>
+          <mat-menu #skillMenu="matMenu">
+            <div class="edit-stat-popover u-padding-md" (click)="$event.stopPropagation()">
+              <mat-form-field appearance="outline" class="u-width-full">
+                <mat-label>HAB. (X+)</mat-label>
+                <input matInput type="number" 
+                       [(ngModel)]="profileData.skill" 
+                       (ngModelChange)="onProfileDataChange()" 
+                       min="2" max="6" 
+                       (keydown.enter)="handleInputEnterKey(skillMenuTrigger)" 
+                       placeholder="Ej: 3"
+                       appAutofocus>
+                <mat-icon matSuffix matTooltip="El resultado necesario en un D6 para impactar." class="tooltip-icon">help_outline</mat-icon>
+              </mat-form-field>
+            </div>
+          </mat-menu>
+
+          <!-- FUERZA Card -->
+          <mat-card class="stat-card-icon-display"
+                    [matMenuTriggerFor]="strengthMenu"
+                    #strengthMenuTrigger="matMenuTrigger"
+                    tabindex="0"
+                    (click)="strengthMenuTrigger.openMenu()"
+                    (keydown.enter)="$event.preventDefault(); strengthMenuTrigger.openMenu()"
+                    matTooltip="Editar Fuerza" 
+                    aria-label="Editar Fuerza">
+            <div class="stat-card-header-content u-text-align-center u-padding-sm">
+              <mat-icon class="stat-card-icon u-margin-bottom-xs">fitness_center</mat-icon>
+              <div class="stat-card-title u-font-sm">FZA (F)</div>
+            </div>
+            <mat-card-content class="u-text-align-center u-padding-bottom-sm">
+              <span class="stat-card-value u-font-lg">{{ profileData.strength || 'N/A' }}</span>
+            </mat-card-content>
+            <!-- mat-card-actions removed -->
+          </mat-card>
+          <mat-menu #strengthMenu="matMenu">
+            <div class="edit-stat-popover u-padding-md" (click)="$event.stopPropagation()">
+              <mat-form-field appearance="outline" class="u-width-full">
+                <mat-label>FZA (F)</mat-label>
+                <input matInput type="number" 
+                       [(ngModel)]="profileData.strength" 
+                       (ngModelChange)="onProfileDataChange()" 
+                       min="1" 
+                       (keydown.enter)="handleInputEnterKey(strengthMenuTrigger)" 
+                       placeholder="Ej: 4"
+                       appAutofocus>
+                <mat-icon matSuffix matTooltip="La Fuerza del ataque." class="tooltip-icon">help_outline</mat-icon>
+              </mat-form-field>
+            </div>
+          </mat-menu>
+
+          <!-- PA Card -->
+          <mat-card class="stat-card-icon-display"
+                    [matMenuTriggerFor]="apMenu"
+                    #apMenuTrigger="matMenuTrigger"
+                    tabindex="0"
+                    (click)="apMenuTrigger.openMenu()"
+                    (keydown.enter)="$event.preventDefault(); apMenuTrigger.openMenu()"
+                    matTooltip="Editar PA" 
+                    aria-label="Editar Penetración de Armadura">
+            <div class="stat-card-header-content u-text-align-center u-padding-sm">
+              <mat-icon class="stat-card-icon u-margin-bottom-xs">shield</mat-icon>
+              <div class="stat-card-title u-font-sm">PA</div>
+            </div>
+            <mat-card-content class="u-text-align-center u-padding-bottom-sm">
+              <span class="stat-card-value u-font-lg">{{ profileData.ap || 'N/A' }}</span>
+            </mat-card-content>
+            <!-- mat-card-actions removed -->
+          </mat-card>
+          <mat-menu #apMenu="matMenu">
+            <div class="edit-stat-popover u-padding-md" (click)="$event.stopPropagation()">
+              <mat-form-field appearance="outline" class="u-width-full">
+                <mat-label>PA</mat-label>
+                <input matInput type="number" 
+                       [(ngModel)]="profileData.ap" 
+                       (ngModelChange)="onProfileDataChange()" 
+                       min="0" 
+                       (keydown.enter)="handleInputEnterKey(apMenuTrigger)" 
+                       placeholder="Ej: 1, 2"
+                       appAutofocus>
+                <mat-icon matSuffix matTooltip="Penetración de Armadura. Reduce la salvación del objetivo." class="tooltip-icon">help_outline</mat-icon>
+              </mat-form-field>
+            </div>
+          </mat-menu>
+
+          <!-- DAÑO Card -->
+          <mat-card class="stat-card-icon-display"
+                    [matMenuTriggerFor]="damageMenu"
+                    #damageMenuTrigger="matMenuTrigger"
+                    tabindex="0"
+                    (click)="damageMenuTrigger.openMenu()"
+                    (keydown.enter)="$event.preventDefault(); damageMenuTrigger.openMenu()"
+                    matTooltip="Editar Daño" 
+                    aria-label="Editar Daño">
+            <div class="stat-card-header-content u-text-align-center u-padding-sm">
+              <mat-icon class="stat-card-icon u-margin-bottom-xs">whatshot</mat-icon>
+              <div class="stat-card-title u-font-sm">DAÑO (D)</div>
+            </div>
+            <mat-card-content class="u-text-align-center u-padding-bottom-sm">
+              <span class="stat-card-value u-font-lg">{{ profileData.damage || 'N/A' }}</span>
+            </mat-card-content>
+            <!-- mat-card-actions removed -->
+          </mat-card>
+          <mat-menu #damageMenu="matMenu">
+            <div class="edit-stat-popover u-padding-md" (click)="$event.stopPropagation()">
+              <mat-form-field appearance="outline" class="u-width-full">
+                <mat-label>DAÑO (D)</mat-label>
+                <input matInput type="text" 
+                       [(ngModel)]="profileData.damage" 
+                       (ngModelChange)="onProfileDataChange()" 
+                       (keydown)="filterNumericDiceInput($event)" 
+                       (keydown.enter)="handleInputEnterKey(damageMenuTrigger)" 
+                       placeholder="Ej: 3, D3, D6+1"
+                       appAutofocus>
+                <mat-icon matSuffix matTooltip="FORMATO: '3', 'D6', '2D3', 'D3+1'." class="tooltip-icon">help_outline</mat-icon>
+              </mat-form-field>
+            </div>
+          </mat-menu>
+        </div>
+
+        <!-- Active Protocols Summary -->
+        <div class="active-protocols-summary u-padding-sm u-margin-bottom-md">
+          <h4 class="summary-title u-margin-bottom-xs">Protocolos Activos:</h4>
+          <div *ngIf="activeHitProtocolsSummary.length === 0 && activeWoundProtocolsSummary.length === 0 && activeDamageProtocolsSummary.length === 0" class="no-active-protocols-message">
+            <p>Ningún protocolo avanzado activo.</p>
+          </div>
+          <mat-chip-listbox aria-label="Protocolos de impacto activos" class="u-margin-bottom-xs">
+            <mat-chip *ngFor="let summary of activeHitProtocolsSummary" class="summary-chip" selectable="false" [matTooltip]="summary">
+              {{ summary }}
+            </mat-chip>
+          </mat-chip-listbox>
+          <mat-chip-listbox aria-label="Protocolos de herida activos" class="u-margin-bottom-xs">
+            <mat-chip *ngFor="let summary of activeWoundProtocolsSummary" class="summary-chip" selectable="false" [matTooltip]="summary">
+              {{ summary }}
+            </mat-chip>
+          </mat-chip-listbox>
+          <mat-chip-listbox aria-label="Protocolos de daño activos">
+            <mat-chip *ngFor="let summary of activeDamageProtocolsSummary" class="summary-chip" selectable="false" [matTooltip]="summary">
+              {{ summary }}
+            </mat-chip>
+          </mat-chip-listbox>
+        </div>
+      </mat-tab>
+
+      <mat-tab label="Protocolos Avanzados">
+        <!-- Advanced Protocols Section -->
+        <div class="u-padding-top-md">
+          <h3 class="section-title-font u-margin-bottom-md">CONFIGURACIÓN DE PROTOCOLOS AVANZADOS</h3>
+          <mat-accordion multi>
+            <!-- Hit Protocols Panel -->
+            <mat-expansion-panel #hitProtocolsPanel class="u-margin-bottom-md expansion-panel" [expanded]="true">
+              <mat-expansion-panel-header>
+                <mat-panel-title class="section-subtitle-font">
+                  PROTOCOLOS DE IMPACTO
+                </mat-panel-title>
+              </mat-expansion-panel-header>
+              <div class="expansion-panel-content u-padding-top-md">
+                <div class="ability-toggle-group u-margin-bottom-sm">
+                  <mat-form-field appearance="outline" class="u-width-full">
+                    <mat-label>REPETIR TIRADAS PARA IMPACTAR</mat-label>
+                    <mat-select [(ngModel)]="profileData.hitRerollType" (ngModelChange)="onProfileDataChange()" (focus)="onFocusField('hitRerollType')">
+                      <mat-option value="none">NINGUNA</mat-option>
+                      <mat-option value="ones">SOLO 1S</mat-option>
+                      <mat-option value="all">TODOS LOS FALLOS</mat-option>
+                    </mat-select>
+                    <mat-icon matSuffix matTooltip="Permite repetir tiradas fallidas para impactar." class="tooltip-icon">help_outline</mat-icon>
+                  </mat-form-field>
+                </div>
+
+                <div class="ability-toggle-group u-margin-bottom-sm">
+                  <mat-slide-toggle [(ngModel)]="profileData.critHitMod!.active" (ngModelChange)="onProfileDataChange()">
+                    MODIFICAR UMBRAL DE IMPACTO CRÍTICO
+                  </mat-slide-toggle>
+                  <mat-form-field *ngIf="profileData.critHitMod?.active" appearance="outline" class="sub-input-field u-margin-top-xs u-margin-left-lg u-width-auto">
+                    <mat-label>NUEVO UMBRAL (X+)</mat-label>
+                    <input matInput type="number" [(ngModel)]="profileData.critHitMod!.value" (ngModelChange)="onProfileDataChange()" min="2" max="6">
+                  </mat-form-field>
+                </div>
+
+                <div class="ability-toggle-group u-margin-bottom-sm">
+                  <mat-slide-toggle [(ngModel)]="profileData.sustainedHits.active" (ngModelChange)="onProfileDataChange()" (focus)="onFocusField('sustainedHits')">
+                    IMPACTOS SOSTENIDOS [X]
+                  </mat-slide-toggle>
+                  <mat-form-field *ngIf="profileData.sustainedHits.active" appearance="outline" class="sub-input-field u-margin-top-xs u-margin-left-lg u-width-auto">
+                    <mat-label>X:</mat-label>
+                    <input matInput type="number" [(ngModel)]="profileData.sustainedHits.value" (ngModelChange)="onProfileDataChange()" (focus)="onFocusField('sustainedHits')" min="1">
+                  </mat-form-field>
+                </div>
+
+                <div class="ability-toggle-group u-margin-bottom-sm">
+                  <mat-slide-toggle [(ngModel)]="profileData.lethalHits.active" (ngModelChange)="onProfileDataChange()" (focus)="onFocusField('lethalHits')">
+                    IMPACTOS LETALES
+                    <span class="switch-text u-font-sm u-text-muted u-margin-left-xs">(Auto-hiere en crítico)</span>
+                  </mat-slide-toggle>
+                </div>
+
+                <div class="ability-toggle-group u-margin-bottom-sm">
+                  <mat-slide-toggle [(ngModel)]="profileData.rapidFire!.active" (ngModelChange)="onProfileDataChange()">
+                    DISPARO RÁPIDO [X]
+                  </mat-slide-toggle>
+                  <mat-form-field *ngIf="profileData.rapidFire?.active" appearance="outline" class="sub-input-field u-margin-top-xs u-margin-left-lg u-width-auto">
+                    <mat-label>X (Ataq. Adic.):</mat-label>
+                    <input matInput type="number" [(ngModel)]="profileData.rapidFire!.value" (ngModelChange)="onProfileDataChange()" min="1">
+                  </mat-form-field>
+                </div>
+
+                <div class="ability-toggle-group u-margin-bottom-sm">
+                  <mat-slide-toggle [(ngModel)]="profileData.heavy" (ngModelChange)="onProfileDataChange()">
+                    PESADA
+                  </mat-slide-toggle>
+                  <div *ngIf="profileData.heavy" class="sub-option u-margin-top-xs u-margin-left-lg">
+                    <mat-slide-toggle [(ngModel)]="profileData.attackerStationary" (ngModelChange)="onProfileDataChange()">
+                      ¿Atacante estacionario?
+                    </mat-slide-toggle>
+                  </div>
+                </div>
+
+                <div class="ability-toggle-group u-margin-bottom-sm">
+                  <mat-slide-toggle [(ngModel)]="profileData.torrent" (ngModelChange)="onProfileDataChange()">
+                    TORRENTE
+                    <span class="switch-text u-font-sm u-text-muted u-margin-left-xs">(Auto-impacta)</span>
+                  </mat-slide-toggle>
+                </div>
+
+                <div class="ability-toggle-group u-margin-bottom-sm">
+                  <mat-slide-toggle [(ngModel)]="profileData.blast" (ngModelChange)="onProfileDataChange()">
+                    BLAST
+                    <span class="switch-text u-font-sm u-text-muted u-margin-left-xs">(+1 Ataque por c/5 miniaturas objetivo)</span>
+                  </mat-slide-toggle>
+                </div>
+              </div>
+            </mat-expansion-panel>
+
+            <!-- Wound Protocols Panel -->
+            <mat-expansion-panel #woundProtocolsPanel class="u-margin-bottom-md expansion-panel" [expanded]="true">
+              <mat-expansion-panel-header>
+                <mat-panel-title class="section-subtitle-font">
+                  PROTOCOLOS DE HERIDA
+                </mat-panel-title>
+              </mat-expansion-panel-header>
+              <div class="expansion-panel-content u-padding-top-md">
+                <div class="ability-toggle-group u-margin-bottom-sm">
+                  <mat-form-field appearance="outline" class="u-width-full">
+                    <mat-label>MOD. AL HERIR</mat-label>
+                    <mat-select [(ngModel)]="profileData.woundModifiers" (ngModelChange)="onProfileDataChange()">
+                      <mat-option value="none">NINGUNO</mat-option>
+                      <mat-option value="lance">+1 AL HERIR (LANZA - SI CARGA)</mat-option>
+                      <mat-option value="plus_one_general">+1 AL HERIR (GENERAL)</mat-option>
+                    </mat-select>
+                    <mat-icon matSuffix matTooltip="Modificadores directos a la tirada para herir." class="tooltip-icon">help_outline</mat-icon>
+                  </mat-form-field>
+                  <div *ngIf="profileData.woundModifiers === 'lance'" class="sub-option u-margin-top-xs u-margin-left-lg">
+                    <mat-slide-toggle [(ngModel)]="profileData.lance!.charged" (ngModelChange)="onProfileDataChange()">
+                      ¿Atacante cargó (para Lanza)?
+                    </mat-slide-toggle>
+                  </div>
+                </div>
+
+                <div class="ability-toggle-group u-margin-bottom-sm">
+                  <mat-form-field appearance="outline" class="u-width-full">
+                    <mat-label>REPETIR PARA HERIR</mat-label>
+                    <mat-select [(ngModel)]="profileData.woundRerollType" (ngModelChange)="onProfileDataChange()" (focus)="onFocusField('woundRerollType')" [disabled]="profileData.twinLinked.active">
+                      <mat-option value="none">NINGUNO</mat-option>
+                      <mat-option value="failures">REPETIR FALLOS</mat-option> <!-- Removed (EMPAREJADO) as twinLinked is separate -->
+                      <mat-option value="ones">REPETIR 1S</mat-option>
+                      <mat-option value="all">TODOS LOS FALLOS</mat-option> <!-- Added for general all failed wounds reroll -->
+                    </mat-select>
+                    <mat-icon matSuffix matTooltip="Permite repetir tiradas fallidas para herir." class="tooltip-icon">help_outline</mat-icon>
+                  </mat-form-field>
+                </div>
+
+                <div class="ability-toggle-group u-margin-bottom-sm">
+                  <mat-slide-toggle [(ngModel)]="profileData.twinLinked.active" (ngModelChange)="onProfileDataChange()" (focus)="onFocusField('twinLinked')">
+                    EMPAREJADO
+                    <span class="switch-text u-font-sm u-text-muted u-margin-left-xs">(Repetir todas las tiradas para herir fallidas)</span>
+                  </mat-slide-toggle>
+                </div>
+
+                <div class="ability-toggle-group u-margin-bottom-sm">
+                  <mat-slide-toggle [(ngModel)]="profileData.devastatingWounds.active" (ngModelChange)="onProfileDataChange()" (focus)="onFocusField('devastatingWounds')">
+                    HERIDAS DEVASTADORAS
+                    <span class="switch-text u-font-sm u-text-muted u-margin-left-xs">(Mortales en críticos al herir)</span>
+                  </mat-slide-toggle>
+                </div>
+
+                <div class="ability-toggle-group u-margin-bottom-sm">
+                  <mat-slide-toggle [(ngModel)]="profileData.anti!.active" (ngModelChange)="onProfileDataChange()">
+                    ANTI- [X] [Y+]
+                  </mat-slide-toggle>
+                  <div *ngIf="profileData.anti?.active" class="anti-fields u-display-flex u-flex-direction-column u-gap-xs u-margin-top-xs u-margin-left-lg">
+                    <mat-form-field appearance="outline" class="sub-input-field u-width-auto">
+                      <mat-label>KEYWORD [X]</mat-label>
+                      <input matInput type="text" [(ngModel)]="profileData.antiKeyword" (ngModelChange)="onProfileDataChange()" placeholder="INFANTERÍA">
+                    </mat-form-field>
+                    <mat-form-field appearance="outline" class="sub-input-field u-width-auto">
+                      <mat-label>UMBRAL [Y+]</mat-label>
+                      <input matInput type="number" [(ngModel)]="profileData.anti!.value" (ngModelChange)="onProfileDataChange()" min="2" max="6">
+                    </mat-form-field>
+                  </div>
+                </div>
+
+                <div class="ability-toggle-group u-margin-bottom-sm">
+                  <mat-slide-toggle [(ngModel)]="profileData.melta!.active" (ngModelChange)="onProfileDataChange()">
+                    FUSIÓN [X]
+                    <span class="switch-text u-font-sm u-text-muted u-margin-left-xs">(Daño adicional a corto alcance)</span>
+                  </mat-slide-toggle>
+                  <div *ngIf="profileData.melta?.active" class="melta-fields u-display-flex u-flex-direction-column u-gap-xs u-margin-top-xs u-margin-left-lg">
+                    <mat-form-field appearance="outline" class="sub-input-field u-width-auto">
+                      <mat-label>DAÑO ADIC. [X]</mat-label>
+                      <input matInput type="text" [(ngModel)]="profileData.melta!.value" (ngModelChange)="onProfileDataChange()" placeholder="D3">
+                    </mat-form-field>
+                    <mat-slide-toggle [(ngModel)]="profileData.melta!.inRange" (ngModelChange)="onProfileDataChange()">
+                      ¿A corto alcance?
+                    </mat-slide-toggle>
+                  </div>
+                </div>
+              </div>
+            </mat-expansion-panel>
+
+            <!-- Additional Damage Panel -->
+            <mat-expansion-panel #additionalDamagePanel class="u-margin-bottom-md expansion-panel" [expanded]="true">
+              <mat-expansion-panel-header>
+                <mat-panel-title class="section-subtitle-font">
+                  HABILIDADES DE DAÑO ADICIONAL / MORTALES
+                </mat-panel-title>
+              </mat-expansion-panel-header>
+              <div class="expansion-panel-content u-padding-top-md">
+                <div class="ability-toggle-group u-margin-bottom-sm">
+                  <mat-slide-toggle [(ngModel)]="profileData.extraMortals!.active" (ngModelChange)="onProfileDataChange()">
+                    MORTALES ADICIONALES POR DESENCADENANTE
+                  </mat-slide-toggle>
+                  <div *ngIf="profileData.extraMortals?.active" class="extra-mortals-fields u-display-flex u-flex-direction-column u-gap-xs u-margin-top-xs u-margin-left-lg">
+                    <mat-form-field appearance="outline" class="sub-input-field u-width-auto">
+                      <mat-label>EN (X+) PARA ACTIVAR</mat-label>
+                      <input matInput type="number" [(ngModel)]="profileData.extraMortals!.on" (ngModelChange)="onProfileDataChange()" min="2" max="6">
+                    </mat-form-field>
+                    <mat-form-field appearance="outline" class="sub-input-field u-width-auto">
+                      <mat-label>CANTIDAD MORTALES</mat-label>
+                      <input matInput type="text" [(ngModel)]="profileData.extraMortals!.amount" (ngModelChange)="onProfileDataChange()" placeholder="D3">
+                    </mat-form-field>
+                  </div>
+                </div>
+              </div>
+            </mat-expansion-panel>
+          </mat-accordion>
+        </div>
+      </mat-tab>
+    </mat-tab-group>
+  </mat-card-content>
+</mat-card>

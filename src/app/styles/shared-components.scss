@@ -1,0 +1,255 @@
+/* Shared component styles to reduce duplication */
+
+// Set up mixins instead of classes to prevent duplicate CSS
+
+// Section Styles Mixin
+@mixin section-title {
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-bold);
+  color: var(--text-color-primary);
+  border-bottom: 1px solid var(--border-color-subtle);
+  padding-bottom: var(--spacing-sm);
+}
+
+@mixin section-subtitle {
+  font-size: var(--font-size-md);
+  font-weight: var(--font-weight-semibold);
+  color: var(--text-color-secondary);
+}
+
+// Profile Block Mixin
+@mixin profile-block {
+  background-color: var(--surface-color-primary);
+  border: 1px solid var(--border-color-soft);
+  border-radius: var(--border-radius-lg);
+  box-shadow: var(--shadow-medium);
+}
+
+// Profile Header Mixin
+@mixin profile-header {
+  background-color: var(--surface-color-secondary);
+}
+
+@mixin profile-name-input {
+  font-family: var(--font-gothic);
+  color: var(--text-color-header-main);
+  font-size: 1.3rem;
+}
+
+@mixin profile-actions {
+  color: var(--icon-color-interactive);
+  
+  &:hover {
+    background-color: var(--surface-color-hover);
+  }
+  
+  &.remove-profile-btn:hover {
+    background-color: var(--state-color-danger-bg-hover);
+    color: var(--state-color-danger-text);
+  }
+  
+  &.duplicate-profile-btn:hover {
+    background-color: var(--state-color-success-bg-hover);
+    color: var(--state-color-success-text);
+  }
+}
+
+// Mixins for Stat Cards (as used in attacker and defender profiles)
+@mixin stat-card-icon-display-base {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between; // Distribute space for a better layout
+  text-align: center;
+  cursor: pointer;
+  padding: var(--spacing-md); // Add padding to the card itself
+  border-radius: var(--border-radius-md);
+  background-color: var(--color-background-panel); // Use theme variable
+  border: 1px solid var(--color-border-panel);   // Use theme variable
+  transition: box-shadow 0.2s ease-in-out, transform 0.1s ease-in-out;
+
+  &:hover,
+  &:focus,
+  &.cdk-keyboard-focused, // For keyboard navigation focus
+  &.mat-mdc-menu-trigger.mat-menu-open { // When menu is open
+    box-shadow: var(--shadow-medium);
+    transform: translateY(-2px);
+    border-color: var(--color-metal-interactive-hover); // Highlight border on interaction
+  }
+}
+
+@mixin stat-card-header-content-base {
+  // This div wraps icon and title
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: var(--spacing-sm); // Space between header and value
+}
+
+@mixin stat-card-icon-base {
+  font-size: 2.2rem; // Slightly smaller icon for a cleaner look
+  width: 2.2rem;
+  height: 2.2rem;
+  margin-bottom: var(--spacing-xs);
+  color: var(--color-text-title); // Use a theme variable
+}
+
+@mixin stat-card-title-base {
+  font-size: 0.75rem; // Smaller, more subtle title
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--color-secondary-text); // Use a theme variable
+}
+
+@mixin stat-card-content-base {
+  // mat-card-content that holds the value
+  padding: 0 !important; // Remove default padding if any, control with children
+  width: 100%; // Ensure it takes full width
+}
+
+@mixin stat-card-value-base {
+  font-size: 1.4rem; // Prominent value
+  font-weight: 600; // Bold value
+  color: var(--color-primary-text); // Use a theme variable
+  line-height: 1.2;
+}
+
+// Mixin for Tooltip Icons
+@mixin tooltip-icon-base {
+  color: var(--color-secondary-text); // Use a theme variable for consistency
+  font-size: 1rem; // Standardized size
+  width: 1rem;
+  height: 1rem;
+  line-height: 1rem;
+  vertical-align: middle;
+  cursor: help;
+}
+
+// Mixin for the popover content within mat-menu
+@mixin edit-stat-popover-base {
+  min-width: 280px; // Ensure enough width for label and input
+  max-width: 320px;
+  padding: var(--spacing-lg); // Generous padding for the popover
+  box-shadow: var(--shadow-strong); // Strong shadow for popovers
+
+  .mat-mdc-form-field {
+    width: 100%;
+  }
+
+  // Style for the label within the popover's form field
+  .mat-mdc-form-field .mat-mdc-label,
+  .mat-mdc-form-field .mdc-floating-label {
+    font-size: 0.9rem; // Slightly smaller label in popover
+  }
+
+  // Style for the input text within the popover
+  .mat-mdc-form-field .mat-mdc-input-element {
+    font-size: 1rem; // Standard input text size
+  }
+}
+
+// Mixin for general card styling if needed beyond stat cards
+@mixin app-card-base {
+  // Example: border: 1px solid var(--color-border-panel);
+  // Example: background-color: var(--color-background-panel);
+}
+
+// Mixin for toolbar styling if needed
+@mixin app-toolbar-base {
+  // Example: background-color: var(--color-metal-section);
+  // Example: color: var(--color-text-header-main);
+}
+
+// Mixin for expansion panel styling
+@mixin app-expansion-panel-base {
+  background-color: var(--color-background-panel);
+  color: var(--color-primary-text);
+  border: 1px solid var(--color-border-panel);
+
+  .mat-expansion-panel-header {
+    color: var(--color-text-title);
+    font-family: var(--font-sans-condensed); // Example: Consistent font for headers
+  }
+
+  .mat-expansion-panel-header:hover {
+    background-color: rgba(var(--color-metal-interactive-rgb, 80, 80, 80), 0.1); // Use RGB for opacity
+  }
+}
+
+// Mixin for ability toggle groups
+@mixin ability-toggle-group-base {
+  // Common styling for the div.ability-toggle-group
+  // e.g., display: flex, align-items: center, margin-bottom
+  // margin-bottom: 1rem; // Example, adjust as needed
+
+  // mat-slide-toggle {
+    // Common styling for slide toggles within these groups
+    // e.g., margin-right: 1rem;
+  // }
+
+  // .sub-input-field,
+  // .sub-option {
+    // Common styling for nested form fields or options
+    // e.g., margin-left: 2rem; // Indentation
+  // }
+}
+
+// Mixin for chip styling
+@mixin app-chip-base {
+  // background-color: var(--color-metal-interactive) !important;
+  // color: var(--color-primary-text) !important;
+  // border: 1px solid var(--color-border-panel) !important;
+
+  // &.summary-chip {
+  //   // Specific styles for summary chips if needed
+  // }
+}
+
+// Mixin for section titles (like "PROTOCOLOS AVANZADOS")
+@mixin section-title-font-base {
+  font-family: var(--font-gothic), cursive; // Example using a theme font
+  color: var(--color-text-header-main);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  // margin-bottom: 1rem; // Adjust as needed
+}
+
+// Mixin for section subtitles (like panel headers)
+@mixin section-subtitle-font-base {
+  font-family: var(--font-sans-condensed), sans-serif; // Example
+  color: var(--color-text-title);
+  font-weight: 600;
+  // text-transform: uppercase;
+}
+
+// Apply the styles directly in the global stylesheet
+.section-title-font {
+  @include section-title;
+}
+
+.section-subtitle-font {
+  @include section-subtitle;
+}
+
+.profile-block {
+  @include profile-block;
+}
+
+.profile-header {
+  @include profile-header;
+  
+  .profile-name-input input.mat-mdc-input-element {
+    @include profile-name-input;
+  }
+  
+  .profile-actions .icon-button {
+    @include profile-actions;
+  }
+}
+
+// Optional: define these classes if needed
+// .attacker-profile-block,
+// .defender-profile-block {
+//   @include profile-block;
+// }

@@ -1,0 +1,291 @@
+<div class="profile-card data-section u-padding-md u-border u-rounded u-margin-bottom-md" [ngClass]="currentTheme">
+  <mat-toolbar class="profile-toolbar">
+    <!-- Profile Name Display (Clickable to Edit) / Input Field -->
+    <div class="toolbar-section profile-name-container">
+      <h3 class="profile-name-text u-margin-none u-text-truncate"
+          *ngIf="!isEditingName"
+          (click)="startEditingName()"
+          matTooltip="Editar nombre del perfil"
+          tabindex="0"
+          (keydown.enter)="startEditingName()">
+        {{ profile.name }}
+      </h3>
+      <mat-form-field appearance="fill" class="profile-name-input" *ngIf="isEditingName" subscriptSizing="dynamic">
+        <mat-label>Nombre del perfil</mat-label>
+        <input matInput [value]="profile.name" (input)="updateProfileName($event)" (blur)="stopEditingName()" (keydown.enter)="stopEditingName()" placeholder="Nombre del perfil" autofocus>
+      </mat-form-field>
+    </div>
+
+    <!-- Spacer to push subsequent items to the right -->
+    <span class="toolbar-spacer"></span>
+
+    <!-- Action Buttons: Edit, Duplicate, Delete -->
+    <div class="toolbar-section profile-actions">
+      <button mat-icon-button (click)="startEditingName()" matTooltip="Editar nombre del perfil" class="action-button edit-button" *ngIf="!isEditingName">
+        <mat-icon>edit</mat-icon>
+      </button>
+      <button mat-icon-button (click)="emitDuplicateProfile()" matTooltip="Duplicar Perfil" class="action-button duplicate-button">
+        <mat-icon>content_copy</mat-icon>
+      </button>
+      <button mat-icon-button (click)="emitRemoveProfile()" [disabled]="isOnlyProfile" matTooltip="Eliminar Perfil" class="action-button remove-button">
+        <mat-icon>delete_outline</mat-icon> <!-- Changed to delete_outline to match previous -->
+      </button>
+    </div>
+  </mat-toolbar>
+
+  <mat-card-content class="profile-content">
+    <mat-tab-group>
+      <mat-tab label="Principal">
+        <!-- Base Stats Grid: Replaced with Stat Cards -->
+        <div class="base-stats-grid u-display-grid u-grid-cols-responsive u-gap-lg u-padding-sm u-margin-bottom-xl u-margin-top-md">
+          <!-- ORDEN DE SALVACIÓN Card -->
+          <mat-card class="stat-card-icon-display"
+                    [matMenuTriggerFor]="saveOrderMenu" 
+                    #saveOrderMenuTrigger="matMenuTrigger"
+                    tabindex="0"
+                    (click)="saveOrderMenuTrigger.openMenu()"
+                    (keydown.enter)="$event.preventDefault(); saveOrderMenuTrigger.openMenu()"
+                    matTooltip="Editar Orden de Salvación" 
+                    aria-label="Editar Orden de Salvación">
+            <div class="stat-card-header-content u-text-align-center u-padding-sm">
+              <mat-icon class="stat-card-icon u-margin-bottom-xs">swap_vert</mat-icon>
+              <div class="stat-card-title u-font-sm">ORDEN SALV.</div>
+            </div>
+            <mat-card-content class="u-text-align-center u-padding-bottom-sm">
+              <span class="stat-card-value u-font-lg">{{ profile.saveOrder || 'N/A' }}</span>
+            </mat-card-content>
+          </mat-card>
+          <mat-menu #saveOrderMenu="matMenu">
+            <div class="edit-stat-popover u-padding-md" (click)="$event.stopPropagation()">
+              <mat-form-field appearance="outline" class="u-width-full">
+                <mat-label>ORDEN DE SALVACIÓN</mat-label>
+                <input matInput type="number" [(ngModel)]="profile.saveOrder" (ngModelChange)="onProfileDataChange()" min="1" (keydown.enter)="handleInputEnterKey(saveOrderMenuTrigger)" appAutofocus>
+                <mat-icon matSuffix matTooltip="Define el orden en que este perfil intentará salvar heridas." class="tooltip-icon">help_outline</mat-icon>
+              </mat-form-field>
+            </div>
+          </mat-menu>
+
+          <!-- Nº MINIATURAS Card -->
+          <mat-card class="stat-card-icon-display"
+                    [matMenuTriggerFor]="numModelsMenu" 
+                    #numModelsMenuTrigger="matMenuTrigger"
+                    tabindex="0"
+                    (click)="numModelsMenuTrigger.openMenu()"
+                    (keydown.enter)="$event.preventDefault(); numModelsMenuTrigger.openMenu()"
+                    matTooltip="Editar Nº Miniaturas" 
+                    aria-label="Editar Número de Miniaturas">
+            <div class="stat-card-header-content u-text-align-center u-padding-sm">
+              <mat-icon class="stat-card-icon u-margin-bottom-xs">groups</mat-icon>
+              <div class="stat-card-title u-font-sm">Nº MINIATURAS</div>
+            </div>
+            <mat-card-content class="u-text-align-center u-padding-bottom-sm">
+              <span class="stat-card-value u-font-lg">{{ profile.numModels || 'N/A' }}</span>
+            </mat-card-content>
+          </mat-card>
+          <mat-menu #numModelsMenu="matMenu">
+            <div class="edit-stat-popover u-padding-md" (click)="$event.stopPropagation()">
+              <mat-form-field appearance="outline" class="u-width-full">
+                <mat-label>Nº MINIATURAS</mat-label>
+                <input matInput type="number" [(ngModel)]="profile.numModels" (ngModelChange)="onProfileDataChange()" min="1" (keydown.enter)="handleInputEnterKey(numModelsMenuTrigger)" appAutofocus>
+                <mat-icon matSuffix matTooltip="Total de miniaturas en la unidad objetivo. Relevante para BLAST." class="tooltip-icon">help_outline</mat-icon>
+              </mat-form-field>
+            </div>
+          </mat-menu>
+
+          <!-- H. POR MINIATURA Card -->
+          <mat-card class="stat-card-icon-display"
+                    [matMenuTriggerFor]="woundsPerModelMenu" 
+                    #woundsPerModelMenuTrigger="matMenuTrigger"
+                    tabindex="0"
+                    (click)="woundsPerModelMenuTrigger.openMenu()"
+                    (keydown.enter)="$event.preventDefault(); woundsPerModelMenuTrigger.openMenu()"
+                    matTooltip="Editar H. por Miniatura" 
+                    aria-label="Editar Heridas por Miniatura">
+            <div class="stat-card-header-content u-text-align-center u-padding-sm">
+              <mat-icon class="stat-card-icon u-margin-bottom-xs">favorite_border</mat-icon>
+              <div class="stat-card-title u-font-sm">H. X MINIATURA</div>
+            </div>
+            <mat-card-content class="u-text-align-center u-padding-bottom-sm">
+              <span class="stat-card-value u-font-lg">{{ profile.woundsPerModel || 'N/A' }}</span>
+            </mat-card-content>
+          </mat-card>
+          <mat-menu #woundsPerModelMenu="matMenu">
+            <div class="edit-stat-popover u-padding-md" (click)="$event.stopPropagation()">
+              <mat-form-field appearance="outline" class="u-width-full">
+                <mat-label>H. POR MINIATURA</mat-label>
+                <input matInput type="number" [(ngModel)]="profile.woundsPerModel" (ngModelChange)="onProfileDataChange()" min="1" (keydown.enter)="handleInputEnterKey(woundsPerModelMenuTrigger)" appAutofocus>
+                <mat-icon matSuffix matTooltip="Número de heridas de cada miniatura objetivo." class="tooltip-icon">help_outline</mat-icon>
+              </mat-form-field>
+            </div>
+          </mat-menu>
+
+          <!-- RESISTENCIA (R) Card -->
+          <mat-card class="stat-card-icon-display"
+                    [matMenuTriggerFor]="toughnessMenu" 
+                    #toughnessMenuTrigger="matMenuTrigger"
+                    tabindex="0"
+                    (click)="toughnessMenuTrigger.openMenu()"
+                    (keydown.enter)="$event.preventDefault(); toughnessMenuTrigger.openMenu()"
+                    matTooltip="Editar Resistencia" 
+                    aria-label="Editar Resistencia">
+            <div class="stat-card-header-content u-text-align-center u-padding-sm">
+              <mat-icon class="stat-card-icon u-margin-bottom-xs">security</mat-icon>
+              <div class="stat-card-title u-font-sm">RESISTENCIA (R)</div>
+            </div>
+            <mat-card-content class="u-text-align-center u-padding-bottom-sm">
+              <span class="stat-card-value u-font-lg">{{ profile.toughness || 'N/A' }}</span>
+            </mat-card-content>
+          </mat-card>
+          <mat-menu #toughnessMenu="matMenu">
+            <div class="edit-stat-popover u-padding-md" (click)="$event.stopPropagation()">
+              <mat-form-field appearance="outline" class="u-width-full">
+                <mat-label>RESISTENCIA (R)</mat-label>
+                <input matInput type="number" [(ngModel)]="profile.toughness" (ngModelChange)="onProfileDataChange()" min="1" (keydown.enter)="handleInputEnterKey(toughnessMenuTrigger)" appAutofocus>
+                <mat-icon matSuffix matTooltip="La Resistencia del objetivo." class="tooltip-icon">help_outline</mat-icon>
+              </mat-form-field>
+            </div>
+          </mat-menu>
+
+          <!-- SALVACIÓN (TS X+) Card -->
+          <mat-card class="stat-card-icon-display"
+                    [matMenuTriggerFor]="saveSvMenu" 
+                    #saveSvMenuTrigger="matMenuTrigger"
+                    tabindex="0"
+                    (click)="saveSvMenuTrigger.openMenu()"
+                    (keydown.enter)="$event.preventDefault(); saveSvMenuTrigger.openMenu()"
+                    matTooltip="Editar Salvación (TS X+)" 
+                    aria-label="Editar Salvación">
+            <div class="stat-card-header-content u-text-align-center u-padding-sm">
+              <mat-icon class="stat-card-icon u-margin-bottom-xs">verified_user</mat-icon>
+              <div class="stat-card-title u-font-sm">SALVACIÓN (TS)</div>
+            </div>
+            <mat-card-content class="u-text-align-center u-padding-bottom-sm">
+              <span class="stat-card-value u-font-lg">{{ profile.saveSv ? profile.saveSv + '+' : 'N/A' }}</span>
+            </mat-card-content>
+          </mat-card>
+          <mat-menu #saveSvMenu="matMenu">
+            <div class="edit-stat-popover u-padding-md" (click)="$event.stopPropagation()">
+              <mat-form-field appearance="outline" class="u-width-full">
+                <mat-label>SALVACIÓN (TS X+)</mat-label>
+                <input matInput type="number" [(ngModel)]="profile.saveSv" (ngModelChange)="onProfileDataChange()" min="2" max="7" (keydown.enter)="handleInputEnterKey(saveSvMenuTrigger)" appAutofocus>
+                <mat-icon matSuffix matTooltip="Tirada de Salvación normal del objetivo." class="tooltip-icon">help_outline</mat-icon>
+              </mat-form-field>
+            </div>
+          </mat-menu>
+
+          <!-- SALV. INVULN. (TI X+) Card -->
+          <mat-card class="stat-card-icon-display"
+                    [matMenuTriggerFor]="invulnSaveMenu" 
+                    #invulnSaveMenuTrigger="matMenuTrigger"
+                    tabindex="0"
+                    (click)="invulnSaveMenuTrigger.openMenu()"
+                    (keydown.enter)="$event.preventDefault(); invulnSaveMenuTrigger.openMenu()"
+                    matTooltip="Editar Salv. Invulnerable (TI X+)" 
+                    aria-label="Editar Salvación Invulnerable">
+            <div class="stat-card-header-content u-text-align-center u-padding-sm">
+              <mat-icon class="stat-card-icon u-margin-bottom-xs">shield_moon</mat-icon>
+              <div class="stat-card-title u-font-sm">SALV. INV. (TI)</div>
+            </div>
+            <mat-card-content class="u-text-align-center u-padding-bottom-sm">
+              <span class="stat-card-value u-font-lg">{{ profile.invulnSave ? profile.invulnSave + '+' : 'N/A' }}</span>
+            </mat-card-content>
+          </mat-card>
+          <mat-menu #invulnSaveMenu="matMenu">
+            <div class="edit-stat-popover u-padding-md" (click)="$event.stopPropagation()">
+              <mat-form-field appearance="outline" class="u-width-full">
+                <mat-label>SALV. INVULN. (TI X+)</mat-label>
+                <input matInput type="number" [(ngModel)]="profile.invulnSave" (ngModelChange)="onProfileDataChange()" min="0" max="7" (keydown.enter)="handleInputEnterKey(invulnSaveMenuTrigger)" appAutofocus>
+                <mat-icon matSuffix matTooltip="Salvación Invulnerable. No se modifica por PA. 0 si no tiene." class="tooltip-icon">help_outline</mat-icon>
+              </mat-form-field>
+            </div>
+          </mat-menu>
+        </div>
+
+        <!-- Summary View for Advanced Defensive Protocols -->
+        <div class="summary-view u-padding-bottom-md">
+          <h4 class="summary-title u-margin-bottom-xs">Protocolos Defensivos Activos:</h4>
+          <mat-chip-listbox aria-label="Habilidades defensivas activas">
+            <mat-chip *ngFor="let ability of activeDefensiveAbilities" class="summary-chip">
+              {{ ability }}
+            </mat-chip>
+            <mat-chip *ngIf="activeDefensiveAbilities.length === 0" class="summary-chip-none">
+              Sin protocolos defensivos avanzados activos
+            </mat-chip>
+          </mat-chip-listbox>
+        </div>
+      </mat-tab>
+
+      <mat-tab label="Protocolos Avanzados">
+        <!-- Advanced Defensive Protocols -->
+        <div class="u-padding-top-md">
+          <mat-expansion-panel #advancedDefenderPanel class="u-margin-bottom-md" [expanded]="true">
+            <mat-expansion-panel-header>
+              <mat-panel-title class="section-subtitle-font">
+                PROTOCOLOS DEFENSIVOS AVANZADOS
+              </mat-panel-title>
+            </mat-expansion-panel-header>
+
+            <div class="u-padding-top-md">
+              <div class="ability-toggle-group u-margin-bottom-sm">
+                <mat-slide-toggle [(ngModel)]="profile.defenderInCover" (ngModelChange)="onProfileDataChange()">
+                  UNIDAD DEFENSORA EN COBERTURA
+                </mat-slide-toggle>
+              </div>
+
+              <div class="ability-toggle-group u-margin-bottom-sm">
+                <mat-slide-toggle [(ngModel)]="profile.defenderModToBeHit" (ngModelChange)="onProfileDataChange()">
+                  -1 A SER IMPACTADO POR EL ATACANTE
+                </mat-slide-toggle>
+              </div>
+
+              <div class="ability-toggle-group u-margin-bottom-sm">
+                <mat-slide-toggle [(ngModel)]="profile.defenderModToBeWounded" (ngModelChange)="onProfileDataChange()">
+                  -1 A LA TIRADA PARA HERIR DEL ATACANTE
+                </mat-slide-toggle>
+              </div>
+
+              <div class="ability-toggle-group u-margin-bottom-sm">
+                <mat-slide-toggle [(ngModel)]="profile.defenderReduceAp" (ngModelChange)="onProfileDataChange()">
+                  REDUCCIÓN DE PENETRACIÓN (PA del Atacante -1)
+                </mat-slide-toggle>
+              </div>
+
+              <div class="ability-toggle-group u-margin-bottom-sm">
+                <mat-slide-toggle [(ngModel)]="profile.defenderHalveDamage" (ngModelChange)="onProfileDataChange()">
+                  DAÑO REDUCIDO A LA MITAD (Redondeo Arriba)
+                </mat-slide-toggle>
+              </div>
+
+              <div class="ability-toggle-group u-margin-bottom-sm">
+                <mat-slide-toggle [(ngModel)]="profile.defenderReduceDamageFlat" (ngModelChange)="onProfileDataChange()">
+                  REDUCCIÓN DE DAÑO (-1 al Daño, mín. 1)
+                </mat-slide-toggle>
+              </div>
+
+              <div class="ability-toggle-group u-margin-bottom-sm">
+                <mat-slide-toggle [(ngModel)]="profile.feelNoPain.active" (ngModelChange)="onProfileDataChange()">
+                  ACTIVAR NO HAY DOLOR (FNP)
+                  <mat-icon matSuffix matTooltip="Permite ignorar heridas sufridas (normal y mortal si no hay FNP específico). 0 si no tiene." class="tooltip-icon u-margin-left-xs">help_outline</mat-icon>
+                </mat-slide-toggle>
+                <mat-form-field *ngIf="profile.feelNoPain.active" appearance="outline" class="sub-input-field u-margin-top-xs u-margin-left-lg u-width-auto">
+                  <mat-label>FNP GENERAL (X+)</mat-label>
+                  <input matInput type="number" [(ngModel)]="profile.feelNoPain.value" (ngModelChange)="onProfileDataChange()" min="0" max="6">
+                </mat-form-field>
+                
+                <div *ngIf="profile.feelNoPain.active" class="sub-option u-margin-top-xs u-margin-left-lg">
+                  <mat-slide-toggle [(ngModel)]="profile.feelNoPain.vsMortalsActive" (ngModelChange)="onProfileDataChange()">
+                    ¿USAR FNP DIFERENTE PARA HERIDAS MORTALES?
+                  </mat-slide-toggle>
+                  <mat-form-field *ngIf="profile.feelNoPain.vsMortalsActive" appearance="outline" class="sub-input-field u-margin-top-xs u-margin-left-lg u-width-auto">
+                    <mat-label>FNP vs MORTALES (X+)</mat-label>
+                    <input matInput type="number" [(ngModel)]="profile.feelNoPain.vsMortalsValue" (ngModelChange)="onProfileDataChange()" min="0" max="6">
+                  </mat-form-field>
+                </div>
+              </div>
+            </div>
+          </mat-expansion-panel>
+        </div>
+      </mat-tab>
+    </mat-tab-group>
+  </mat-card-content>
+</div>

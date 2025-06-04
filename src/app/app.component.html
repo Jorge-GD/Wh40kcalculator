@@ -1,0 +1,12 @@
+<div class="theme-selector-container">
+  <mat-form-field appearance="outline">
+    <mat-label>Select Theme</mat-label>
+    <mat-select [value]="currentTheme" (selectionChange)="onThemeChange($event.value)">
+      <mat-option *ngFor="let theme of availableThemes" [value]="theme.value">
+        {{ theme.name }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+</div>
+
+<router-outlet></router-outlet>
