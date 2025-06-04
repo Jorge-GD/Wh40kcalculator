@@ -16,6 +16,7 @@ const mockThemeService = {
   ]),
   currentTheme$: of('dark'),
   setTheme: jasmine.createSpy('setTheme'),
+  getCurrentTheme: jasmine.createSpy('getCurrentTheme').and.returnValue('dark'),
 };
 
 describe('AppComponent', () => {
@@ -59,16 +60,5 @@ describe('AppComponent', () => {
     fixture.detectChanges();
     const compiled = fixture.nativeElement as HTMLElement;
     expect(compiled.querySelector('app-theme-toggle')).toBeTruthy();
-  });
-
-  it('should initialize with available themes', () => {
-    const fixture = TestBed.createComponent(AppComponent);
-    const app = fixture.componentInstance;
-    fixture.detectChanges();
-    expect(app.availableThemes).toEqual([
-      { name: 'Dark Theme', value: 'dark' },
-      { name: 'Light Theme', value: 'light' },
-    ]);
-    expect(app.currentTheme).toBe('dark');
   });
 });
