@@ -1,0 +1,38 @@
+@use './design-tokens.scss';
+
+// Shadow mixins using the CSS custom properties defined in design-tokens
+@mixin subtle-shadow {
+  box-shadow: var(--shadow-subtle);
+}
+
+@mixin medium-shadow {
+  box-shadow: var(--shadow-medium);
+}
+
+@mixin strong-shadow {
+  box-shadow: var(--shadow-strong);
+}
+
+// Generic transition mixin
+@mixin transition($properties...) {
+  transition: join($properties, ', ') 0.3s ease-in-out;
+}
+
+// Basic fade animations
+@mixin fade-in($duration: 0.3s) {
+  animation: fadeIn $duration ease-in-out both;
+}
+
+@mixin fade-out($duration: 0.3s) {
+  animation: fadeOut $duration ease-in-out both;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes fadeOut {
+  from { opacity: 1; }
+  to { opacity: 0; }
+}
