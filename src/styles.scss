@@ -53,8 +53,9 @@ $mathhammer-ng-light-theme: mat.m2-define-light-theme((
 // Apply the base (dark) theme globally.
 @include mat.all-component-themes($mathhammer-ng-theme);
 
-// Apply the light theme when .light-theme class is present.
-.light-theme {
+// Apply the light theme when .light-theme or .theme-imperium-light class is present.
+.light-theme,
+.theme-imperium-light {
   @include mat.all-component-themes($mathhammer-ng-light-theme);
 
   // Your existing light theme CSS variable overrides:
@@ -199,8 +200,9 @@ body {
   transition: background-color 0.3s ease, color 0.3s ease; // Smooth theme transition
 }
 
-// Styles for the light theme (ensure body selector is specific enough if .light-theme is on body)
-.light-theme body, .light-theme { // Ensure .light-theme on body also applies these
+// Styles for the light themes (ensure body selector is specific enough if the theme class is on body)
+.light-theme body, .light-theme,
+.theme-imperium-light body, .theme-imperium-light {
   background-color: var(--color-background-main) !important;
   color: var(--color-primary-text) !important;
 }
@@ -234,7 +236,8 @@ body {
   border: 1px solid var(--color-border-panel); // Use CSS variable
 }
 
-.light-theme .mat-mdc-card {
+.light-theme .mat-mdc-card,
+.theme-imperium-light .mat-mdc-card {
   background-color: var(--color-background-panel); // CSS variable from .light-theme scope
   color: var(--color-primary-text);
   border: 1px solid var(--color-border-panel);
@@ -683,7 +686,7 @@ body {
 
 // Ensure theme-specific overrides for Material components are applied correctly
 // These will apply the variables defined in themes.scss for each theme context
-.theme-imperium-dark, .theme-ork-rust, .theme-necrontyr-green {
+.theme-imperium-dark, .theme-ork-rust, .theme-necrontyr-green, .theme-imperium-light {
     // This block is intentionally left for future theme-specific structural overrides if needed.
     // Most styling is handled by CSS variables.
     // Adding a dummy rule to satisfy the linter for now if it complains about empty rulesets.
@@ -696,12 +699,13 @@ body {
 // The .input-field-font and button styles above are already doing this.
 
 // Final check on body styles for themes
-body.theme-imperium-dark, body.theme-ork-rust, body.theme-necrontyr-green {
+body.theme-imperium-dark, body.theme-ork-rust, body.theme-necrontyr-green, body.theme-imperium-light {
     background-color: var(--color-background-main);
     color: var(--color-primary-text);
 }
 
-body.light-theme {
+body.light-theme,
+body.theme-imperium-light {
     background-color: var(--color-background-main) !important; // Ensure override
     color: var(--color-primary-text) !important; // Ensure override
 }
