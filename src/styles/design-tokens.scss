@@ -25,6 +25,10 @@ $color-accent-glow: #ff8c00; // Default glow for dark
 $color-accent-red: #b71c1c;
 $color-accent-red-dark: #8a0000;
 $color-accent-green-cogitator: #4CAF50; // Vibrant green for cogitators
+$color-accent-orange: #ff9800;
+$color-accent-orange-rgb: 255, 152, 0;
+$color-black: #000;
+$color-white: #fff;
 
 // ---------------------------------------------------------------------------
 // CSS Custom Properties
@@ -67,4 +71,8 @@ $color-accent-green-cogitator: #4CAF50; // Vibrant green for cogitators
   --color-accent-red: #{$color-accent-red};
   --color-accent-red-dark: #{$color-accent-red-dark};
   --color-accent-green-cogitator: #{$color-accent-green-cogitator};
+  --color-accent-orange: #{$color-accent-orange};
+  --color-accent-orange-rgb: #{$color-accent-orange-rgb};
+  --color-black: #{$color-black};
+  --color-white: #{$color-white};
 }

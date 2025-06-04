@@ -739,7 +739,7 @@ body.light-theme {
 .main-title {
     font-family: var(--font-gothic); /* Ensure this variable is defined */
     color: var(--color-text-header-main); /* Ensure this variable is defined */
-    text-shadow: 1px 1px 0px #000, 2px 2px 3px var(--color-accent-red-dark), 0 0 10px var(--color-text-header-main);
+    text-shadow: 1px 1px 0px var(--color-black), 2px 2px 3px var(--color-accent-red-dark), 0 0 10px var(--color-text-header-main);
     font-size: 2.5rem; letter-spacing: 1.5px;
     margin-bottom: 0.25rem;
 }
@@ -766,7 +766,7 @@ body.light-theme {
     font-family: var(--font-gothic); color: var(--color-text-title);
     border-bottom: 2px solid var(--color-metal-interactive);
     padding-bottom: 0.6rem; margin-bottom: 1.25rem;
-    text-shadow: 1px 1px 2px #000;
+    text-shadow: 1px 1px 2px var(--color-black);
 }
 
 /* Input Fields, Labels, Tooltips - MEJORAR ESPACIADO Y ACCESIBILIDAD */
@@ -1102,10 +1102,10 @@ body.light-theme {
     background-color: var(--color-accent-red-dark);
     border-color: var(--color-accent-red);
     color: var(--color-text-parchment);
-    text-shadow: 1px 1px 1px #000;
+    text-shadow: 1px 1px 1px var(--color-black);
 }
 .button-calculate:hover {
-    background-color: var(--color-accent-red); border-color: var(--color-text-title); color: #fff; // Consider variables for hover states too
+    background-color: var(--color-accent-red); border-color: var(--color-text-title); color: var(--color-white); // Consider variables for hover states too
     box-shadow: 4px 6px 8px rgba(0,0,0,0.7), inset 1px 1px 3px rgba(0,0,0,0.2), 0 0 10px var(--color-accent-red);
     transform: translateY(-2px);
 }
@@ -1315,7 +1315,7 @@ body.light-theme {
     }
     
     &.warning {
-        border-left: 4px solid var(--color-accent-orange, #ff9800);
+        border-left: 4px solid var(--color-accent-orange);
     }
 }
 
