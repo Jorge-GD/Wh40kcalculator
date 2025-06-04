@@ -59,6 +59,10 @@ npm run lint:fix
 npm run format
 ```
 
+### Git Hooks
+
+Pre-commit hooks are managed with [Husky](https://typicode.github.io/husky). Run `npm install` after cloning to install the hooks. They will automatically execute `npm run lint` and `npm test` before each commit.
+
 ## Project Structure
 
 - `src/app/components/` - Angular components for UI
