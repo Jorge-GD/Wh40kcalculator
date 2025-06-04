@@ -1,9 +1,9 @@
-<div class="cogitator-panel" [ngClass]="currentTheme$ | async">
+<div class="cogitator-panel" role="main" [ngClass]="currentTheme$ | async">
   <header class="cogitator-header">
     <h1 class="main-title">CALCULADORA DE DAÑO</h1>
     <p class="subtitle">Warhammer 40,000 - 10ª Edición</p>
   </header>
-  <form class="main-content-area">
+  <form class="main-content-area" role="form" aria-label="Calculadora de daño">
     <section class="data-section attacker-profile-section" [ngClass]="currentTheme$ | async">
       <div class="section-header u-display-flex u-justify-content-start u-align-items-center u-margin-bottom-md">
         <div class="section-title-group u-display-flex u-align-items-center u-flex-grow-1">
@@ -78,12 +78,13 @@
     </div>
   </form>
 
-  <app-results 
+  <app-results
+    aria-live="polite"
     [calculationResults]="calculationResults?.profileResults || []"
     [totalResults]="calculationResults">
   </app-results>
 
-  <footer class="cogitator-footer">
+  <footer class="cogitator-footer" role="contentinfo">
     <p>&copy; M41.999 - LA VERDAD DEL EMPERADOR ILUMINA NUESTROS DATOS - ABHORRE AL XENO, AL MUTANTE, AL HEREJE.</p>
   </footer>
 </div>

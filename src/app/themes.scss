@@ -4,7 +4,7 @@
 
 .theme-imperium-dark {
   --color-primary-text: #e0dac5; // Parchment text
-  --color-secondary-text: #b0a58f; // Slightly darker parchment
+  --color-secondary-text: #c3b5a0; // Improved contrast
   --color-background-main: #1f1a15; // Very dark brown/black
   --color-background-panel: rgba(40, 35, 30, 0.95); // Dark, slightly transparent wood/metal
   --color-border-panel: #6d5f47; // Bronze/brass border
@@ -43,7 +43,7 @@
 .theme-ork-rust {
   --color-primary-text: #d1c7b7; // Dirty, off-white
   // Adjusted for WCAG 2.2 AA contrast compliance
-  --color-secondary-text: #b6aea0;
+  --color-secondary-text: #d4cbbb; // Improved contrast
   --color-background-main: #4a3b2a; // Rusty brown background
   --color-background-panel: rgba(60, 45, 30, 0.92); // Dark, rusty metal panel
   --color-border-panel: #8c5a2b; // Darker rust border
@@ -81,7 +81,7 @@
 
 .theme-necrontyr-green {
   --color-primary-text: #a2f5b4; // Necron green glow text
-  --color-secondary-text: #7bc48c;
+  --color-secondary-text: #91d5a1; // Improved contrast
   --color-background-main: #08140a; // Very dark, almost black green
   --color-background-panel: rgba(10, 40, 20, 0.93); // Dark green, slightly transparent necrodermis
   --color-border-panel: #0a5c15; // Sharp green border
@@ -120,7 +120,7 @@
 // Light Theme (redefined with CSS variables for consistency)
 .light-theme {
   --color-primary-text: #333333;
-  --color-secondary-text: #555555;
+  --color-secondary-text: #444444; // Improved contrast
   --color-background-main: #f0f0f0;
   --color-background-panel: #ffffff;
   --color-border-panel: #dcdcdc;
@@ -159,7 +159,7 @@
 // Imperium Light Theme (alternative light mode)
 .theme-imperium-light {
   --color-primary-text: #4a3a2b; // Dark parchment text
-  --color-secondary-text: #6b5a44;
+  --color-secondary-text: #514031; // Improved contrast
   --color-background-main: #faf7f2; // Warm parchment background
   --color-background-panel: #f5f0e6;
   --color-border-panel: #d0c0a0;
