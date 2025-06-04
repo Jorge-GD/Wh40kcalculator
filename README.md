@@ -10,6 +10,7 @@ A comprehensive mathhammer calculator for Warhammer 40,000 designed to help play
 - **Real-time Calculations**: Instant probability calculations as you modify parameters
 - **Multiple Profiles**: Support for multiple attacker and defender profiles
 - **Modern UI**: Clean, responsive Angular Material interface
+- **macOS-inspired Typography**: Uses the San Francisco font with a `-apple-system` fallback for a consistent look across browsers
 
 ## Development
 
