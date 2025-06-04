@@ -52,18 +52,10 @@ $mathhammer-ng-light-theme: mat.m2-define-light-theme((
 
 // Apply the base (dark) theme globally.
 @include mat.all-component-themes($mathhammer-ng-theme);
-@include mat.dialog-theme($mathhammer-ng-theme);
-@include mat.menu-theme($mathhammer-ng-theme);
-@include mat.select-theme($mathhammer-ng-theme); // Ensure select panel is themed
-@include mat.tooltip-theme($mathhammer-ng-theme); // Ensure tooltips are themed
 
 // Apply the light theme when .light-theme class is present.
 .light-theme {
   @include mat.all-component-themes($mathhammer-ng-light-theme);
-  @include mat.dialog-theme($mathhammer-ng-light-theme);
-  @include mat.menu-theme($mathhammer-ng-light-theme);
-  @include mat.select-theme($mathhammer-ng-light-theme);
-  @include mat.tooltip-theme($mathhammer-ng-light-theme);
 
   // Your existing light theme CSS variable overrides:
   .mat-mdc-card {
