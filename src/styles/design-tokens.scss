@@ -18,6 +18,7 @@ $color-secondary-text: #9e8a74;
 $color-background-main: #1a1a1a;
 $color-background-panel: #2a2a2a;
 $color-border-panel: #444;
+$color-border-divider: #555;
 $color-input-bg: #333322; // Darker, parchment-like
 $color-metal-interactive: #5a5a5a;
 $color-metal-interactive-hover: #7a7a7a;
@@ -64,6 +65,7 @@ $color-white: #fff;
   --color-background-main: #{$color-background-main};
   --color-background-panel: #{$color-background-panel};
   --color-border-panel: #{$color-border-panel};
+  --color-border-divider: #{$color-border-divider};
   --color-input-bg: #{$color-input-bg};
   --color-metal-interactive: #{$color-metal-interactive};
   --color-metal-interactive-hover: #{$color-metal-interactive-hover};

@@ -31,9 +31,10 @@
           (profileChange)="updateAttackerProfile($event, i)">
         </app-attacker-profile>
       </div>
-    </section>
+      </section>
+      <app-section-divider></app-section-divider>
 
-    <section class="data-section defender-profile-section u-margin-top-lg" [ngClass]="currentTheme$ | async">
+      <section class="data-section defender-profile-section u-margin-top-lg" [ngClass]="currentTheme$ | async">
       <div class="section-header u-display-flex u-justify-content-start u-align-items-center u-margin-bottom-md">
         <div class="section-title-group u-display-flex u-align-items-center u-flex-grow-1">
           <h2 class="section-title-font u-margin-none">PERFILES DEL DEFENSOR</h2>
