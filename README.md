@@ -66,6 +66,27 @@ npm run format
 - `src/app/services/` - Services for business logic and calculations
 - `src/app/styles/` - Shared styles and utilities
 
+## Publicar en GitHub Pages
+
+Sigue estos pasos para desplegar la aplicación usando GitHub Pages:
+
+1. Ejecuta el comando de compilación con la ruta base adecuada:
+
+   ```bash
+   ng build --base-href /Wh40kcalculator/
+   ```
+
+   Esto generará los archivos estáticos en la carpeta `dist/wh40kcalculator`.
+2. Entra a la sección **Settings** del repositorio en GitHub y abre la pestaña **Pages**.
+3. Selecciona la rama principal (por ejemplo `main`) y la carpeta `/dist/wh40kcalculator` como origen del sitio.
+4. Guarda la configuración para activar la publicación.
+
+Una vez completado el proceso, la aplicación estará disponible en:
+
+```
+https://<tu-usuario>.github.io/Wh40kcalculator/
+```
+
 ## Additional Resources
 
 For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
