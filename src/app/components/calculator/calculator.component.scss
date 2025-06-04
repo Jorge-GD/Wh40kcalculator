@@ -1,10 +1,12 @@
+@use '../../styles/design-tokens' as tokens;
+
 /* Main container styling */
 .cogitator-panel {
   background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 50%, #1a1a1a 100%);
   border: 2px solid #4a4a4a;
   border-radius: 15px;
-  padding: 20px;
-  margin: 20px auto;
+  padding: var(--spacing-xl);
+  margin: var(--spacing-xl) auto;
   max-width: 1200px;
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
   color: #e0e0e0;
@@ -15,14 +17,14 @@
 .cogitator-header {
   text-align: center;
   margin-bottom: 30px;
-  padding: 15px;
+  padding: var(--spacing-lg);
   background: linear-gradient(90deg, #333 0%, #555 50%, #333 100%);
   border-radius: 10px;
   border: 1px solid #666;
 }
 
 .cogitator-header h1 {
-  color: #ff6b35;
+  color: var(--color-accent-orange-bright);
   font-size: 2.5em;
   margin: 0;
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
@@ -41,7 +43,7 @@
 /* Content area styling */
 .cogitator-content {
   display: flex;
-  gap: 20px;
+  gap: var(--spacing-xl);
   margin-bottom: 30px;
 }
 
@@ -55,8 +57,8 @@
 
 /* Profile management styling */
 .profile-management {
-  margin-bottom: 20px;
-  padding: 15px;
+  margin-bottom: var(--spacing-xl);
+  padding: var(--spacing-lg);
   background: rgba(255, 255, 255, 0.05);
   border-radius: 8px;
   border: 1px solid #555;
@@ -87,14 +89,14 @@
 }
 
 .profile-tab.active {
-  background: #ff6b35;
+  background: var(--color-accent-orange-bright);
   color: white;
-  border-color: #ff6b35;
+  border-color: var(--color-accent-orange-bright);
 }
 
 .profile-tab .remove-btn {
   margin-left: 8px;
-  background: #d32f2f;
+  background: var(--color-accent-red);
   color: white;
   border: none;
   border-radius: 3px;
@@ -108,7 +110,7 @@
 }
 
 .profile-tab .remove-btn:hover {
-  background: #b71c1c;
+  background: var(--color-accent-red-dark);
 }
 
 .profile-actions {
@@ -119,8 +121,8 @@
 
 /* Button styling */
 .cogitator-btn {
-  background: linear-gradient(135deg, #ff6b35 0%, #f7931e 50%, #ff6b35 100%);
-  border: 2px solid #ff8a50;
+  background: linear-gradient(135deg, var(--color-accent-orange-bright) 0%, var(--color-accent-orange-alt) 50%, var(--color-accent-orange-bright) 100%);
+  border: 2px solid var(--color-accent-orange-border);
   color: white;
   padding: 12px 24px;
   border-radius: 8px;
@@ -130,7 +132,7 @@
   transition: all 0.3s ease;
   text-transform: uppercase;
   letter-spacing: 1px;
-  box-shadow: 0 4px 15px rgba(255, 107, 53, 0.3);
+  box-shadow: 0 4px 15px rgba(var(--color-accent-orange-rgb), 0.3);
 }
 
 .add-profile-inline-button {
@@ -141,9 +143,9 @@
 }
 
 .cogitator-btn:hover {
-  background: linear-gradient(135deg, #f7931e 0%, #ff6b35 50%, #f7931e 100%);
+  background: linear-gradient(135deg, var(--color-accent-orange-alt) 0%, var(--color-accent-orange-bright) 50%, var(--color-accent-orange-alt) 100%);
   transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(255, 107, 53, 0.4);
+  box-shadow: 0 6px 20px rgba(var(--color-accent-orange-rgb), 0.4);
 }
 
 .cogitator-btn:active {
@@ -175,30 +177,30 @@
 .calculate-section {
   text-align: center;
   margin: 30px 0;
-  padding: 20px;
-  background: rgba(255, 107, 53, 0.1);
+  padding: var(--spacing-xl);
+  background: rgba(var(--color-accent-orange-rgb), 0.1);
   border-radius: 10px;
-  border: 1px solid #ff6b35;
+  border: 1px solid var(--color-accent-orange-bright);
 }
 
 .calculate-btn {
   font-size: 1.3em;
   padding: 15px 40px;
-  background: linear-gradient(135deg, #ff6b35 0%, #d32f2f 50%, #ff6b35 100%);
-  border: 3px solid #ff8a50;
-  box-shadow: 0 6px 25px rgba(255, 107, 53, 0.4);
+  background: linear-gradient(135deg, var(--color-accent-orange-bright) 0%, var(--color-accent-red) 50%, var(--color-accent-orange-bright) 100%);
+  border: 3px solid var(--color-accent-orange-border);
+  box-shadow: 0 6px 25px rgba(var(--color-accent-orange-rgb), 0.4);
 }
 
 .calculate-btn:hover {
-  background: linear-gradient(135deg, #d32f2f 0%, #ff6b35 50%, #d32f2f 100%);
+  background: linear-gradient(135deg, var(--color-accent-red) 0%, var(--color-accent-orange-bright) 50%, var(--color-accent-red) 100%);
   transform: translateY(-3px);
-  box-shadow: 0 8px 30px rgba(255, 107, 53, 0.5);
+  box-shadow: 0 8px 30px rgba(var(--color-accent-orange-rgb), 0.5);
 }
 
 /* Footer styling */
 .cogitator-footer {
   text-align: center;
-  padding: 20px;
+  padding: var(--spacing-xl);
   background: linear-gradient(90deg, #333 0%, #555 50%, #333 100%);
   border-radius: 10px;
   border: 1px solid #666;
@@ -213,7 +215,7 @@
 }
 
 .cogitator-footer .emperor-quote {
-  color: #ff6b35;
+  color: var(--color-accent-orange-bright);
   font-weight: bold;
   margin-top: 10px;
 }
