@@ -15,6 +15,7 @@ import { MatExpansionModule } from '@angular/material/expansion';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { ProfilePanelComponent } from '../profile-panel/profile-panel.component';
 
 describe('AttackerProfileComponent', () => {
   let component: AttackerProfileComponent;
@@ -40,6 +41,7 @@ describe('AttackerProfileComponent', () => {
         MatIconModule,
         MatButtonModule,
         MatTooltipModule,
+        ProfilePanelComponent,
         AttackerProfileComponent, // Importar el componente standalone
       ],
     }).compileComponents();
