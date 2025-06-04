@@ -27,7 +27,7 @@ $mathhammer-ng-theme: mat.m2-define-dark-theme((
     warn: $mathhammer-ng-warn,
   ),
   typography: mat.m2-define-typography-config(
-    $font-family: '"SF Pro Text", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif'
+    $font-family: '"SF Pro", "SF Pro Text", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif'
   ),
   density: 0
 ));
@@ -43,7 +43,7 @@ $mathhammer-ng-light-theme: mat.m2-define-light-theme((
     warn: $mathhammer-ng-warn,
   ),
   typography: mat.m2-define-typography-config(
-    $font-family: '"SF Pro Text", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif'
+    $font-family: '"SF Pro", "SF Pro Text", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif'
   ),
   density: 0
 ));
