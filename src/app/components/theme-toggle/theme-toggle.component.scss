@@ -1,3 +1,11 @@
 :host {
   display: inline-block;
 }
+
+mat-slide-toggle {
+  transition: transform 0.2s ease;
+}
+
+mat-slide-toggle:hover {
+  transform: scale(1.05);
+}
