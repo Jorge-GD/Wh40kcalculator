@@ -7,6 +7,14 @@ $mat-theme-ignore-duplication-warnings: true; // Keep for now, aim to remove if 
 @use './app/themes.scss' as themes;
 @use './app/styles/utilities.scss' as utilities;
 @use './app/styles/shared-components.scss' as shared;
+@use './styles/mixins.scss' as mixins;
+
+// Use Material Symbols Outlined for all mat-icon elements
+.mat-icon,
+mat-icon {
+  font-family: 'Material Symbols Outlined';
+  font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+}
 
 // Include the core styles for Angular Material only once.
 // This renders all common structural styles.
@@ -27,7 +35,7 @@ $mathhammer-ng-theme: mat.m2-define-dark-theme((
     warn: $mathhammer-ng-warn,
   ),
   typography: mat.m2-define-typography-config(
-    $font-family: '"SF Pro Text", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif'
+    $font-family: '"SF Pro", "SF Pro Text", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif'
   ),
   density: 0
 ));
@@ -43,7 +51,7 @@ $mathhammer-ng-light-theme: mat.m2-define-light-theme((
     warn: $mathhammer-ng-warn,
   ),
   typography: mat.m2-define-typography-config(
-    $font-family: '"SF Pro Text", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif'
+    $font-family: '"SF Pro", "SF Pro Text", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif'
   ),
   density: 0
 ));
@@ -53,8 +61,9 @@ $mathhammer-ng-light-theme: mat.m2-define-light-theme((
 // Apply the base (dark) theme globally.
 @include mat.all-component-themes($mathhammer-ng-theme);
 
-// Apply the light theme when .light-theme class is present.
-.light-theme {
+// Apply the light theme when .light-theme or .theme-imperium-light class is present.
+.light-theme,
+.theme-imperium-light {
   @include mat.all-component-themes($mathhammer-ng-light-theme);
 
   // Your existing light theme CSS variable overrides:
@@ -199,8 +208,9 @@ body {
   transition: background-color 0.3s ease, color 0.3s ease; // Smooth theme transition
 }
 
-// Styles for the light theme (ensure body selector is specific enough if .light-theme is on body)
-.light-theme body, .light-theme { // Ensure .light-theme on body also applies these
+// Styles for the light themes (ensure body selector is specific enough if the theme class is on body)
+.light-theme body, .light-theme,
+.theme-imperium-light body, .theme-imperium-light {
   background-color: var(--color-background-main) !important;
   color: var(--color-primary-text) !important;
 }
@@ -234,7 +244,8 @@ body {
   border: 1px solid var(--color-border-panel); // Use CSS variable
 }
 
-.light-theme .mat-mdc-card {
+.light-theme .mat-mdc-card,
+.theme-imperium-light .mat-mdc-card {
   background-color: var(--color-background-panel); // CSS variable from .light-theme scope
   color: var(--color-primary-text);
   border: 1px solid var(--color-border-panel);
@@ -683,7 +694,7 @@ body {
 
 // Ensure theme-specific overrides for Material components are applied correctly
 // These will apply the variables defined in themes.scss for each theme context
-.theme-imperium-dark, .theme-ork-rust, .theme-necrontyr-green {
+.theme-imperium-dark, .theme-ork-rust, .theme-necrontyr-green, .theme-imperium-light {
     // This block is intentionally left for future theme-specific structural overrides if needed.
     // Most styling is handled by CSS variables.
     // Adding a dummy rule to satisfy the linter for now if it complains about empty rulesets.
@@ -696,12 +707,13 @@ body {
 // The .input-field-font and button styles above are already doing this.
 
 // Final check on body styles for themes
-body.theme-imperium-dark, body.theme-ork-rust, body.theme-necrontyr-green {
+body.theme-imperium-dark, body.theme-ork-rust, body.theme-necrontyr-green, body.theme-imperium-light {
     background-color: var(--color-background-main);
     color: var(--color-primary-text);
 }
 
-body.light-theme {
+body.light-theme,
+body.theme-imperium-light {
     background-color: var(--color-background-main) !important; // Ensure override
     color: var(--color-primary-text) !important; // Ensure override
 }
@@ -739,7 +751,7 @@ body.light-theme {
 .main-title {
     font-family: var(--font-gothic); /* Ensure this variable is defined */
     color: var(--color-text-header-main); /* Ensure this variable is defined */
-    text-shadow: 1px 1px 0px #000, 2px 2px 3px var(--color-accent-red-dark), 0 0 10px var(--color-text-header-main);
+    text-shadow: 1px 1px 0px var(--color-black), 2px 2px 3px var(--color-accent-red-dark), 0 0 10px var(--color-text-header-main);
     font-size: 2.5rem; letter-spacing: 1.5px;
     margin-bottom: 0.25rem;
 }
@@ -766,7 +778,7 @@ body.light-theme {
     font-family: var(--font-gothic); color: var(--color-text-title);
     border-bottom: 2px solid var(--color-metal-interactive);
     padding-bottom: 0.6rem; margin-bottom: 1.25rem;
-    text-shadow: 1px 1px 2px #000;
+    text-shadow: 1px 1px 2px var(--color-black);
 }
 
 /* Input Fields, Labels, Tooltips - MEJORAR ESPACIADO Y ACCESIBILIDAD */
@@ -1088,30 +1100,29 @@ body.light-theme {
     justify-content: center; align-items: center; gap: 1rem;
     margin: 2rem auto 1.5rem auto; padding: 0 1rem; max-width: 600px;
 }
+
+@media (min-width: 600px) {
+    .action-buttons-container {
+        flex-direction: row;
+    }
+
+    .button-cogitator {
+        width: auto;
+    }
+}
 .button-cogitator {
     font-family: var(--font-gothic);
-    color: var(--color-text-header-main);
-    border: 2px solid var(--color-metal-panel-border);
-    padding: 0.85rem 1.75rem; border-radius: 4px;
-    text-transform: uppercase; letter-spacing: 1.5px;
-    font-size: 1.25rem; cursor: pointer; transition: all 0.2s ease-in-out;
-    box-shadow: 3px 3px 6px rgba(0,0,0,0.6), inset 0 0 0px rgba(255,255,255,0);
-    width: 100%; // sm:w-auto; (Tailwind class)
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    font-size: 1.25rem;
+    width: 100%; // sm:w-auto
+    @include shared.flat-button(var(--color-accent-red-dark), var(--color-text-parchment), 2px solid var(--color-metal-panel-border));
+    text-shadow: 1px 1px 1px var(--color-black);
 }
+
 .button-calculate {
-    background-color: var(--color-accent-red-dark);
-    border-color: var(--color-accent-red);
-    color: var(--color-text-parchment);
-    text-shadow: 1px 1px 1px #000;
-}
-.button-calculate:hover {
-    background-color: var(--color-accent-red); border-color: var(--color-text-title); color: #fff; // Consider variables for hover states too
-    box-shadow: 4px 6px 8px rgba(0,0,0,0.7), inset 1px 1px 3px rgba(0,0,0,0.2), 0 0 10px var(--color-accent-red);
-    transform: translateY(-2px);
-}
-.button-calculate:active {
-    background-color: var(--color-accent-red-dark); transform: translateY(1px);
-    box-shadow: inset 3px 3px 6px rgba(0,0,0,0.7);
+    @include shared.flat-button(var(--color-accent-red-dark), var(--color-text-parchment), 2px solid var(--color-accent-red));
+    text-shadow: 1px 1px 1px var(--color-black);
 }
 
 /* ===== MEJORAS ADICIONALES UX/UI ===== */
@@ -1315,7 +1326,7 @@ body.light-theme {
     }
     
     &.warning {
-        border-left: 4px solid var(--color-accent-orange, #ff9800);
+        border-left: 4px solid var(--color-accent-orange);
     }
 }
 

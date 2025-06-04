@@ -1,33 +1,28 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { ThemeService } from './services/theme.service';
-import { MatSelectModule } from '@angular/material/select';
-import { MatFormFieldModule } from '@angular/material/form-field';
+import { trigger, transition, style, animate } from '@angular/animations';
 import { CommonModule } from '@angular/common';
+import { HeaderComponent } from './components/header/header.component';
 
 @Component({
   selector: 'app-root',
   standalone: true, // Added standalone: true
-  imports: [RouterOutlet, MatSelectModule, MatFormFieldModule, CommonModule],
+  imports: [RouterOutlet, CommonModule, HeaderComponent],
+  animations: [
+    trigger('routeAnimations', [
+      transition('* <=> *', [
+        style({ opacity: 0 }),
+        animate('300ms ease', style({ opacity: 1 })),
+      ]),
+    ]),
+  ],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
 })
-export class AppComponent implements OnInit {
+export class AppComponent {
   title = 'mathhammer-ng';
-  availableThemes: { name: string; value: string }[] = [];
-  currentTheme: string = '';
 
-  constructor(private themeService: ThemeService) {}
-
-  ngOnInit(): void {
-    this.availableThemes = this.themeService.getAvailableThemes();
-    this.themeService.currentTheme$.subscribe((theme: string) => {
-      // Explicitly type theme
-      this.currentTheme = theme;
-    });
-  }
-
-  onThemeChange(themeValue: string): void {
-    this.themeService.setTheme(themeValue);
+  prepareRoute(outlet: RouterOutlet): string | null {
+    return outlet?.activatedRouteData?.['animation'] ?? null;
   }
 }

@@ -1,4 +1,9 @@
-<div class="results-panel" *ngIf="calculationResults.length > 0 || totalResults">
+<div
+  class="results-panel"
+  role="region"
+  aria-label="Resultados de combate"
+  aria-live="polite"
+  *ngIf="calculationResults.length > 0 || totalResults">
   <h2 class="section-title-font">PROYECCIÓN DE COMBATE</h2>
 
   <div *ngIf="calculationResults.length === 0 && !totalResults" class="results-text-font">
@@ -55,7 +60,12 @@
 
 </div>
 
-<div class="results-panel" *ngIf="calculationResults.length === 0 && !totalResults">
+<div
+  class="results-panel"
+  role="region"
+  aria-label="Resultados de combate"
+  aria-live="polite"
+  *ngIf="calculationResults.length === 0 && !totalResults">
     <h2 class="section-title-font">PROYECCIÓN DE COMBATE</h2>
     <div class="results-text-font u-font-md">
         SISTEMA INERTE. INGRESE DATOS Y ACTIVE EL COGITATOR...

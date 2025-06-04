@@ -23,6 +23,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
+import { MatRippleModule } from '@angular/material/core';
 import { FormsModule } from '@angular/forms';
 import { AttackerProfileComponent } from '../attacker-profile/attacker-profile.component';
 import { DefenderProfileComponent } from '../defender-profile/defender-profile.component';
@@ -39,6 +40,7 @@ import { Observable } from 'rxjs';
     MatIconModule,
     MatFormFieldModule,
     MatInputModule,
+    MatRippleModule,
     FormsModule,
     AttackerProfileComponent,
     DefenderProfileComponent,

@@ -6,20 +6,19 @@ import {
   PLATFORM_ID,
 } from '@angular/core';
 import { DOCUMENT, isPlatformBrowser } from '@angular/common';
-import { BehaviorSubject } from 'rxjs'; // Import BehaviorSubject
+import { BehaviorSubject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ThemeService {
   private renderer: Renderer2;
-  private currentThemeClassName: string = 'imperium-dark'; // Default theme
-  private readonly THEME_STORAGE_KEY = 'mathhammer-theme';
-
-  // Observable for the current theme
+  private currentThemeClassName = 'theme-imperium-dark';
   private currentThemeSubject = new BehaviorSubject<string>(
     this.currentThemeClassName
   );
+  private readonly THEME_STORAGE_KEY = 'selected-theme';
+
   public currentTheme$ = this.currentThemeSubject.asObservable();
 
   public readonly availableThemes: { name: string; value: string }[] = [
@@ -27,6 +26,7 @@ export class ThemeService {
     { name: 'Ork Rust', value: 'theme-ork-rust' },
     { name: 'Necrontyr Green', value: 'theme-necrontyr-green' },
     { name: 'Light Theme', value: 'light-theme' },
+    { name: 'Imperium Light', value: 'theme-imperium-light' },
   ];
 
   constructor(
@@ -35,10 +35,6 @@ export class ThemeService {
     @Inject(PLATFORM_ID) private platformId: object
   ) {
     this.renderer = this.rendererFactory.createRenderer(null, null);
-    this.loadTheme();
-  }
-
-  private loadTheme(): void {
     if (isPlatformBrowser(this.platformId)) {
       const storedTheme = localStorage.getItem(this.THEME_STORAGE_KEY);
       if (
@@ -47,10 +43,10 @@ export class ThemeService {
       ) {
         this.setThemeInternal(storedTheme, false);
       } else {
-        this.setThemeInternal(this.currentThemeClassName); // Apply default
+        this.setThemeInternal(this.currentThemeClassName);
       }
     } else {
-      this.applyThemeClass(this.currentThemeClassName); // Apply default for SSR
+      this.applyThemeClass(this.currentThemeClassName);
     }
   }
 
@@ -60,47 +56,35 @@ export class ThemeService {
   ): void {
     const oldTheme = this.currentThemeClassName;
     this.currentThemeClassName = themeClassName;
-    this.currentThemeSubject.next(themeClassName); // Notify subscribers
+    this.currentThemeSubject.next(themeClassName);
 
     if (isPlatformBrowser(this.platformId)) {
-      if (savePreference) {
-        localStorage.setItem(this.THEME_STORAGE_KEY, themeClassName);
-      }
       if (oldTheme) {
         this.renderer.removeClass(this.document.body, oldTheme);
       }
       this.renderer.addClass(this.document.body, themeClassName);
+
+      if (savePreference) {
+        localStorage.setItem(this.THEME_STORAGE_KEY, themeClassName);
+      }
     } else {
       this.applyThemeClass(themeClassName);
     }
   }
 
-  setTheme(themeClassName: string): void {
-    this.setThemeInternal(themeClassName, true);
-  }
-
   private applyThemeClass(themeClassName: string): void {
-    if (!this.document.body.classList.contains(themeClassName)) {
-      this.availableThemes.forEach((theme) => {
-        if (theme.value !== themeClassName) {
-          this.renderer.removeClass(this.document.body, theme.value);
-        }
-      });
-      this.renderer.addClass(this.document.body, themeClassName);
-    }
+    this.renderer.addClass(this.document.body, themeClassName);
   }
 
-  getCurrentTheme(): string {
+  public setTheme(themeClassName: string): void {
+    this.setThemeInternal(themeClassName);
+  }
+
+  public getCurrentTheme(): string {
     return this.currentThemeClassName;
   }
 
-  getAvailableThemes(): { name: string; value: string }[] {
+  public getAvailableThemes(): { name: string; value: string }[] {
     return this.availableThemes;
-  }
-
-  getThemeByClassName(
-    className: string
-  ): { name: string; value: string } | undefined {
-    return this.availableThemes.find((t) => t.value === className);
   }
 }

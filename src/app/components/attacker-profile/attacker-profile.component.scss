@@ -123,7 +123,7 @@
   display: block; // Ensures the component takes up block space
 }
 
-.attacker-profile-card {
+.profile-card {
   @include mat.elevation(2); // Standard Material card elevation
   margin-bottom: 20px; // Space below the card
   transition: box-shadow 0.3s ease-in-out;
