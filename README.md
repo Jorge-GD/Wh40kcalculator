@@ -44,6 +44,21 @@ To execute unit tests with the [Karma](https://karma-runner.github.io) test runn
 ng test
 ```
 
+### Linting and formatting
+
+Code quality is enforced with ESLint and Prettier. Check for lint issues with:
+
+```bash
+npm run lint
+```
+
+Automatically fix problems and format all files using:
+
+```bash
+npm run lint:fix
+npm run format
+```
+
 ## Project Structure
 
 - `src/app/components/` - Angular components for UI
