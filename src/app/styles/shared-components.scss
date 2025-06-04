@@ -237,6 +237,34 @@
   }
 }
 
+// Flat button mixin for a simple design with hover and active feedback
+@mixin flat-button($bg, $text: var(--color-white), $border: 1px solid transparent) {
+  background-color: $bg;
+  color: $text;
+  border: $border;
+  border-radius: var(--border-radius-md);
+  padding: var(--spacing-sm) var(--spacing-lg);
+  cursor: pointer;
+  transition: filter 0.2s ease, transform 0.1s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  &:hover:not(:disabled) {
+    filter: brightness(1.05);
+  }
+
+  &:active:not(:disabled) {
+    filter: brightness(0.95);
+    transform: translateY(1px);
+  }
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+}
+
 // Apply the styles directly in the global stylesheet
 .section-title-font {
   @include section-title;
