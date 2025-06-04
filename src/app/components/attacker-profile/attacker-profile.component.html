@@ -444,7 +444,7 @@
                        'neutral': profileData.shootingModifier?.value === 0,
                        'negative': profileData.shootingModifier?.value === -1
                      }">
-                  {{ profileData.shootingModifier?.value > 0 ? '+' : '' }}{{ profileData.shootingModifier?.value || '0' }}
+                  {{ (profileData.shootingModifier?.value ?? 0) > 0 ? '+' : '' }}{{ profileData.shootingModifier?.value ?? 0 }}
                 </div>
               </mat-card-content>
             </mat-card>            <!-- Torrent Protocol Card -->

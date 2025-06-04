@@ -45,8 +45,8 @@ export class CalculationService {
     }
     
     // Formato DX+Y o DX-Y (ej: D6+1)
-    if (diceString.match(/^D\d+[\+\-]\d+$/)) {
-      const match = diceString.match(/D(\d+)([\+\-])(\d+)/);
+    if (diceString.match(/^D\d+[+-]\d+$/)) {
+      const match = diceString.match(/D(\d+)([+-])(\d+)/);
       if (match) {
         const numSides = parseInt(match[1]);
         const operator = match[2];
@@ -57,8 +57,8 @@ export class CalculationService {
     }
     
     // Formato XDXY+Z o XDY-Z (ej: 2D6+1)
-    if (diceString.match(/^\d+D\d+[\+\-]\d+$/)) {
-      const match = diceString.match(/(\d+)D(\d+)([\+\-])(\d+)/);
+    if (diceString.match(/^\d+D\d+[+-]\d+$/)) {
+      const match = diceString.match(/(\d+)D(\d+)([+-])(\d+)/);
       if (match) {
         const numDice = parseInt(match[1]);
         const numSides = parseInt(match[2]);
