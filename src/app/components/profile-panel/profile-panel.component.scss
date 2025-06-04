@@ -1,0 +1,5 @@
+@use '../../styles/_mixins' as mixins;
+
+.panel-container {
+  @include mixins.collapsible-panel(1000px, 0.3s);
+}

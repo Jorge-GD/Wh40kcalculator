@@ -12,6 +12,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { ProfilePanelComponent } from '../profile-panel/profile-panel.component';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { of } from 'rxjs';
 
@@ -35,6 +36,7 @@ describe('DefenderProfileComponent', () => {
         MatSlideToggleModule,
         MatExpansionModule,
         MatTooltipModule,
+        ProfilePanelComponent,
         DefenderProfileComponent, // Import standalone component
       ],
       providers: [

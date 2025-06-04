@@ -23,6 +23,7 @@ import { MatChipsModule } from '@angular/material/chips';
 import { MatTabsModule } from '@angular/material/tabs'; // Provides tab functionality
 import { MatMenuModule, MatMenuTrigger } from '@angular/material/menu'; // Menu support
 import { ThemeService } from '../../services/theme.service';
+import { ProfilePanelComponent } from '../profile-panel/profile-panel.component';
 
 @Component({
   selector: 'app-defender-profile',
@@ -42,6 +43,7 @@ import { ThemeService } from '../../services/theme.service';
     MatChipsModule,
     MatTabsModule, // Provides tab functionality
     MatMenuModule, // Menu support
+    ProfilePanelComponent,
   ],
   templateUrl: './defender-profile.component.html',
   styleUrls: ['./defender-profile.component.scss'],
