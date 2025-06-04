@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, OnDestroy, ChangeDetectorRef, HostListener } from '@angular/core';
 import { AttackerProfileService } from '../../services/attacker-profile.service';
 import { DefenderProfileService } from '../../services/defender-profile.service';
 import { CalculationService } from '../../services/calculation.service';
@@ -51,6 +51,23 @@ export class CalculatorComponent implements OnInit, OnDestroy {
   rippleAnimation = { enterDuration: 250, exitDuration: 150 };
 
   private ngUnsubscribe = new Subject<void>();
+
+  @HostListener('window:keydown', ['$event'])
+  handleKeyboardShortcuts(event: KeyboardEvent): void {
+    if (event.metaKey) {
+      const key = event.key.toLowerCase();
+      if (key === 'a' && event.shiftKey) {
+        event.preventDefault();
+        this.addAttackerProfile();
+      } else if (key === 'd' && event.shiftKey) {
+        event.preventDefault();
+        this.addDefenderProfile();
+      } else if (key === 'enter') {
+        event.preventDefault();
+        this.calculate();
+      }
+    }
+  }
 
   constructor(
     public attackerProfileService: AttackerProfileService,
