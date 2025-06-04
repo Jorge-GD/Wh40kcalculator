@@ -1,1317 +1,1334 @@
-<mat-card class="profile-card" [ngClass]="currentTheme">
-  <!-- Toolbar for Profile Actions, Name, and Attacks Display -->
-  <mat-toolbar class="attacker-profile-toolbar">
-    <!-- Profile Name Display (Clickable to Edit) / Input Field -->
-    <div class="toolbar-section profile-name-container">
-      <h3
-        class="profile-name-text u-margin-none u-text-truncate"
-        *ngIf="!isEditingName"
-        (click)="startEditingName()"
-        matTooltip="Editar nombre del perfil"
-        tabindex="0"
-        (keydown.enter)="startEditingName()"
-      >
-        {{ profile.name }}
-      </h3>
-      <mat-form-field
-        appearance="fill"
-        class="profile-name-input"
-        *ngIf="isEditingName"
-        subscriptSizing="dynamic"
-      >
-        <mat-label>Nombre del perfil</mat-label>
-        <input
-          matInput
-          [value]="profile.name"
-          (input)="updateProfileName($event)"
-          (blur)="stopEditingName()"
-          (keydown.enter)="stopEditingName()"
-          placeholder="Nombre del perfil"
-          autofocus
-        />
-      </mat-form-field>
-    </div>
+<app-profile-panel>
+  <mat-card class="profile-card" [ngClass]="currentTheme">
+    <!-- Toolbar for Profile Actions, Name, and Attacks Display -->
+    <mat-toolbar class="attacker-profile-toolbar">
+      <!-- Profile Name Display (Clickable to Edit) / Input Field -->
+      <div class="toolbar-section profile-name-container">
+        <h3
+          class="profile-name-text u-margin-none u-text-truncate"
+          *ngIf="!isEditingName"
+          (click)="startEditingName()"
+          matTooltip="Editar nombre del perfil"
+          tabindex="0"
+          (keydown.enter)="startEditingName()"
+        >
+          {{ profile.name }}
+        </h3>
+        <mat-form-field
+          appearance="fill"
+          class="profile-name-input"
+          *ngIf="isEditingName"
+          subscriptSizing="dynamic"
+        >
+          <mat-label>Nombre del perfil</mat-label>
+          <input
+            matInput
+            [value]="profile.name"
+            (input)="updateProfileName($event)"
+            (blur)="stopEditingName()"
+            (keydown.enter)="stopEditingName()"
+            placeholder="Nombre del perfil"
+            autofocus
+          />
+        </mat-form-field>
+      </div>
 
-    <!-- Spacer to push subsequent items to the right -->
-    <span class="toolbar-spacer"></span>
+      <!-- Spacer to push subsequent items to the right -->
+      <span class="toolbar-spacer"></span>
 
-    <!-- Action Buttons: Edit, Duplicate, Delete -->
-    <div class="toolbar-section profile-actions">
-      <button
-        mat-icon-button
-        (click)="startEditingName()"
-        matTooltip="Editar nombre del perfil"
-        class="action-button edit-button"
-        *ngIf="!isEditingName"
-      >
-        <mat-icon>edit</mat-icon>
-      </button>
-      <button
-        mat-icon-button
-        (click)="onDuplicateProfile()"
-        matTooltip="Duplicar Perfil"
-        class="action-button duplicate-button"
-      >
-        <mat-icon>content_copy</mat-icon>
-      </button>
-      <button
-        mat-icon-button
-        (click)="onRemoveProfile()"
-        [disabled]="isOnlyProfile"
-        matTooltip="Eliminar Perfil"
-        class="action-button remove-button"
-      >
-        <mat-icon>delete</mat-icon>
-      </button>
-    </div>
-  </mat-toolbar>
+      <!-- Action Buttons: Edit, Duplicate, Delete -->
+      <div class="toolbar-section profile-actions">
+        <button
+          mat-icon-button
+          (click)="startEditingName()"
+          matTooltip="Editar nombre del perfil"
+          class="action-button edit-button"
+          *ngIf="!isEditingName"
+        >
+          <mat-icon>edit</mat-icon>
+        </button>
+        <button
+          mat-icon-button
+          (click)="onDuplicateProfile()"
+          matTooltip="Duplicar Perfil"
+          class="action-button duplicate-button"
+        >
+          <mat-icon>content_copy</mat-icon>
+        </button>
+        <button
+          mat-icon-button
+          (click)="onRemoveProfile()"
+          [disabled]="isOnlyProfile"
+          matTooltip="Eliminar Perfil"
+          class="action-button remove-button"
+        >
+          <mat-icon>delete</mat-icon>
+        </button>
+      </div>
+    </mat-toolbar>
 
-  <!-- Main Content: Hierarchical Tab Structure by Combat Phase -->
-  <mat-card-content class="attacker-profile-content">
-    <mat-tab-group class="attacker-tabs" animationDuration="300ms">
-      <!-- Tab 1: Estadísticas Base -->
-      <mat-tab>
-        <ng-template mat-tab-label>
-          <mat-icon class="tab-icon">casino</mat-icon>
-          <span class="tab-label-text">Estadísticas Base</span>
-        </ng-template>
-        <div class="tab-content u-padding-top-lg">
-          <div class="tab-header u-margin-bottom-lg">
-            <h3 class="tab-title">Estadísticas Base del Perfil</h3>
-            <p class="tab-description u-text-muted">
-              Configura las características fundamentales del arma o unidad.
-            </p>
-          </div>
-
-          <!-- Base Stats Grid: Stat Cards -->
-          <div
-            class="base-stats-grid u-display-grid u-grid-cols-responsive u-gap-lg u-padding-sm u-margin-bottom-xl"
-          >
-            <!-- Nº ATAQUES Card -->
-            <mat-card
-              class="stat-card-icon-display"
-              [matMenuTriggerFor]="attacksMenu"
-              #attacksMenuTrigger="matMenuTrigger"
-              tabindex="0"
-              (click)="attacksMenuTrigger.openMenu()"
-              (keydown.enter)="
-                $event.preventDefault(); attacksMenuTrigger.openMenu()
-              "
-              matTooltip="Editar Nº Ataques"
-              aria-label="Editar Número de Ataques"
-            >
-              <div
-                class="stat-card-header-content u-text-align-center u-padding-sm"
-              >
-                <mat-icon class="stat-card-icon u-margin-bottom-xs"
-                  >casino</mat-icon
-                >
-                <div class="stat-card-title u-font-sm">Nº ATAQUES</div>
-              </div>
-              <mat-card-content class="u-text-align-center u-padding-bottom-sm">
-                <span class="stat-card-value u-font-lg">{{
-                  profileData.attacks || 'N/A'
-                }}</span>
-              </mat-card-content>
-            </mat-card>
-            <mat-menu #attacksMenu="matMenu">
-              <div
-                class="edit-stat-popover u-padding-md"
-                (click)="$event.stopPropagation()"
-              >
-                <mat-form-field appearance="outline" class="u-width-full">
-                  <mat-label>Nº ATAQUES</mat-label>
-                  <input
-                    matInput
-                    type="text"
-                    [(ngModel)]="profileData.attacks"
-                    (ngModelChange)="onProfileDataChange()"
-                    (keydown)="filterNumericDiceInput($event)"
-                    (keydown.enter)="handleInputEnterKey(attacksMenuTrigger)"
-                    placeholder="Ej: 6, D6, 2D3"
-                    appAutofocus
-                  />
-                  <mat-icon
-                    matSuffix
-                    matTooltip="Número total de dados que lanza esta arma/unidad para impactar."
-                    class="tooltip-icon"
-                    >help_outline</mat-icon
-                  >
-                </mat-form-field>
-              </div>
-            </mat-menu>
-
-            <!-- HABILIDAD Card -->
-            <mat-card
-              class="stat-card-icon-display"
-              [matMenuTriggerFor]="skillMenu"
-              #skillMenuTrigger="matMenuTrigger"
-              tabindex="0"
-              (click)="skillMenuTrigger.openMenu()"
-              (keydown.enter)="
-                $event.preventDefault(); skillMenuTrigger.openMenu()
-              "
-              matTooltip="Editar Habilidad"
-              aria-label="Editar Habilidad"
-            >
-              <div
-                class="stat-card-header-content u-text-align-center u-padding-sm"
-              >
-                <mat-icon class="stat-card-icon u-margin-bottom-xs"
-                  >ads_click</mat-icon
-                >
-                <div class="stat-card-title u-font-sm">HAB. (X+)</div>
-              </div>
-              <mat-card-content class="u-text-align-center u-padding-bottom-sm">
-                <span class="stat-card-value u-font-lg">{{
-                  profileData.skill || 'N/A'
-                }}</span>
-              </mat-card-content>
-            </mat-card>
-            <mat-menu #skillMenu="matMenu">
-              <div
-                class="edit-stat-popover u-padding-md"
-                (click)="$event.stopPropagation()"
-              >
-                <mat-form-field appearance="outline" class="u-width-full">
-                  <mat-label>HAB. (X+)</mat-label>
-                  <input
-                    matInput
-                    type="number"
-                    [(ngModel)]="profileData.skill"
-                    (ngModelChange)="onProfileDataChange()"
-                    min="2"
-                    max="6"
-                    (keydown.enter)="handleInputEnterKey(skillMenuTrigger)"
-                    placeholder="Ej: 3"
-                    appAutofocus
-                  />
-                  <mat-icon
-                    matSuffix
-                    matTooltip="El resultado necesario en un D6 para impactar."
-                    class="tooltip-icon"
-                    >help_outline</mat-icon
-                  >
-                </mat-form-field>
-              </div>
-            </mat-menu>
-
-            <!-- FUERZA Card -->
-            <mat-card
-              class="stat-card-icon-display"
-              [matMenuTriggerFor]="strengthMenu"
-              #strengthMenuTrigger="matMenuTrigger"
-              tabindex="0"
-              (click)="strengthMenuTrigger.openMenu()"
-              (keydown.enter)="
-                $event.preventDefault(); strengthMenuTrigger.openMenu()
-              "
-              matTooltip="Editar Fuerza"
-              aria-label="Editar Fuerza"
-            >
-              <div
-                class="stat-card-header-content u-text-align-center u-padding-sm"
-              >
-                <mat-icon class="stat-card-icon u-margin-bottom-xs"
-                  >fitness_center</mat-icon
-                >
-                <div class="stat-card-title u-font-sm">FZA (F)</div>
-              </div>
-              <mat-card-content class="u-text-align-center u-padding-bottom-sm">
-                <span class="stat-card-value u-font-lg">{{
-                  profileData.strength || 'N/A'
-                }}</span>
-              </mat-card-content>
-            </mat-card>
-            <mat-menu #strengthMenu="matMenu">
-              <div
-                class="edit-stat-popover u-padding-md"
-                (click)="$event.stopPropagation()"
-              >
-                <mat-form-field appearance="outline" class="u-width-full">
-                  <mat-label>FZA (F)</mat-label>
-                  <input
-                    matInput
-                    type="number"
-                    [(ngModel)]="profileData.strength"
-                    (ngModelChange)="onProfileDataChange()"
-                    min="1"
-                    (keydown.enter)="handleInputEnterKey(strengthMenuTrigger)"
-                    placeholder="Ej: 4"
-                    appAutofocus
-                  />
-                  <mat-icon
-                    matSuffix
-                    matTooltip="La Fuerza del ataque."
-                    class="tooltip-icon"
-                    >help_outline</mat-icon
-                  >
-                </mat-form-field>
-              </div>
-            </mat-menu>
-
-            <!-- PA Card -->
-            <mat-card
-              class="stat-card-icon-display"
-              [matMenuTriggerFor]="apMenu"
-              #apMenuTrigger="matMenuTrigger"
-              tabindex="0"
-              (click)="apMenuTrigger.openMenu()"
-              (keydown.enter)="
-                $event.preventDefault(); apMenuTrigger.openMenu()
-              "
-              matTooltip="Editar PA"
-              aria-label="Editar Penetración de Armadura"
-            >
-              <div
-                class="stat-card-header-content u-text-align-center u-padding-sm"
-              >
-                <mat-icon class="stat-card-icon u-margin-bottom-xs"
-                  >shield</mat-icon
-                >
-                <div class="stat-card-title u-font-sm">PA</div>
-              </div>
-              <mat-card-content class="u-text-align-center u-padding-bottom-sm">
-                <span class="stat-card-value u-font-lg">{{
-                  profileData.ap || 'N/A'
-                }}</span>
-              </mat-card-content>
-            </mat-card>
-            <mat-menu #apMenu="matMenu">
-              <div
-                class="edit-stat-popover u-padding-md"
-                (click)="$event.stopPropagation()"
-              >
-                <mat-form-field appearance="outline" class="u-width-full">
-                  <mat-label>PA</mat-label>
-                  <input
-                    matInput
-                    type="number"
-                    [(ngModel)]="profileData.ap"
-                    (ngModelChange)="onProfileDataChange()"
-                    min="0"
-                    (keydown.enter)="handleInputEnterKey(apMenuTrigger)"
-                    placeholder="Ej: 1, 2"
-                    appAutofocus
-                  />
-                  <mat-icon
-                    matSuffix
-                    matTooltip="Penetración de Armadura. Reduce la salvación del objetivo."
-                    class="tooltip-icon"
-                    >help_outline</mat-icon
-                  >
-                </mat-form-field>
-              </div>
-            </mat-menu>
-
-            <!-- DAÑO Card -->
-            <mat-card
-              class="stat-card-icon-display"
-              [matMenuTriggerFor]="damageMenu"
-              #damageMenuTrigger="matMenuTrigger"
-              tabindex="0"
-              (click)="damageMenuTrigger.openMenu()"
-              (keydown.enter)="
-                $event.preventDefault(); damageMenuTrigger.openMenu()
-              "
-              matTooltip="Editar Daño"
-              aria-label="Editar Daño"
-            >
-              <div
-                class="stat-card-header-content u-text-align-center u-padding-sm"
-              >
-                <mat-icon class="stat-card-icon u-margin-bottom-xs"
-                  >whatshot</mat-icon
-                >
-                <div class="stat-card-title u-font-sm">DAÑO (D)</div>
-              </div>
-              <mat-card-content class="u-text-align-center u-padding-bottom-sm">
-                <span class="stat-card-value u-font-lg">{{
-                  profileData.damage || 'N/A'
-                }}</span>
-              </mat-card-content>
-            </mat-card>
-            <mat-menu #damageMenu="matMenu">
-              <div
-                class="edit-stat-popover u-padding-md"
-                (click)="$event.stopPropagation()"
-              >
-                <mat-form-field appearance="outline" class="u-width-full">
-                  <mat-label>DAÑO (D)</mat-label>
-                  <input
-                    matInput
-                    type="text"
-                    [(ngModel)]="profileData.damage"
-                    (ngModelChange)="onProfileDataChange()"
-                    (keydown)="filterNumericDiceInput($event)"
-                    (keydown.enter)="handleInputEnterKey(damageMenuTrigger)"
-                    placeholder="Ej: 3, D3, D6+1"
-                    appAutofocus
-                  />
-                  <mat-icon
-                    matSuffix
-                    matTooltip="FORMATO: '3', 'D6', '2D3', 'D3+1'."
-                    class="tooltip-icon"
-                    >help_outline</mat-icon
-                  >
-                </mat-form-field>
-              </div>
-            </mat-menu>
-          </div>
-
-          <!-- Enhanced Active Protocols Summary -->
-          <div class="active-protocols-summary u-padding-lg u-margin-bottom-md">
-            <div class="summary-header u-margin-bottom-md">
-              <h4
-                class="summary-title u-display-flex u-align-items-center u-margin-bottom-xs"
-              >
-                <mat-icon class="u-margin-right-xs">list_alt</mat-icon>
-                Resumen de Protocolos Activos
-              </h4>
-              <p class="summary-subtitle u-text-muted u-font-sm">
-                Configurados en las siguientes pestañas
+    <!-- Main Content: Hierarchical Tab Structure by Combat Phase -->
+    <mat-card-content class="attacker-profile-content">
+      <mat-tab-group class="attacker-tabs" animationDuration="300ms">
+        <!-- Tab 1: Estadísticas Base -->
+        <mat-tab>
+          <ng-template mat-tab-label>
+            <mat-icon class="tab-icon">casino</mat-icon>
+            <span class="tab-label-text">Estadísticas Base</span>
+          </ng-template>
+          <div class="tab-content u-padding-top-lg">
+            <div class="tab-header u-margin-bottom-lg">
+              <h3 class="tab-title">Estadísticas Base del Perfil</h3>
+              <p class="tab-description u-text-muted">
+                Configura las características fundamentales del arma o unidad.
               </p>
             </div>
 
+            <!-- Base Stats Grid: Stat Cards -->
             <div
-              *ngIf="
-                activeHitProtocolsSummary.length === 0 &&
-                activeWoundProtocolsSummary.length === 0 &&
-                activeDamageProtocolsSummary.length === 0
-              "
-              class="no-active-protocols-message u-text-align-center u-padding-lg"
+              class="base-stats-grid u-display-grid u-grid-cols-responsive u-gap-lg u-padding-sm u-margin-bottom-xl"
             >
-              <mat-icon class="u-margin-bottom-sm u-text-muted"
-                >info_outline</mat-icon
+              <!-- Nº ATAQUES Card -->
+              <mat-card
+                class="stat-card-icon-display"
+                [matMenuTriggerFor]="attacksMenu"
+                #attacksMenuTrigger="matMenuTrigger"
+                tabindex="0"
+                (click)="attacksMenuTrigger.openMenu()"
+                (keydown.enter)="
+                  $event.preventDefault(); attacksMenuTrigger.openMenu()
+                "
+                matTooltip="Editar Nº Ataques"
+                aria-label="Editar Número de Ataques"
               >
-              <p class="u-text-muted">
-                Ningún protocolo avanzado activo. Usa las pestañas siguientes
-                para configurar modificadores.
-              </p>
-            </div>
-
-            <!-- Hit Protocols -->
-            <div
-              *ngIf="activeHitProtocolsSummary.length > 0"
-              class="protocol-category u-margin-bottom-sm"
-            >
-              <h5
-                class="category-title u-display-flex u-align-items-center u-margin-bottom-xs"
-              >
-                <mat-icon class="category-icon u-margin-right-xs"
-                  >gps_fixed</mat-icon
-                >
-                Protocolos de Impacto:
-              </h5>
-              <mat-chip-listbox
-                aria-label="Protocolos de impacto activos"
-                class="protocol-chips"
-              >
-                <mat-chip
-                  *ngFor="let summary of activeHitProtocolsSummary"
-                  class="summary-chip hit-chip"
-                  selectable="false"
-                  [matTooltip]="summary"
-                >
-                  <mat-icon matChipAvatar>gps_fixed</mat-icon>
-                  {{ summary }}
-                </mat-chip>
-              </mat-chip-listbox>
-            </div>
-
-            <!-- Wound Protocols -->
-            <div
-              *ngIf="activeWoundProtocolsSummary.length > 0"
-              class="protocol-category u-margin-bottom-sm"
-            >
-              <h5
-                class="category-title u-display-flex u-align-items-center u-margin-bottom-xs"
-              >
-                <mat-icon class="category-icon u-margin-right-xs"
-                  >healing</mat-icon
-                >
-                Protocolos de Herida:
-              </h5>
-              <mat-chip-listbox
-                aria-label="Protocolos de herida activos"
-                class="protocol-chips"
-              >
-                <mat-chip
-                  *ngFor="let summary of activeWoundProtocolsSummary"
-                  class="summary-chip wound-chip"
-                  selectable="false"
-                  [matTooltip]="summary"
-                >
-                  <mat-icon matChipAvatar>healing</mat-icon>
-                  {{ summary }}
-                </mat-chip>
-              </mat-chip-listbox>
-            </div>
-
-            <!-- Damage Protocols -->
-            <div
-              *ngIf="activeDamageProtocolsSummary.length > 0"
-              class="protocol-category"
-            >
-              <h5
-                class="category-title u-display-flex u-align-items-center u-margin-bottom-xs"
-              >
-                <mat-icon class="category-icon u-margin-right-xs"
-                  >bolt</mat-icon
-                >
-                Habilidades Especiales:
-              </h5>
-              <mat-chip-listbox
-                aria-label="Protocolos de daño activos"
-                class="protocol-chips"
-              >
-                <mat-chip
-                  *ngFor="let summary of activeDamageProtocolsSummary"
-                  class="summary-chip damage-chip"
-                  selectable="false"
-                  [matTooltip]="summary"
-                >
-                  <mat-icon matChipAvatar>bolt</mat-icon>
-                  {{ summary }}
-                </mat-chip>
-              </mat-chip-listbox>
-            </div>
-          </div>
-        </div>
-      </mat-tab>
-
-      <!-- Tab 2: Modificadores de Disparo -->
-      <mat-tab>
-        <ng-template mat-tab-label>
-          <mat-icon class="tab-icon">gps_fixed</mat-icon>
-          <span class="tab-label-text">Modificadores de Disparo</span>
-        </ng-template>
-        <div class="tab-content u-padding-top-lg">
-          <div class="tab-header u-margin-bottom-lg">
-            <h3 class="tab-title">Protocolos de Impacto</h3>
-            <p class="tab-description u-text-muted">
-              Configura las reglas que afectan las tiradas para impactar durante
-              la fase de disparo.
-            </p>
-          </div>
-
-          <!-- Hit Protocols Grid -->
-          <div
-            class="protocols-grid u-display-grid u-grid-cols-responsive u-gap-lg u-padding-sm"
-          >
-            <!-- Hit Rerolls Protocol Card -->
-            <mat-card class="protocol-card">
-              <mat-card-header>
-                <mat-card-title
-                  class="protocol-card-title u-display-flex u-align-items-center"
-                >
-                  <mat-icon class="protocol-icon u-margin-right-sm"
-                    >refresh</mat-icon
-                  >
-                  Repetir Tiradas para Impactar
-                </mat-card-title>
-              </mat-card-header>
-              <mat-card-content>
-                <p
-                  class="protocol-description u-text-muted u-font-sm u-margin-bottom-md"
-                >
-                  Permite repetir tiradas fallidas para impactar según el tipo
-                  seleccionado.
-                </p>
-                <div class="custom-input-container">
-                  <label class="custom-input-label"
-                    >REPETIR TIRADAS PARA IMPACTAR</label
-                  >
-                  <div class="custom-input-wrapper">
-                    <select
-                      class="custom-select"
-                      [(ngModel)]="profileData.hitRerollType"
-                      (ngModelChange)="onProfileDataChange()"
-                      (focus)="onFocusField('hitRerollType')"
-                    >
-                      <option value="none">NINGUNA</option>
-                      <option value="ones">SOLO 1S</option>
-                      <option value="all">TODOS LOS FALLOS</option>
-                    </select>
-                    <mat-icon
-                      class="custom-help-icon"
-                      matTooltip="Permite repetir tiradas fallidas para impactar."
-                      >help_outline</mat-icon
-                    >
-                  </div>
-                </div>
-              </mat-card-content>
-            </mat-card>
-            <!-- Critical Hit Modifier Protocol Card -->
-            <mat-card
-              class="protocol-card"
-              [ngClass]="{
-                active: profileData.critHitMod?.active,
-                inactive: !profileData.critHitMod?.active,
-                'needs-config': profileData.critHitMod?.active,
-              }"
-              (click)="toggleProtocol('critHitMod')"
-              tabindex="0"
-              (keydown.enter)="toggleProtocol('critHitMod')"
-              matTooltip="Click para activar/desactivar"
-            >
-              <mat-card-header>
-                <mat-card-title
-                  class="protocol-card-title u-display-flex u-align-items-center"
-                >
-                  <mat-icon class="protocol-icon u-margin-right-sm"
-                    >star</mat-icon
-                  >
-                  Modificar Umbral Crítico
-                </mat-card-title>
-              </mat-card-header>
-              <mat-card-content>
-                <p
-                  class="protocol-description u-text-muted u-font-sm u-margin-bottom-md"
-                >
-                  Modifica el umbral para conseguir impactos críticos
-                  (normalmente 6+).
-                </p>
-                <!-- Configuration inputs shown when active -->
                 <div
-                  *ngIf="profileData.critHitMod?.active"
-                  class="custom-input-container"
+                  class="stat-card-header-content u-text-align-center u-padding-sm"
+                >
+                  <mat-icon class="stat-card-icon u-margin-bottom-xs"
+                    >casino</mat-icon
+                  >
+                  <div class="stat-card-title u-font-sm">Nº ATAQUES</div>
+                </div>
+                <mat-card-content
+                  class="u-text-align-center u-padding-bottom-sm"
+                >
+                  <span class="stat-card-value u-font-lg">{{
+                    profileData.attacks || 'N/A'
+                  }}</span>
+                </mat-card-content>
+              </mat-card>
+              <mat-menu #attacksMenu="matMenu">
+                <div
+                  class="edit-stat-popover u-padding-md"
                   (click)="$event.stopPropagation()"
                 >
-                  <label class="custom-input-label">NUEVO UMBRAL (X+)</label>
-                  <div class="custom-input-wrapper">
+                  <mat-form-field appearance="outline" class="u-width-full">
+                    <mat-label>Nº ATAQUES</mat-label>
                     <input
+                      matInput
+                      type="text"
+                      [(ngModel)]="profileData.attacks"
+                      (ngModelChange)="onProfileDataChange()"
+                      (keydown)="filterNumericDiceInput($event)"
+                      (keydown.enter)="handleInputEnterKey(attacksMenuTrigger)"
+                      placeholder="Ej: 6, D6, 2D3"
+                      appAutofocus
+                    />
+                    <mat-icon
+                      matSuffix
+                      matTooltip="Número total de dados que lanza esta arma/unidad para impactar."
+                      class="tooltip-icon"
+                      >help_outline</mat-icon
+                    >
+                  </mat-form-field>
+                </div>
+              </mat-menu>
+
+              <!-- HABILIDAD Card -->
+              <mat-card
+                class="stat-card-icon-display"
+                [matMenuTriggerFor]="skillMenu"
+                #skillMenuTrigger="matMenuTrigger"
+                tabindex="0"
+                (click)="skillMenuTrigger.openMenu()"
+                (keydown.enter)="
+                  $event.preventDefault(); skillMenuTrigger.openMenu()
+                "
+                matTooltip="Editar Habilidad"
+                aria-label="Editar Habilidad"
+              >
+                <div
+                  class="stat-card-header-content u-text-align-center u-padding-sm"
+                >
+                  <mat-icon class="stat-card-icon u-margin-bottom-xs"
+                    >ads_click</mat-icon
+                  >
+                  <div class="stat-card-title u-font-sm">HAB. (X+)</div>
+                </div>
+                <mat-card-content
+                  class="u-text-align-center u-padding-bottom-sm"
+                >
+                  <span class="stat-card-value u-font-lg">{{
+                    profileData.skill || 'N/A'
+                  }}</span>
+                </mat-card-content>
+              </mat-card>
+              <mat-menu #skillMenu="matMenu">
+                <div
+                  class="edit-stat-popover u-padding-md"
+                  (click)="$event.stopPropagation()"
+                >
+                  <mat-form-field appearance="outline" class="u-width-full">
+                    <mat-label>HAB. (X+)</mat-label>
+                    <input
+                      matInput
                       type="number"
-                      class="custom-input"
-                      [(ngModel)]="profileData.critHitMod!.value"
+                      [(ngModel)]="profileData.skill"
                       (ngModelChange)="onProfileDataChange()"
                       min="2"
                       max="6"
+                      (keydown.enter)="handleInputEnterKey(skillMenuTrigger)"
+                      placeholder="Ej: 3"
+                      appAutofocus
                     />
                     <mat-icon
-                      class="custom-help-icon"
-                      matTooltip="Nuevo umbral para conseguir impactos críticos."
+                      matSuffix
+                      matTooltip="El resultado necesario en un D6 para impactar."
+                      class="tooltip-icon"
                       >help_outline</mat-icon
                     >
-                  </div>
+                  </mat-form-field>
                 </div>
-              </mat-card-content>
-            </mat-card>
-            <!-- Sustained Hits Protocol Card -->
-            <mat-card
-              class="protocol-card"
-              [ngClass]="{
-                active: profileData.sustainedHits.active,
-                inactive: !profileData.sustainedHits.active,
-                'needs-config': profileData.sustainedHits.active,
-              }"
-              (click)="toggleProtocol('sustainedHits')"
-              tabindex="0"
-              (keydown.enter)="toggleProtocol('sustainedHits')"
-              matTooltip="Click para activar/desactivar"
-            >
-              <mat-card-header>
-                <mat-card-title
-                  class="protocol-card-title u-display-flex u-align-items-center"
-                >
-                  <mat-icon class="protocol-icon u-margin-right-sm"
-                    >trending_up</mat-icon
-                  >
-                  Impactos Sostenidos [X]
-                </mat-card-title>
-              </mat-card-header>
-              <mat-card-content>
-                <p
-                  class="protocol-description u-text-muted u-font-sm u-margin-bottom-md"
-                >
-                  Cada impacto crítico genera X impactos adicionales
-                  automáticos.
-                </p>
+              </mat-menu>
+
+              <!-- FUERZA Card -->
+              <mat-card
+                class="stat-card-icon-display"
+                [matMenuTriggerFor]="strengthMenu"
+                #strengthMenuTrigger="matMenuTrigger"
+                tabindex="0"
+                (click)="strengthMenuTrigger.openMenu()"
+                (keydown.enter)="
+                  $event.preventDefault(); strengthMenuTrigger.openMenu()
+                "
+                matTooltip="Editar Fuerza"
+                aria-label="Editar Fuerza"
+              >
                 <div
-                  *ngIf="profileData.sustainedHits.active"
-                  class="custom-input-container"
+                  class="stat-card-header-content u-text-align-center u-padding-sm"
+                >
+                  <mat-icon class="stat-card-icon u-margin-bottom-xs"
+                    >fitness_center</mat-icon
+                  >
+                  <div class="stat-card-title u-font-sm">FZA (F)</div>
+                </div>
+                <mat-card-content
+                  class="u-text-align-center u-padding-bottom-sm"
+                >
+                  <span class="stat-card-value u-font-lg">{{
+                    profileData.strength || 'N/A'
+                  }}</span>
+                </mat-card-content>
+              </mat-card>
+              <mat-menu #strengthMenu="matMenu">
+                <div
+                  class="edit-stat-popover u-padding-md"
                   (click)="$event.stopPropagation()"
                 >
-                  <label class="custom-input-label"
-                    >X (Impactos Adicionales):</label
-                  >
-                  <div class="custom-input-wrapper">
+                  <mat-form-field appearance="outline" class="u-width-full">
+                    <mat-label>FZA (F)</mat-label>
                     <input
+                      matInput
                       type="number"
-                      class="custom-input"
-                      [(ngModel)]="profileData.sustainedHits.value"
-                      (ngModelChange)="onProfileDataChange()"
-                      (focus)="onFocusField('sustainedHits')"
-                      min="1"
-                    />
-                    <mat-icon
-                      class="custom-help-icon"
-                      matTooltip="Número de impactos adicionales por cada crítico."
-                      >help_outline</mat-icon
-                    >
-                  </div>
-                </div>
-              </mat-card-content>
-            </mat-card>
-            <!-- Lethal Hits Protocol Card -->
-            <mat-card
-              class="protocol-card"
-              [ngClass]="{
-                active: profileData.lethalHits.active,
-                inactive: !profileData.lethalHits.active,
-              }"
-              (click)="toggleProtocol('lethalHits')"
-              tabindex="0"
-              (keydown.enter)="toggleProtocol('lethalHits')"
-              matTooltip="Click para activar/desactivar"
-            >
-              <mat-card-header>
-                <mat-card-title
-                  class="protocol-card-title u-display-flex u-align-items-center"
-                >
-                  <mat-icon class="protocol-icon u-margin-right-sm"
-                    >dangerous</mat-icon
-                  >
-                  Impactos Letales
-                </mat-card-title>
-              </mat-card-header>
-              <mat-card-content>
-                <p
-                  class="protocol-description u-text-muted u-font-sm u-margin-bottom-md"
-                >
-                  Los impactos críticos hieren automáticamente sin necesidad de
-                  tirar para herir.
-                </p>
-              </mat-card-content>
-            </mat-card>
-            <!-- Rapid Fire Protocol Card -->
-            <mat-card
-              class="protocol-card"
-              [ngClass]="{
-                active: profileData.rapidFire?.active,
-                inactive: !profileData.rapidFire?.active,
-                'needs-config': profileData.rapidFire?.active,
-              }"
-              (click)="toggleProtocol('rapidFire')"
-              tabindex="0"
-              (keydown.enter)="toggleProtocol('rapidFire')"
-              matTooltip="Click para activar/desactivar"
-            >
-              <mat-card-header>
-                <mat-card-title
-                  class="protocol-card-title u-display-flex u-align-items-center"
-                >
-                  <mat-icon class="protocol-icon u-margin-right-sm"
-                    >speed</mat-icon
-                  >
-                  Disparo Rápido [X]
-                </mat-card-title>
-              </mat-card-header>
-              <mat-card-content>
-                <p
-                  class="protocol-description u-text-muted u-font-sm u-margin-bottom-md"
-                >
-                  Cuando está a corto alcance, realiza X ataques adicionales con
-                  esta arma.
-                </p>
-                <div
-                  *ngIf="profileData.rapidFire?.active"
-                  class="custom-input-container"
-                  (click)="$event.stopPropagation()"
-                >
-                  <label class="custom-input-label"
-                    >X (Ataques Adicionales):</label
-                  >
-                  <div class="custom-input-wrapper">
-                    <input
-                      type="number"
-                      class="custom-input"
-                      [(ngModel)]="profileData.rapidFire!.value"
+                      [(ngModel)]="profileData.strength"
                       (ngModelChange)="onProfileDataChange()"
                       min="1"
+                      (keydown.enter)="handleInputEnterKey(strengthMenuTrigger)"
+                      placeholder="Ej: 4"
+                      appAutofocus
                     />
                     <mat-icon
-                      class="custom-help-icon"
-                      matTooltip="Número de ataques adicionales a corto alcance."
+                      matSuffix
+                      matTooltip="La Fuerza del ataque."
+                      class="tooltip-icon"
                       >help_outline</mat-icon
                     >
-                  </div>
+                  </mat-form-field>
                 </div>
-              </mat-card-content> </mat-card
-            ><!-- Shooting Modifier Protocol Card -->
-            <mat-card
-              class="protocol-card shooting-modifier"
-              [ngClass]="{
-                active: profileData.shootingModifier.active,
-                inactive: !profileData.shootingModifier.active,
-              }"
-              (click)="openProtocolModal('shootingModifier')"
-              tabindex="0"
-              (keydown.enter)="openProtocolModal('shootingModifier')"
-              matTooltip="Click para configurar modificador de disparo"
-            >
-              <mat-card-header>
-                <mat-card-title
-                  class="protocol-card-title u-display-flex u-align-items-center"
-                >
-                  <mat-icon class="protocol-icon u-margin-right-sm"
-                    >adjust</mat-icon
-                  >
-                  Modificador de Disparo
-                </mat-card-title>
-              </mat-card-header>
-              <mat-card-content>
-                <p
-                  class="protocol-description u-text-muted u-font-sm u-margin-bottom-md"
-                >
-                  Aplica un modificador a las tiradas para impactar (+1, 0, o
-                  -1).
-                </p>
-                <div
-                  class="modifier-value"
-                  [ngClass]="{
-                    positive: profileData.shootingModifier.value === 1,
-                    neutral: profileData.shootingModifier.value === 0,
-                    negative: profileData.shootingModifier.value === -1,
-                  }"
-                >
-                  {{ profileData.shootingModifier.value > 0 ? '+' : ''
-                  }}{{ profileData.shootingModifier.value || '0' }}
-                </div>
-              </mat-card-content>
-            </mat-card>
-            <!-- Torrent Protocol Card -->
-            <mat-card
-              class="protocol-card"
-              [ngClass]="{
-                active: profileData.torrent,
-                inactive: !profileData.torrent,
-              }"
-              (click)="toggleProtocol('torrent')"
-              tabindex="0"
-              (keydown.enter)="toggleProtocol('torrent')"
-              matTooltip="Click para activar/desactivar"
-            >
-              <mat-card-header>
-                <mat-card-title
-                  class="protocol-card-title u-display-flex u-align-items-center"
-                >
-                  <mat-icon class="protocol-icon u-margin-right-sm"
-                    >water_drop</mat-icon
-                  >
-                  Torrente
-                </mat-card-title>
-              </mat-card-header>
-              <mat-card-content>
-                <p
-                  class="protocol-description u-text-muted u-font-sm u-margin-bottom-md"
-                >
-                  Esta arma impacta automáticamente - no se necesita tirada para
-                  impactar.
-                </p>
-              </mat-card-content>
-            </mat-card>
-            <!-- Blast Protocol Card -->
-            <mat-card
-              class="protocol-card"
-              [ngClass]="{
-                active: profileData.blast,
-                inactive: !profileData.blast,
-              }"
-              (click)="toggleProtocol('blast')"
-              tabindex="0"
-              (keydown.enter)="toggleProtocol('blast')"
-              matTooltip="Click para activar/desactivar"
-            >
-              <mat-card-header>
-                <mat-card-title
-                  class="protocol-card-title u-display-flex u-align-items-center"
-                >
-                  <mat-icon class="protocol-icon u-margin-right-sm"
-                    >explosion</mat-icon
-                  >
-                  Blast
-                </mat-card-title>
-              </mat-card-header>
-              <mat-card-content>
-                <p
-                  class="protocol-description u-text-muted u-font-sm u-margin-bottom-md"
-                >
-                  Añade +1 ataque por cada 5 miniaturas en la unidad objetivo
-                  (redondeando hacia arriba).
-                </p>
-              </mat-card-content>
-            </mat-card>
-          </div>
-        </div>
-      </mat-tab>
+              </mat-menu>
 
-      <!-- Tab 3: Modificadores de Herir -->
-      <mat-tab>
-        <ng-template mat-tab-label>
-          <mat-icon class="tab-icon">healing</mat-icon>
-          <span class="tab-label-text">Modificadores de Herir</span>
-        </ng-template>
-        <div class="tab-content u-padding-top-lg">
-          <div class="tab-header u-margin-bottom-lg">
-            <h3 class="tab-title">Protocolos de Herida</h3>
-            <p class="tab-description u-text-muted">
-              Configura las reglas que afectan las tiradas para herir y la
-              penetración.
-            </p>
-          </div>
-
-          <!-- Wound Protocols Grid -->
-          <div
-            class="protocols-grid u-display-grid u-grid-cols-responsive u-gap-lg u-padding-sm"
-          >
-            <!-- Wound Modifiers Protocol Card -->
-            <mat-card class="protocol-card">
-              <mat-card-header>
-                <mat-card-title
-                  class="protocol-card-title u-display-flex u-align-items-center"
-                >
-                  <mat-icon class="protocol-icon u-margin-right-sm"
-                    >add_circle</mat-icon
-                  >
-                  Modificadores al Herir
-                </mat-card-title>
-              </mat-card-header>
-              <mat-card-content>
-                <p
-                  class="protocol-description u-text-muted u-font-sm u-margin-bottom-md"
-                >
-                  Bonificaciones directas a la tirada para herir por reglas
-                  especiales.
-                </p>
-                <div class="custom-input-container u-margin-bottom-sm">
-                  <label class="custom-input-label">MOD. AL HERIR</label>
-                  <div class="custom-input-wrapper">
-                    <select
-                      class="custom-select"
-                      [(ngModel)]="profileData.woundModifiers"
-                      (ngModelChange)="onProfileDataChange()"
-                    >
-                      <option value="none">NINGUNO</option>
-                      <option value="lance">
-                        +1 AL HERIR (LANZA - SI CARGA)
-                      </option>
-                      <option value="plus_one_general">
-                        +1 AL HERIR (GENERAL)
-                      </option>
-                    </select>
-                    <mat-icon
-                      class="custom-help-icon"
-                      matTooltip="Modificadores directos a la tirada para herir."
-                      >help_outline</mat-icon
-                    >
-                  </div>
-                </div>
+              <!-- PA Card -->
+              <mat-card
+                class="stat-card-icon-display"
+                [matMenuTriggerFor]="apMenu"
+                #apMenuTrigger="matMenuTrigger"
+                tabindex="0"
+                (click)="apMenuTrigger.openMenu()"
+                (keydown.enter)="
+                  $event.preventDefault(); apMenuTrigger.openMenu()
+                "
+                matTooltip="Editar PA"
+                aria-label="Editar Penetración de Armadura"
+              >
                 <div
-                  *ngIf="profileData.woundModifiers === 'lance'"
-                  class="custom-protocol-toggle custom-dependent-input"
-                  [ngClass]="{
-                    active: profileData.lance?.charged,
-                    inactive: !profileData.lance?.charged,
-                  }"
-                  (click)="toggleProtocol('lance')"
-                  tabindex="0"
-                  (keydown.enter)="toggleProtocol('lance')"
-                  matTooltip="Click para activar/desactivar carga"
+                  class="stat-card-header-content u-text-align-center u-padding-sm"
                 >
-                  <div class="lance-charge-indicator">
-                    <mat-icon class="protocol-icon">{{
-                      profileData.lance?.charged ? 'flash_on' : 'flash_off'
-                    }}</mat-icon>
-                    <span>¿Atacante cargó (para Lanza)?</span>
-                  </div>
+                  <mat-icon class="stat-card-icon u-margin-bottom-xs"
+                    >shield</mat-icon
+                  >
+                  <div class="stat-card-title u-font-sm">PA</div>
                 </div>
-              </mat-card-content>
-            </mat-card>
-            <!-- Wound Rerolls Protocol Card -->
-            <mat-card class="protocol-card">
-              <mat-card-header>
-                <mat-card-title
-                  class="protocol-card-title u-display-flex u-align-items-center"
+                <mat-card-content
+                  class="u-text-align-center u-padding-bottom-sm"
                 >
-                  <mat-icon class="protocol-icon u-margin-right-sm"
-                    >refresh</mat-icon
-                  >
-                  Repetir Tiradas para Herir
-                </mat-card-title>
-              </mat-card-header>
-              <mat-card-content>
-                <p
-                  class="protocol-description u-text-muted u-font-sm u-margin-bottom-md"
-                >
-                  Permite repetir tiradas fallidas para herir según el tipo
-                  seleccionado.
-                </p>
-                <div class="custom-input-container">
-                  <label class="custom-input-label">REPETIR PARA HERIR</label>
-                  <div class="custom-input-wrapper">
-                    <select
-                      class="custom-select"
-                      [(ngModel)]="profileData.woundRerollType"
-                      (ngModelChange)="onProfileDataChange()"
-                      (focus)="onFocusField('woundRerollType')"
-                      [disabled]="profileData.twinLinked.active"
-                    >
-                      <option value="none">NINGUNO</option>
-                      <option value="failures">REPETIR FALLOS</option>
-                      <option value="ones">REPETIR 1S</option>
-                      <option value="all">TODOS LOS FALLOS</option>
-                    </select>
-                    <mat-icon
-                      class="custom-help-icon"
-                      matTooltip="Permite repetir tiradas fallidas para herir."
-                      >help_outline</mat-icon
-                    >
-                  </div>
-                </div>
-              </mat-card-content>
-            </mat-card>
-            <!-- Twin-Linked Protocol Card -->
-            <mat-card
-              class="protocol-card"
-              [ngClass]="{
-                active: profileData.twinLinked.active,
-                inactive: !profileData.twinLinked.active,
-              }"
-              (click)="toggleProtocol('twinLinked')"
-              tabindex="0"
-              (keydown.enter)="toggleProtocol('twinLinked')"
-              matTooltip="Click para activar/desactivar"
-            >
-              <mat-card-header>
-                <mat-card-title
-                  class="protocol-card-title u-display-flex u-align-items-center"
-                >
-                  <mat-icon class="protocol-icon u-margin-right-sm"
-                    >link</mat-icon
-                  >
-                  Emparejado
-                </mat-card-title>
-              </mat-card-header>
-              <mat-card-content>
-                <p
-                  class="protocol-description u-text-muted u-font-sm u-margin-bottom-md"
-                >
-                  Permite repetir todas las tiradas para herir fallidas de esta
-                  arma.
-                </p>
-              </mat-card-content>
-            </mat-card>
-            <!-- Devastating Wounds Protocol Card -->
-            <mat-card
-              class="protocol-card"
-              [ngClass]="{
-                active: profileData.devastatingWounds.active,
-                inactive: !profileData.devastatingWounds.active,
-              }"
-              (click)="toggleProtocol('devastatingWounds')"
-              tabindex="0"
-              (keydown.enter)="toggleProtocol('devastatingWounds')"
-              matTooltip="Click para activar/desactivar"
-            >
-              <mat-card-header>
-                <mat-card-title
-                  class="protocol-card-title u-display-flex u-align-items-center"
-                >
-                  <mat-icon class="protocol-icon u-margin-right-sm"
-                    >local_fire_department</mat-icon
-                  >
-                  Heridas Devastadoras
-                </mat-card-title>
-              </mat-card-header>
-              <mat-card-content>
-                <p
-                  class="protocol-description u-text-muted u-font-sm u-margin-bottom-md"
-                >
-                  Las heridas críticas (6+ para herir) se convierten en heridas
-                  mortales.
-                </p>
-              </mat-card-content>
-            </mat-card>
-            <!-- Anti- Protocol Card -->
-            <mat-card
-              class="protocol-card"
-              [ngClass]="{
-                active: profileData.anti?.active,
-                inactive: !profileData.anti?.active,
-                'needs-config': profileData.anti?.active,
-              }"
-              (click)="toggleProtocol('anti')"
-              tabindex="0"
-              (keydown.enter)="toggleProtocol('anti')"
-              matTooltip="Click para activar/desactivar"
-            >
-              <mat-card-header>
-                <mat-card-title
-                  class="protocol-card-title u-display-flex u-align-items-center"
-                >
-                  <mat-icon class="protocol-icon u-margin-right-sm"
-                    >block</mat-icon
-                  >
-                  Anti- [X] [Y+]
-                </mat-card-title>
-              </mat-card-header>
-              <mat-card-content>
-                <p
-                  class="protocol-description u-text-muted u-font-sm u-margin-bottom-md"
-                >
-                  Contra unidades con la palabra clave X, las heridas críticas
-                  mejoran al umbral Y+.
-                </p>
+                  <span class="stat-card-value u-font-lg">{{
+                    profileData.ap || 'N/A'
+                  }}</span>
+                </mat-card-content>
+              </mat-card>
+              <mat-menu #apMenu="matMenu">
                 <div
-                  *ngIf="profileData.anti?.active"
-                  class="custom-dependent-input u-display-flex u-flex-direction-column u-gap-sm"
+                  class="edit-stat-popover u-padding-md"
                   (click)="$event.stopPropagation()"
                 >
+                  <mat-form-field appearance="outline" class="u-width-full">
+                    <mat-label>PA</mat-label>
+                    <input
+                      matInput
+                      type="number"
+                      [(ngModel)]="profileData.ap"
+                      (ngModelChange)="onProfileDataChange()"
+                      min="0"
+                      (keydown.enter)="handleInputEnterKey(apMenuTrigger)"
+                      placeholder="Ej: 1, 2"
+                      appAutofocus
+                    />
+                    <mat-icon
+                      matSuffix
+                      matTooltip="Penetración de Armadura. Reduce la salvación del objetivo."
+                      class="tooltip-icon"
+                      >help_outline</mat-icon
+                    >
+                  </mat-form-field>
+                </div>
+              </mat-menu>
+
+              <!-- DAÑO Card -->
+              <mat-card
+                class="stat-card-icon-display"
+                [matMenuTriggerFor]="damageMenu"
+                #damageMenuTrigger="matMenuTrigger"
+                tabindex="0"
+                (click)="damageMenuTrigger.openMenu()"
+                (keydown.enter)="
+                  $event.preventDefault(); damageMenuTrigger.openMenu()
+                "
+                matTooltip="Editar Daño"
+                aria-label="Editar Daño"
+              >
+                <div
+                  class="stat-card-header-content u-text-align-center u-padding-sm"
+                >
+                  <mat-icon class="stat-card-icon u-margin-bottom-xs"
+                    >whatshot</mat-icon
+                  >
+                  <div class="stat-card-title u-font-sm">DAÑO (D)</div>
+                </div>
+                <mat-card-content
+                  class="u-text-align-center u-padding-bottom-sm"
+                >
+                  <span class="stat-card-value u-font-lg">{{
+                    profileData.damage || 'N/A'
+                  }}</span>
+                </mat-card-content>
+              </mat-card>
+              <mat-menu #damageMenu="matMenu">
+                <div
+                  class="edit-stat-popover u-padding-md"
+                  (click)="$event.stopPropagation()"
+                >
+                  <mat-form-field appearance="outline" class="u-width-full">
+                    <mat-label>DAÑO (D)</mat-label>
+                    <input
+                      matInput
+                      type="text"
+                      [(ngModel)]="profileData.damage"
+                      (ngModelChange)="onProfileDataChange()"
+                      (keydown)="filterNumericDiceInput($event)"
+                      (keydown.enter)="handleInputEnterKey(damageMenuTrigger)"
+                      placeholder="Ej: 3, D3, D6+1"
+                      appAutofocus
+                    />
+                    <mat-icon
+                      matSuffix
+                      matTooltip="FORMATO: '3', 'D6', '2D3', 'D3+1'."
+                      class="tooltip-icon"
+                      >help_outline</mat-icon
+                    >
+                  </mat-form-field>
+                </div>
+              </mat-menu>
+            </div>
+
+            <!-- Enhanced Active Protocols Summary -->
+            <div
+              class="active-protocols-summary u-padding-lg u-margin-bottom-md"
+            >
+              <div class="summary-header u-margin-bottom-md">
+                <h4
+                  class="summary-title u-display-flex u-align-items-center u-margin-bottom-xs"
+                >
+                  <mat-icon class="u-margin-right-xs">list_alt</mat-icon>
+                  Resumen de Protocolos Activos
+                </h4>
+                <p class="summary-subtitle u-text-muted u-font-sm">
+                  Configurados en las siguientes pestañas
+                </p>
+              </div>
+
+              <div
+                *ngIf="
+                  activeHitProtocolsSummary.length === 0 &&
+                  activeWoundProtocolsSummary.length === 0 &&
+                  activeDamageProtocolsSummary.length === 0
+                "
+                class="no-active-protocols-message u-text-align-center u-padding-lg"
+              >
+                <mat-icon class="u-margin-bottom-sm u-text-muted"
+                  >info_outline</mat-icon
+                >
+                <p class="u-text-muted">
+                  Ningún protocolo avanzado activo. Usa las pestañas siguientes
+                  para configurar modificadores.
+                </p>
+              </div>
+
+              <!-- Hit Protocols -->
+              <div
+                *ngIf="activeHitProtocolsSummary.length > 0"
+                class="protocol-category u-margin-bottom-sm"
+              >
+                <h5
+                  class="category-title u-display-flex u-align-items-center u-margin-bottom-xs"
+                >
+                  <mat-icon class="category-icon u-margin-right-xs"
+                    >gps_fixed</mat-icon
+                  >
+                  Protocolos de Impacto:
+                </h5>
+                <mat-chip-listbox
+                  aria-label="Protocolos de impacto activos"
+                  class="protocol-chips"
+                >
+                  <mat-chip
+                    *ngFor="let summary of activeHitProtocolsSummary"
+                    class="summary-chip hit-chip"
+                    selectable="false"
+                    [matTooltip]="summary"
+                  >
+                    <mat-icon matChipAvatar>gps_fixed</mat-icon>
+                    {{ summary }}
+                  </mat-chip>
+                </mat-chip-listbox>
+              </div>
+
+              <!-- Wound Protocols -->
+              <div
+                *ngIf="activeWoundProtocolsSummary.length > 0"
+                class="protocol-category u-margin-bottom-sm"
+              >
+                <h5
+                  class="category-title u-display-flex u-align-items-center u-margin-bottom-xs"
+                >
+                  <mat-icon class="category-icon u-margin-right-xs"
+                    >healing</mat-icon
+                  >
+                  Protocolos de Herida:
+                </h5>
+                <mat-chip-listbox
+                  aria-label="Protocolos de herida activos"
+                  class="protocol-chips"
+                >
+                  <mat-chip
+                    *ngFor="let summary of activeWoundProtocolsSummary"
+                    class="summary-chip wound-chip"
+                    selectable="false"
+                    [matTooltip]="summary"
+                  >
+                    <mat-icon matChipAvatar>healing</mat-icon>
+                    {{ summary }}
+                  </mat-chip>
+                </mat-chip-listbox>
+              </div>
+
+              <!-- Damage Protocols -->
+              <div
+                *ngIf="activeDamageProtocolsSummary.length > 0"
+                class="protocol-category"
+              >
+                <h5
+                  class="category-title u-display-flex u-align-items-center u-margin-bottom-xs"
+                >
+                  <mat-icon class="category-icon u-margin-right-xs"
+                    >bolt</mat-icon
+                  >
+                  Habilidades Especiales:
+                </h5>
+                <mat-chip-listbox
+                  aria-label="Protocolos de daño activos"
+                  class="protocol-chips"
+                >
+                  <mat-chip
+                    *ngFor="let summary of activeDamageProtocolsSummary"
+                    class="summary-chip damage-chip"
+                    selectable="false"
+                    [matTooltip]="summary"
+                  >
+                    <mat-icon matChipAvatar>bolt</mat-icon>
+                    {{ summary }}
+                  </mat-chip>
+                </mat-chip-listbox>
+              </div>
+            </div>
+          </div>
+        </mat-tab>
+
+        <!-- Tab 2: Modificadores de Disparo -->
+        <mat-tab>
+          <ng-template mat-tab-label>
+            <mat-icon class="tab-icon">gps_fixed</mat-icon>
+            <span class="tab-label-text">Modificadores de Disparo</span>
+          </ng-template>
+          <div class="tab-content u-padding-top-lg">
+            <div class="tab-header u-margin-bottom-lg">
+              <h3 class="tab-title">Protocolos de Impacto</h3>
+              <p class="tab-description u-text-muted">
+                Configura las reglas que afectan las tiradas para impactar
+                durante la fase de disparo.
+              </p>
+            </div>
+
+            <!-- Hit Protocols Grid -->
+            <div
+              class="protocols-grid u-display-grid u-grid-cols-responsive u-gap-lg u-padding-sm"
+            >
+              <!-- Hit Rerolls Protocol Card -->
+              <mat-card class="protocol-card">
+                <mat-card-header>
+                  <mat-card-title
+                    class="protocol-card-title u-display-flex u-align-items-center"
+                  >
+                    <mat-icon class="protocol-icon u-margin-right-sm"
+                      >refresh</mat-icon
+                    >
+                    Repetir Tiradas para Impactar
+                  </mat-card-title>
+                </mat-card-header>
+                <mat-card-content>
+                  <p
+                    class="protocol-description u-text-muted u-font-sm u-margin-bottom-md"
+                  >
+                    Permite repetir tiradas fallidas para impactar según el tipo
+                    seleccionado.
+                  </p>
                   <div class="custom-input-container">
-                    <label class="custom-input-label">KEYWORD [X]</label>
+                    <label class="custom-input-label"
+                      >REPETIR TIRADAS PARA IMPACTAR</label
+                    >
                     <div class="custom-input-wrapper">
-                      <input
-                        type="text"
-                        class="custom-input"
-                        [(ngModel)]="profileData.antiKeyword"
+                      <select
+                        class="custom-select"
+                        [(ngModel)]="profileData.hitRerollType"
                         (ngModelChange)="onProfileDataChange()"
-                        placeholder="INFANTERÍA"
-                      />
+                        (focus)="onFocusField('hitRerollType')"
+                      >
+                        <option value="none">NINGUNA</option>
+                        <option value="ones">SOLO 1S</option>
+                        <option value="all">TODOS LOS FALLOS</option>
+                      </select>
                       <mat-icon
                         class="custom-help-icon"
-                        matTooltip="Palabra clave objetivo del Anti-."
+                        matTooltip="Permite repetir tiradas fallidas para impactar."
                         >help_outline</mat-icon
                       >
                     </div>
                   </div>
-                  <div class="custom-input-container">
-                    <label class="custom-input-label">UMBRAL [Y+]</label>
+                </mat-card-content>
+              </mat-card>
+              <!-- Critical Hit Modifier Protocol Card -->
+              <mat-card
+                class="protocol-card"
+                [ngClass]="{
+                  active: profileData.critHitMod?.active,
+                  inactive: !profileData.critHitMod?.active,
+                  'needs-config': profileData.critHitMod?.active,
+                }"
+                (click)="toggleProtocol('critHitMod')"
+                tabindex="0"
+                (keydown.enter)="toggleProtocol('critHitMod')"
+                matTooltip="Click para activar/desactivar"
+              >
+                <mat-card-header>
+                  <mat-card-title
+                    class="protocol-card-title u-display-flex u-align-items-center"
+                  >
+                    <mat-icon class="protocol-icon u-margin-right-sm"
+                      >star</mat-icon
+                    >
+                    Modificar Umbral Crítico
+                  </mat-card-title>
+                </mat-card-header>
+                <mat-card-content>
+                  <p
+                    class="protocol-description u-text-muted u-font-sm u-margin-bottom-md"
+                  >
+                    Modifica el umbral para conseguir impactos críticos
+                    (normalmente 6+).
+                  </p>
+                  <!-- Configuration inputs shown when active -->
+                  <div
+                    *ngIf="profileData.critHitMod?.active"
+                    class="custom-input-container"
+                    (click)="$event.stopPropagation()"
+                  >
+                    <label class="custom-input-label">NUEVO UMBRAL (X+)</label>
                     <div class="custom-input-wrapper">
                       <input
                         type="number"
                         class="custom-input"
-                        [(ngModel)]="profileData.anti!.value"
+                        [(ngModel)]="profileData.critHitMod!.value"
                         (ngModelChange)="onProfileDataChange()"
                         min="2"
                         max="6"
                       />
                       <mat-icon
                         class="custom-help-icon"
-                        matTooltip="Nuevo umbral para heridas críticas contra esta keyword."
+                        matTooltip="Nuevo umbral para conseguir impactos críticos."
                         >help_outline</mat-icon
                       >
                     </div>
                   </div>
-                </div>
-              </mat-card-content>
-            </mat-card>
-            <!-- Melta Protocol Card -->
-            <mat-card
-              class="protocol-card"
-              [ngClass]="{
-                active: profileData.melta?.active,
-                inactive: !profileData.melta?.active,
-                'needs-config': profileData.melta?.active,
-              }"
-              (click)="toggleProtocol('melta')"
-              tabindex="0"
-              (keydown.enter)="toggleProtocol('melta')"
-              matTooltip="Click para activar/desactivar"
-            >
-              <mat-card-header>
-                <mat-card-title
-                  class="protocol-card-title u-display-flex u-align-items-center"
-                >
-                  <mat-icon class="protocol-icon u-margin-right-sm"
-                    >local_fire_department</mat-icon
+                </mat-card-content>
+              </mat-card>
+              <!-- Sustained Hits Protocol Card -->
+              <mat-card
+                class="protocol-card"
+                [ngClass]="{
+                  active: profileData.sustainedHits.active,
+                  inactive: !profileData.sustainedHits.active,
+                  'needs-config': profileData.sustainedHits.active,
+                }"
+                (click)="toggleProtocol('sustainedHits')"
+                tabindex="0"
+                (keydown.enter)="toggleProtocol('sustainedHits')"
+                matTooltip="Click para activar/desactivar"
+              >
+                <mat-card-header>
+                  <mat-card-title
+                    class="protocol-card-title u-display-flex u-align-items-center"
                   >
-                  Fusión [X]
-                </mat-card-title>
-              </mat-card-header>
-              <mat-card-content>
-                <p
-                  class="protocol-description u-text-muted u-font-sm u-margin-bottom-md"
-                >
-                  Cuando está a corto alcance, añade X daño adicional a cada
-                  ataque exitoso.
-                </p>
-                <div
-                  *ngIf="profileData.melta?.active"
-                  class="custom-dependent-input u-display-flex u-flex-direction-column u-gap-sm"
-                  (click)="$event.stopPropagation()"
-                >
-                  <div class="custom-input-container">
-                    <label class="custom-input-label">DAÑO ADIC. [X]</label>
+                    <mat-icon class="protocol-icon u-margin-right-sm"
+                      >trending_up</mat-icon
+                    >
+                    Impactos Sostenidos [X]
+                  </mat-card-title>
+                </mat-card-header>
+                <mat-card-content>
+                  <p
+                    class="protocol-description u-text-muted u-font-sm u-margin-bottom-md"
+                  >
+                    Cada impacto crítico genera X impactos adicionales
+                    automáticos.
+                  </p>
+                  <div
+                    *ngIf="profileData.sustainedHits.active"
+                    class="custom-input-container"
+                    (click)="$event.stopPropagation()"
+                  >
+                    <label class="custom-input-label"
+                      >X (Impactos Adicionales):</label
+                    >
                     <div class="custom-input-wrapper">
                       <input
-                        type="text"
+                        type="number"
                         class="custom-input"
-                        [(ngModel)]="profileData.melta!.value"
+                        [(ngModel)]="profileData.sustainedHits.value"
                         (ngModelChange)="onProfileDataChange()"
-                        placeholder="D3"
+                        (focus)="onFocusField('sustainedHits')"
+                        min="1"
                       />
                       <mat-icon
                         class="custom-help-icon"
-                        matTooltip="Daño adicional cuando está a corto alcance."
+                        matTooltip="Número de impactos adicionales por cada crítico."
+                        >help_outline</mat-icon
+                      >
+                    </div>
+                  </div>
+                </mat-card-content>
+              </mat-card>
+              <!-- Lethal Hits Protocol Card -->
+              <mat-card
+                class="protocol-card"
+                [ngClass]="{
+                  active: profileData.lethalHits.active,
+                  inactive: !profileData.lethalHits.active,
+                }"
+                (click)="toggleProtocol('lethalHits')"
+                tabindex="0"
+                (keydown.enter)="toggleProtocol('lethalHits')"
+                matTooltip="Click para activar/desactivar"
+              >
+                <mat-card-header>
+                  <mat-card-title
+                    class="protocol-card-title u-display-flex u-align-items-center"
+                  >
+                    <mat-icon class="protocol-icon u-margin-right-sm"
+                      >dangerous</mat-icon
+                    >
+                    Impactos Letales
+                  </mat-card-title>
+                </mat-card-header>
+                <mat-card-content>
+                  <p
+                    class="protocol-description u-text-muted u-font-sm u-margin-bottom-md"
+                  >
+                    Los impactos críticos hieren automáticamente sin necesidad
+                    de tirar para herir.
+                  </p>
+                </mat-card-content>
+              </mat-card>
+              <!-- Rapid Fire Protocol Card -->
+              <mat-card
+                class="protocol-card"
+                [ngClass]="{
+                  active: profileData.rapidFire?.active,
+                  inactive: !profileData.rapidFire?.active,
+                  'needs-config': profileData.rapidFire?.active,
+                }"
+                (click)="toggleProtocol('rapidFire')"
+                tabindex="0"
+                (keydown.enter)="toggleProtocol('rapidFire')"
+                matTooltip="Click para activar/desactivar"
+              >
+                <mat-card-header>
+                  <mat-card-title
+                    class="protocol-card-title u-display-flex u-align-items-center"
+                  >
+                    <mat-icon class="protocol-icon u-margin-right-sm"
+                      >speed</mat-icon
+                    >
+                    Disparo Rápido [X]
+                  </mat-card-title>
+                </mat-card-header>
+                <mat-card-content>
+                  <p
+                    class="protocol-description u-text-muted u-font-sm u-margin-bottom-md"
+                  >
+                    Cuando está a corto alcance, realiza X ataques adicionales
+                    con esta arma.
+                  </p>
+                  <div
+                    *ngIf="profileData.rapidFire?.active"
+                    class="custom-input-container"
+                    (click)="$event.stopPropagation()"
+                  >
+                    <label class="custom-input-label"
+                      >X (Ataques Adicionales):</label
+                    >
+                    <div class="custom-input-wrapper">
+                      <input
+                        type="number"
+                        class="custom-input"
+                        [(ngModel)]="profileData.rapidFire!.value"
+                        (ngModelChange)="onProfileDataChange()"
+                        min="1"
+                      />
+                      <mat-icon
+                        class="custom-help-icon"
+                        matTooltip="Número de ataques adicionales a corto alcance."
+                        >help_outline</mat-icon
+                      >
+                    </div>
+                  </div>
+                </mat-card-content> </mat-card
+              ><!-- Shooting Modifier Protocol Card -->
+              <mat-card
+                class="protocol-card shooting-modifier"
+                [ngClass]="{
+                  active: profileData.shootingModifier.active,
+                  inactive: !profileData.shootingModifier.active,
+                }"
+                (click)="openProtocolModal('shootingModifier')"
+                tabindex="0"
+                (keydown.enter)="openProtocolModal('shootingModifier')"
+                matTooltip="Click para configurar modificador de disparo"
+              >
+                <mat-card-header>
+                  <mat-card-title
+                    class="protocol-card-title u-display-flex u-align-items-center"
+                  >
+                    <mat-icon class="protocol-icon u-margin-right-sm"
+                      >adjust</mat-icon
+                    >
+                    Modificador de Disparo
+                  </mat-card-title>
+                </mat-card-header>
+                <mat-card-content>
+                  <p
+                    class="protocol-description u-text-muted u-font-sm u-margin-bottom-md"
+                  >
+                    Aplica un modificador a las tiradas para impactar (+1, 0, o
+                    -1).
+                  </p>
+                  <div
+                    class="modifier-value"
+                    [ngClass]="{
+                      positive: profileData.shootingModifier.value === 1,
+                      neutral: profileData.shootingModifier.value === 0,
+                      negative: profileData.shootingModifier.value === -1,
+                    }"
+                  >
+                    {{ profileData.shootingModifier.value > 0 ? '+' : ''
+                    }}{{ profileData.shootingModifier.value || '0' }}
+                  </div>
+                </mat-card-content>
+              </mat-card>
+              <!-- Torrent Protocol Card -->
+              <mat-card
+                class="protocol-card"
+                [ngClass]="{
+                  active: profileData.torrent,
+                  inactive: !profileData.torrent,
+                }"
+                (click)="toggleProtocol('torrent')"
+                tabindex="0"
+                (keydown.enter)="toggleProtocol('torrent')"
+                matTooltip="Click para activar/desactivar"
+              >
+                <mat-card-header>
+                  <mat-card-title
+                    class="protocol-card-title u-display-flex u-align-items-center"
+                  >
+                    <mat-icon class="protocol-icon u-margin-right-sm"
+                      >water_drop</mat-icon
+                    >
+                    Torrente
+                  </mat-card-title>
+                </mat-card-header>
+                <mat-card-content>
+                  <p
+                    class="protocol-description u-text-muted u-font-sm u-margin-bottom-md"
+                  >
+                    Esta arma impacta automáticamente - no se necesita tirada
+                    para impactar.
+                  </p>
+                </mat-card-content>
+              </mat-card>
+              <!-- Blast Protocol Card -->
+              <mat-card
+                class="protocol-card"
+                [ngClass]="{
+                  active: profileData.blast,
+                  inactive: !profileData.blast,
+                }"
+                (click)="toggleProtocol('blast')"
+                tabindex="0"
+                (keydown.enter)="toggleProtocol('blast')"
+                matTooltip="Click para activar/desactivar"
+              >
+                <mat-card-header>
+                  <mat-card-title
+                    class="protocol-card-title u-display-flex u-align-items-center"
+                  >
+                    <mat-icon class="protocol-icon u-margin-right-sm"
+                      >explosion</mat-icon
+                    >
+                    Blast
+                  </mat-card-title>
+                </mat-card-header>
+                <mat-card-content>
+                  <p
+                    class="protocol-description u-text-muted u-font-sm u-margin-bottom-md"
+                  >
+                    Añade +1 ataque por cada 5 miniaturas en la unidad objetivo
+                    (redondeando hacia arriba).
+                  </p>
+                </mat-card-content>
+              </mat-card>
+            </div>
+          </div>
+        </mat-tab>
+
+        <!-- Tab 3: Modificadores de Herir -->
+        <mat-tab>
+          <ng-template mat-tab-label>
+            <mat-icon class="tab-icon">healing</mat-icon>
+            <span class="tab-label-text">Modificadores de Herir</span>
+          </ng-template>
+          <div class="tab-content u-padding-top-lg">
+            <div class="tab-header u-margin-bottom-lg">
+              <h3 class="tab-title">Protocolos de Herida</h3>
+              <p class="tab-description u-text-muted">
+                Configura las reglas que afectan las tiradas para herir y la
+                penetración.
+              </p>
+            </div>
+
+            <!-- Wound Protocols Grid -->
+            <div
+              class="protocols-grid u-display-grid u-grid-cols-responsive u-gap-lg u-padding-sm"
+            >
+              <!-- Wound Modifiers Protocol Card -->
+              <mat-card class="protocol-card">
+                <mat-card-header>
+                  <mat-card-title
+                    class="protocol-card-title u-display-flex u-align-items-center"
+                  >
+                    <mat-icon class="protocol-icon u-margin-right-sm"
+                      >add_circle</mat-icon
+                    >
+                    Modificadores al Herir
+                  </mat-card-title>
+                </mat-card-header>
+                <mat-card-content>
+                  <p
+                    class="protocol-description u-text-muted u-font-sm u-margin-bottom-md"
+                  >
+                    Bonificaciones directas a la tirada para herir por reglas
+                    especiales.
+                  </p>
+                  <div class="custom-input-container u-margin-bottom-sm">
+                    <label class="custom-input-label">MOD. AL HERIR</label>
+                    <div class="custom-input-wrapper">
+                      <select
+                        class="custom-select"
+                        [(ngModel)]="profileData.woundModifiers"
+                        (ngModelChange)="onProfileDataChange()"
+                      >
+                        <option value="none">NINGUNO</option>
+                        <option value="lance">
+                          +1 AL HERIR (LANZA - SI CARGA)
+                        </option>
+                        <option value="plus_one_general">
+                          +1 AL HERIR (GENERAL)
+                        </option>
+                      </select>
+                      <mat-icon
+                        class="custom-help-icon"
+                        matTooltip="Modificadores directos a la tirada para herir."
                         >help_outline</mat-icon
                       >
                     </div>
                   </div>
                   <div
-                    class="custom-protocol-toggle"
+                    *ngIf="profileData.woundModifiers === 'lance'"
+                    class="custom-protocol-toggle custom-dependent-input"
                     [ngClass]="{
-                      active: profileData.melta!.inRange,
-                      inactive: !profileData.melta!.inRange,
+                      active: profileData.lance?.charged,
+                      inactive: !profileData.lance?.charged,
                     }"
-                    (click)="toggleProtocol('meltaRange')"
+                    (click)="toggleProtocol('lance')"
                     tabindex="0"
-                    (keydown.enter)="toggleProtocol('meltaRange')"
-                    matTooltip="Click para indicar si está a corto alcance"
+                    (keydown.enter)="toggleProtocol('lance')"
+                    matTooltip="Click para activar/desactivar carga"
                   >
-                    <div class="range-indicator">
+                    <div class="lance-charge-indicator">
                       <mat-icon class="protocol-icon">{{
-                        profileData.melta!.inRange
-                          ? 'near_me'
-                          : 'near_me_disabled'
+                        profileData.lance?.charged ? 'flash_on' : 'flash_off'
                       }}</mat-icon>
-                      <span>¿A corto alcance?</span>
+                      <span>¿Atacante cargó (para Lanza)?</span>
                     </div>
                   </div>
-                </div>
-              </mat-card-content>
-            </mat-card>
-          </div>
-        </div>
-      </mat-tab>
-
-      <!-- Tab 4: Habilidades Especiales -->
-      <mat-tab>
-        <ng-template mat-tab-label>
-          <mat-icon class="tab-icon">bolt</mat-icon>
-          <span class="tab-label-text">Habilidades Especiales</span>
-        </ng-template>
-        <div class="tab-content u-padding-top-lg">
-          <div class="tab-header u-margin-bottom-lg">
-            <h3 class="tab-title">Habilidades de Daño Adicional</h3>
-            <p class="tab-description u-text-muted">
-              Configura habilidades especiales que generan daño adicional o
-              efectos únicos.
-            </p>
-          </div>
-
-          <!-- Special Abilities Grid -->
-          <div
-            class="protocols-grid u-display-grid u-grid-cols-responsive u-gap-lg u-padding-sm"
-          >
-            <!-- Extra Mortals Protocol Card -->
-            <mat-card
-              class="protocol-card"
-              [ngClass]="{
-                active: profileData.extraMortals?.active,
-                inactive: !profileData.extraMortals?.active,
-                'needs-config': profileData.extraMortals?.active,
-              }"
-              (click)="toggleProtocol('extraMortals')"
-              tabindex="0"
-              (keydown.enter)="toggleProtocol('extraMortals')"
-              matTooltip="Click para activar/desactivar"
-            >
-              <mat-card-header>
-                <mat-card-title
-                  class="protocol-card-title u-display-flex u-align-items-center"
-                >
-                  <mat-icon class="protocol-icon u-margin-right-sm"
-                    >bolt</mat-icon
+                </mat-card-content>
+              </mat-card>
+              <!-- Wound Rerolls Protocol Card -->
+              <mat-card class="protocol-card">
+                <mat-card-header>
+                  <mat-card-title
+                    class="protocol-card-title u-display-flex u-align-items-center"
                   >
-                  Mortales Adicionales
-                </mat-card-title>
-              </mat-card-header>
-              <mat-card-content>
-                <p
-                  class="protocol-description u-text-muted u-font-sm u-margin-bottom-md"
-                >
-                  Genera heridas mortales adicionales cuando se cumple un
-                  desencadenante específico.
-                </p>
-                <div
-                  *ngIf="profileData.extraMortals?.active"
-                  class="custom-dependent-input u-display-flex u-flex-direction-column u-gap-sm"
-                  (click)="$event.stopPropagation()"
-                >
-                  <div class="custom-input-container">
-                    <label class="custom-input-label"
-                      >EN (X+) PARA ACTIVAR</label
+                    <mat-icon class="protocol-icon u-margin-right-sm"
+                      >refresh</mat-icon
                     >
-                    <div class="custom-input-wrapper">
-                      <input
-                        type="number"
-                        class="custom-input"
-                        [(ngModel)]="profileData.extraMortals!.on"
-                        (ngModelChange)="onProfileDataChange()"
-                        min="2"
-                        max="6"
-                      />
-                      <mat-icon
-                        class="custom-help-icon"
-                        matTooltip="Umbral de tirada para activar los mortales adicionales."
-                        >help_outline</mat-icon
-                      >
-                    </div>
-                  </div>
-                  <div class="custom-input-container">
-                    <label class="custom-input-label">CANTIDAD MORTALES</label>
-                    <div class="custom-input-wrapper">
-                      <input
-                        type="text"
-                        class="custom-input"
-                        [(ngModel)]="profileData.extraMortals!.amount"
-                        (ngModelChange)="onProfileDataChange()"
-                        placeholder="D3"
-                      />
-                      <mat-icon
-                        class="custom-help-icon"
-                        matTooltip="Cantidad de heridas mortales adicionales a infligir."
-                        >help_outline</mat-icon
-                      >
-                    </div>
-                  </div>
-                </div>
-              </mat-card-content>
-            </mat-card>
-
-            <!-- Placeholder for Future Special Abilities -->
-            <mat-card class="protocol-card placeholder-card">
-              <mat-card-header>
-                <mat-card-title
-                  class="protocol-card-title u-display-flex u-align-items-center"
-                >
-                  <mat-icon class="protocol-icon u-margin-right-sm u-text-muted"
-                    >add_circle_outline</mat-icon
+                    Repetir Tiradas para Herir
+                  </mat-card-title>
+                </mat-card-header>
+                <mat-card-content>
+                  <p
+                    class="protocol-description u-text-muted u-font-sm u-margin-bottom-md"
                   >
-                  <span class="u-text-muted">Habilidades Futuras</span>
-                </mat-card-title>
-              </mat-card-header>
-              <mat-card-content>
-                <p class="protocol-description u-text-muted u-font-sm">
-                  Esta sección se expandirá con más habilidades especiales en
-                  futuras actualizaciones.
-                </p>
-                <div
-                  class="placeholder-content u-text-align-center u-padding-lg"
-                >
-                  <mat-icon class="u-text-muted u-font-xl"
-                    >construction</mat-icon
-                  >
-                  <p class="u-text-muted u-margin-top-sm">
-                    Próximamente más opciones
+                    Permite repetir tiradas fallidas para herir según el tipo
+                    seleccionado.
                   </p>
-                </div>
-              </mat-card-content>
-            </mat-card>
+                  <div class="custom-input-container">
+                    <label class="custom-input-label">REPETIR PARA HERIR</label>
+                    <div class="custom-input-wrapper">
+                      <select
+                        class="custom-select"
+                        [(ngModel)]="profileData.woundRerollType"
+                        (ngModelChange)="onProfileDataChange()"
+                        (focus)="onFocusField('woundRerollType')"
+                        [disabled]="profileData.twinLinked.active"
+                      >
+                        <option value="none">NINGUNO</option>
+                        <option value="failures">REPETIR FALLOS</option>
+                        <option value="ones">REPETIR 1S</option>
+                        <option value="all">TODOS LOS FALLOS</option>
+                      </select>
+                      <mat-icon
+                        class="custom-help-icon"
+                        matTooltip="Permite repetir tiradas fallidas para herir."
+                        >help_outline</mat-icon
+                      >
+                    </div>
+                  </div>
+                </mat-card-content>
+              </mat-card>
+              <!-- Twin-Linked Protocol Card -->
+              <mat-card
+                class="protocol-card"
+                [ngClass]="{
+                  active: profileData.twinLinked.active,
+                  inactive: !profileData.twinLinked.active,
+                }"
+                (click)="toggleProtocol('twinLinked')"
+                tabindex="0"
+                (keydown.enter)="toggleProtocol('twinLinked')"
+                matTooltip="Click para activar/desactivar"
+              >
+                <mat-card-header>
+                  <mat-card-title
+                    class="protocol-card-title u-display-flex u-align-items-center"
+                  >
+                    <mat-icon class="protocol-icon u-margin-right-sm"
+                      >link</mat-icon
+                    >
+                    Emparejado
+                  </mat-card-title>
+                </mat-card-header>
+                <mat-card-content>
+                  <p
+                    class="protocol-description u-text-muted u-font-sm u-margin-bottom-md"
+                  >
+                    Permite repetir todas las tiradas para herir fallidas de
+                    esta arma.
+                  </p>
+                </mat-card-content>
+              </mat-card>
+              <!-- Devastating Wounds Protocol Card -->
+              <mat-card
+                class="protocol-card"
+                [ngClass]="{
+                  active: profileData.devastatingWounds.active,
+                  inactive: !profileData.devastatingWounds.active,
+                }"
+                (click)="toggleProtocol('devastatingWounds')"
+                tabindex="0"
+                (keydown.enter)="toggleProtocol('devastatingWounds')"
+                matTooltip="Click para activar/desactivar"
+              >
+                <mat-card-header>
+                  <mat-card-title
+                    class="protocol-card-title u-display-flex u-align-items-center"
+                  >
+                    <mat-icon class="protocol-icon u-margin-right-sm"
+                      >local_fire_department</mat-icon
+                    >
+                    Heridas Devastadoras
+                  </mat-card-title>
+                </mat-card-header>
+                <mat-card-content>
+                  <p
+                    class="protocol-description u-text-muted u-font-sm u-margin-bottom-md"
+                  >
+                    Las heridas críticas (6+ para herir) se convierten en
+                    heridas mortales.
+                  </p>
+                </mat-card-content>
+              </mat-card>
+              <!-- Anti- Protocol Card -->
+              <mat-card
+                class="protocol-card"
+                [ngClass]="{
+                  active: profileData.anti?.active,
+                  inactive: !profileData.anti?.active,
+                  'needs-config': profileData.anti?.active,
+                }"
+                (click)="toggleProtocol('anti')"
+                tabindex="0"
+                (keydown.enter)="toggleProtocol('anti')"
+                matTooltip="Click para activar/desactivar"
+              >
+                <mat-card-header>
+                  <mat-card-title
+                    class="protocol-card-title u-display-flex u-align-items-center"
+                  >
+                    <mat-icon class="protocol-icon u-margin-right-sm"
+                      >block</mat-icon
+                    >
+                    Anti- [X] [Y+]
+                  </mat-card-title>
+                </mat-card-header>
+                <mat-card-content>
+                  <p
+                    class="protocol-description u-text-muted u-font-sm u-margin-bottom-md"
+                  >
+                    Contra unidades con la palabra clave X, las heridas críticas
+                    mejoran al umbral Y+.
+                  </p>
+                  <div
+                    *ngIf="profileData.anti?.active"
+                    class="custom-dependent-input u-display-flex u-flex-direction-column u-gap-sm"
+                    (click)="$event.stopPropagation()"
+                  >
+                    <div class="custom-input-container">
+                      <label class="custom-input-label">KEYWORD [X]</label>
+                      <div class="custom-input-wrapper">
+                        <input
+                          type="text"
+                          class="custom-input"
+                          [(ngModel)]="profileData.antiKeyword"
+                          (ngModelChange)="onProfileDataChange()"
+                          placeholder="INFANTERÍA"
+                        />
+                        <mat-icon
+                          class="custom-help-icon"
+                          matTooltip="Palabra clave objetivo del Anti-."
+                          >help_outline</mat-icon
+                        >
+                      </div>
+                    </div>
+                    <div class="custom-input-container">
+                      <label class="custom-input-label">UMBRAL [Y+]</label>
+                      <div class="custom-input-wrapper">
+                        <input
+                          type="number"
+                          class="custom-input"
+                          [(ngModel)]="profileData.anti!.value"
+                          (ngModelChange)="onProfileDataChange()"
+                          min="2"
+                          max="6"
+                        />
+                        <mat-icon
+                          class="custom-help-icon"
+                          matTooltip="Nuevo umbral para heridas críticas contra esta keyword."
+                          >help_outline</mat-icon
+                        >
+                      </div>
+                    </div>
+                  </div>
+                </mat-card-content>
+              </mat-card>
+              <!-- Melta Protocol Card -->
+              <mat-card
+                class="protocol-card"
+                [ngClass]="{
+                  active: profileData.melta?.active,
+                  inactive: !profileData.melta?.active,
+                  'needs-config': profileData.melta?.active,
+                }"
+                (click)="toggleProtocol('melta')"
+                tabindex="0"
+                (keydown.enter)="toggleProtocol('melta')"
+                matTooltip="Click para activar/desactivar"
+              >
+                <mat-card-header>
+                  <mat-card-title
+                    class="protocol-card-title u-display-flex u-align-items-center"
+                  >
+                    <mat-icon class="protocol-icon u-margin-right-sm"
+                      >local_fire_department</mat-icon
+                    >
+                    Fusión [X]
+                  </mat-card-title>
+                </mat-card-header>
+                <mat-card-content>
+                  <p
+                    class="protocol-description u-text-muted u-font-sm u-margin-bottom-md"
+                  >
+                    Cuando está a corto alcance, añade X daño adicional a cada
+                    ataque exitoso.
+                  </p>
+                  <div
+                    *ngIf="profileData.melta?.active"
+                    class="custom-dependent-input u-display-flex u-flex-direction-column u-gap-sm"
+                    (click)="$event.stopPropagation()"
+                  >
+                    <div class="custom-input-container">
+                      <label class="custom-input-label">DAÑO ADIC. [X]</label>
+                      <div class="custom-input-wrapper">
+                        <input
+                          type="text"
+                          class="custom-input"
+                          [(ngModel)]="profileData.melta!.value"
+                          (ngModelChange)="onProfileDataChange()"
+                          placeholder="D3"
+                        />
+                        <mat-icon
+                          class="custom-help-icon"
+                          matTooltip="Daño adicional cuando está a corto alcance."
+                          >help_outline</mat-icon
+                        >
+                      </div>
+                    </div>
+                    <div
+                      class="custom-protocol-toggle"
+                      [ngClass]="{
+                        active: profileData.melta!.inRange,
+                        inactive: !profileData.melta!.inRange,
+                      }"
+                      (click)="toggleProtocol('meltaRange')"
+                      tabindex="0"
+                      (keydown.enter)="toggleProtocol('meltaRange')"
+                      matTooltip="Click para indicar si está a corto alcance"
+                    >
+                      <div class="range-indicator">
+                        <mat-icon class="protocol-icon">{{
+                          profileData.melta!.inRange
+                            ? 'near_me'
+                            : 'near_me_disabled'
+                        }}</mat-icon>
+                        <span>¿A corto alcance?</span>
+                      </div>
+                    </div>
+                  </div>
+                </mat-card-content>
+              </mat-card>
+            </div>
           </div>
-        </div>
-      </mat-tab>
-    </mat-tab-group>
-  </mat-card-content>
-</mat-card>
+        </mat-tab>
+
+        <!-- Tab 4: Habilidades Especiales -->
+        <mat-tab>
+          <ng-template mat-tab-label>
+            <mat-icon class="tab-icon">bolt</mat-icon>
+            <span class="tab-label-text">Habilidades Especiales</span>
+          </ng-template>
+          <div class="tab-content u-padding-top-lg">
+            <div class="tab-header u-margin-bottom-lg">
+              <h3 class="tab-title">Habilidades de Daño Adicional</h3>
+              <p class="tab-description u-text-muted">
+                Configura habilidades especiales que generan daño adicional o
+                efectos únicos.
+              </p>
+            </div>
+
+            <!-- Special Abilities Grid -->
+            <div
+              class="protocols-grid u-display-grid u-grid-cols-responsive u-gap-lg u-padding-sm"
+            >
+              <!-- Extra Mortals Protocol Card -->
+              <mat-card
+                class="protocol-card"
+                [ngClass]="{
+                  active: profileData.extraMortals?.active,
+                  inactive: !profileData.extraMortals?.active,
+                  'needs-config': profileData.extraMortals?.active,
+                }"
+                (click)="toggleProtocol('extraMortals')"
+                tabindex="0"
+                (keydown.enter)="toggleProtocol('extraMortals')"
+                matTooltip="Click para activar/desactivar"
+              >
+                <mat-card-header>
+                  <mat-card-title
+                    class="protocol-card-title u-display-flex u-align-items-center"
+                  >
+                    <mat-icon class="protocol-icon u-margin-right-sm"
+                      >bolt</mat-icon
+                    >
+                    Mortales Adicionales
+                  </mat-card-title>
+                </mat-card-header>
+                <mat-card-content>
+                  <p
+                    class="protocol-description u-text-muted u-font-sm u-margin-bottom-md"
+                  >
+                    Genera heridas mortales adicionales cuando se cumple un
+                    desencadenante específico.
+                  </p>
+                  <div
+                    *ngIf="profileData.extraMortals?.active"
+                    class="custom-dependent-input u-display-flex u-flex-direction-column u-gap-sm"
+                    (click)="$event.stopPropagation()"
+                  >
+                    <div class="custom-input-container">
+                      <label class="custom-input-label"
+                        >EN (X+) PARA ACTIVAR</label
+                      >
+                      <div class="custom-input-wrapper">
+                        <input
+                          type="number"
+                          class="custom-input"
+                          [(ngModel)]="profileData.extraMortals!.on"
+                          (ngModelChange)="onProfileDataChange()"
+                          min="2"
+                          max="6"
+                        />
+                        <mat-icon
+                          class="custom-help-icon"
+                          matTooltip="Umbral de tirada para activar los mortales adicionales."
+                          >help_outline</mat-icon
+                        >
+                      </div>
+                    </div>
+                    <div class="custom-input-container">
+                      <label class="custom-input-label"
+                        >CANTIDAD MORTALES</label
+                      >
+                      <div class="custom-input-wrapper">
+                        <input
+                          type="text"
+                          class="custom-input"
+                          [(ngModel)]="profileData.extraMortals!.amount"
+                          (ngModelChange)="onProfileDataChange()"
+                          placeholder="D3"
+                        />
+                        <mat-icon
+                          class="custom-help-icon"
+                          matTooltip="Cantidad de heridas mortales adicionales a infligir."
+                          >help_outline</mat-icon
+                        >
+                      </div>
+                    </div>
+                  </div>
+                </mat-card-content>
+              </mat-card>
+
+              <!-- Placeholder for Future Special Abilities -->
+              <mat-card class="protocol-card placeholder-card">
+                <mat-card-header>
+                  <mat-card-title
+                    class="protocol-card-title u-display-flex u-align-items-center"
+                  >
+                    <mat-icon
+                      class="protocol-icon u-margin-right-sm u-text-muted"
+                      >add_circle_outline</mat-icon
+                    >
+                    <span class="u-text-muted">Habilidades Futuras</span>
+                  </mat-card-title>
+                </mat-card-header>
+                <mat-card-content>
+                  <p class="protocol-description u-text-muted u-font-sm">
+                    Esta sección se expandirá con más habilidades especiales en
+                    futuras actualizaciones.
+                  </p>
+                  <div
+                    class="placeholder-content u-text-align-center u-padding-lg"
+                  >
+                    <mat-icon class="u-text-muted u-font-xl"
+                      >construction</mat-icon
+                    >
+                    <p class="u-text-muted u-margin-top-sm">
+                      Próximamente más opciones
+                    </p>
+                  </div>
+                </mat-card-content>
+              </mat-card>
+            </div>
+          </div>
+        </mat-tab>
+      </mat-tab-group>
+    </mat-card-content>
+  </mat-card>
+</app-profile-panel>

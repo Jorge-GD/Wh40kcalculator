@@ -44,3 +44,24 @@
     opacity: 0;
   }
 }
+
+// Mixin for smooth collapsible panels
+@mixin collapsible-panel($max-height: 1000px, $duration: 0.3s) {
+  overflow: hidden;
+  transition:
+    max-height $duration ease-in-out,
+    opacity $duration ease-in-out,
+    padding $duration ease-in-out;
+
+  &.collapsed {
+    max-height: 0;
+    opacity: 0;
+    padding-top: 0;
+    padding-bottom: 0;
+  }
+
+  &.expanded {
+    max-height: $max-height;
+    opacity: 1;
+  }
+}

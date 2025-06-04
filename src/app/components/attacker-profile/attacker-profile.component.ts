@@ -22,6 +22,7 @@ import { MatCardModule } from '@angular/material/card';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatMenuModule, MatMenuTrigger } from '@angular/material/menu'; // Import MatMenuTrigger
+import { ProfilePanelComponent } from '../profile-panel/profile-panel.component';
 
 import {
   AttackerProfile,
@@ -51,6 +52,7 @@ import { Subscription } from 'rxjs'; // Import Subscription
     MatToolbarModule,
     MatTabsModule, // Add MatTabsModule here
     MatMenuModule, // Add MatMenuModule here
+    ProfilePanelComponent,
   ],
   templateUrl: './attacker-profile.component.html',
   styleUrls: ['./attacker-profile.component.scss'],
