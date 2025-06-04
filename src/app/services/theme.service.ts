@@ -1,6 +1,9 @@
 import { Injectable, Renderer2, RendererFactory2, Inject, PLATFORM_ID } from '@angular/core';
 import { DOCUMENT, isPlatformBrowser } from '@angular/common';
-import { BehaviorSubject } from 'rxjs'; // Import BehaviorSubject
+import { BehaviorSubject } from 'rxjs';
+import { Store } from '@ngrx/store';
+import { setTheme } from '../state/theme.actions';
+import { selectCurrentTheme } from '../state/theme.reducer';
 
 @Injectable({
   providedIn: 'root'
@@ -8,7 +11,6 @@ import { BehaviorSubject } from 'rxjs'; // Import BehaviorSubject
 export class ThemeService {
   private renderer: Renderer2;
   private currentThemeClassName: string = 'imperium-dark'; // Default theme
-  private readonly THEME_STORAGE_KEY = 'mathhammer-theme';
 
   // Observable for the current theme
   private currentThemeSubject = new BehaviorSubject<string>(this.currentThemeClassName);
@@ -25,34 +27,24 @@ export class ThemeService {
   constructor(
     private rendererFactory: RendererFactory2,
     @Inject(DOCUMENT) private document: Document,
-    @Inject(PLATFORM_ID) private platformId: object
+    @Inject(PLATFORM_ID) private platformId: object,
+    private store: Store
   ) {
     this.renderer = this.rendererFactory.createRenderer(null, null);
-    this.loadTheme();
-  }
-
-  private loadTheme(): void {
     if (isPlatformBrowser(this.platformId)) {
-      const storedTheme = localStorage.getItem(this.THEME_STORAGE_KEY);
-      if (storedTheme && this.availableThemes.some(t => t.value === storedTheme)) {
-        this.setThemeInternal(storedTheme, false);
-      } else {
-        this.setThemeInternal(this.currentThemeClassName); // Apply default
-      }
-    } else {
-      this.applyThemeClass(this.currentThemeClassName); // Apply default for SSR
+      this.store.select(selectCurrentTheme).subscribe(theme => {
+        this.setThemeInternal(theme);
+      });
     }
   }
 
-  private setThemeInternal(themeClassName: string, savePreference: boolean = true): void {
+
+  private setThemeInternal(themeClassName: string): void {
     const oldTheme = this.currentThemeClassName;
     this.currentThemeClassName = themeClassName;
     this.currentThemeSubject.next(themeClassName); // Notify subscribers
 
     if (isPlatformBrowser(this.platformId)) {
-      if (savePreference) {
-        localStorage.setItem(this.THEME_STORAGE_KEY, themeClassName);
-      }
       if (oldTheme) {
         this.renderer.removeClass(this.document.body, oldTheme);
       }
@@ -63,7 +55,7 @@ export class ThemeService {
   }
 
   setTheme(themeClassName: string): void {
-    this.setThemeInternal(themeClassName, true);
+    this.store.dispatch(setTheme({ theme: themeClassName }));
   }
 
   private applyThemeClass(themeClassName: string): void {

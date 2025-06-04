@@ -4,6 +4,9 @@ import { provideRouter } from '@angular/router';
 import { routes } from './app.routes';
 import { provideClientHydration } from '@angular/platform-browser';
 import { provideAnimations } from '@angular/platform-browser/animations';
+import { provideStore, provideState } from '@ngrx/store';
+import { themeFeature } from './state/theme.reducer';
+import { hydrationMetaReducer } from './state/hydration.metareducer';
 
 // Import Angular Material modules
 import { MatButtonModule } from '@angular/material/button';
@@ -21,6 +24,8 @@ export const appConfig: ApplicationConfig = {
     provideRouter(routes),
     provideClientHydration(),
     provideAnimations(), // Required for Angular Material animations
+    provideStore({ metaReducers: [hydrationMetaReducer] }),
+    provideState(themeFeature),
     importProvidersFrom([ // Import Angular Material modules here
       MatButtonModule,
       MatInputModule,
