@@ -10,7 +10,7 @@
     "lint": "eslint . --ext .ts --config .eslintrc.cjs",
     "lint:fix": "eslint . --ext .ts --config .eslintrc.cjs --fix",
     "format": "prettier --write \"**/*.{ts,js,json,html,scss,md}\"",
-    "deploy": "ng build --configuration production && npx gh-pages -d dist/mathhammer-ng -b gh-pages"
+    "deploy": "ng build --configuration production && npx gh-pages -d dist/mathhammer-ng -b gh-pages",
     "prepare": "husky install"
   },
   "private": true,
