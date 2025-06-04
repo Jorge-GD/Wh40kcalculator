@@ -10,7 +10,7 @@ import { CommonModule } from '@angular/common';
   standalone: true, // Added standalone: true
   imports: [RouterOutlet, MatSelectModule, MatFormFieldModule, CommonModule],
   templateUrl: './app.component.html',
-  styleUrl: './app.component.scss'
+  styleUrls: ['./app.component.scss']
 })
 export class AppComponent implements OnInit {
   title = 'mathhammer-ng';
