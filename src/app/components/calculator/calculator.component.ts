@@ -46,6 +46,10 @@ export class CalculatorComponent implements OnInit, OnDestroy {
   sectionTitle = 'PERFILES DEL ATACANTE';
   currentTheme$: Observable<string>;
 
+  // Custom ripple configuration for subtle feedback
+  rippleColor = 'var(--color-accent-glow)';
+  rippleAnimation = { enterDuration: 250, exitDuration: 150 };
+
   private ngUnsubscribe = new Subject<void>();
 
   constructor(
