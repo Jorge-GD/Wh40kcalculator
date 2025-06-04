@@ -24,7 +24,7 @@ export class ThemeService {
   constructor(
     private rendererFactory: RendererFactory2,
     @Inject(DOCUMENT) private document: Document,
-    @Inject(PLATFORM_ID) private platformId: Object
+    @Inject(PLATFORM_ID) private platformId: object
   ) {
     this.renderer = this.rendererFactory.createRenderer(null, null);
     this.loadTheme();
