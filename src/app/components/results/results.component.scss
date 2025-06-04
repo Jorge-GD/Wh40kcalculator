@@ -19,6 +19,18 @@
     margin-top: 1.5rem; // Consistent with codigo.html
 }
 
+.results-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: var(--spacing-md);
+}
+
+@media (max-width: 600px) {
+    .results-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
 // The HTML uses inline styles for the second .final-damage-container and its .final-damage-value.
 // If preferred, these could be moved to classes:
 

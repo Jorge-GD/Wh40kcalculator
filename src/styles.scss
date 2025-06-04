@@ -1099,6 +1099,16 @@ body.theme-imperium-light {
     justify-content: center; align-items: center; gap: 1rem;
     margin: 2rem auto 1.5rem auto; padding: 0 1rem; max-width: 600px;
 }
+
+@media (min-width: 600px) {
+    .action-buttons-container {
+        flex-direction: row;
+    }
+
+    .button-cogitator {
+        width: auto;
+    }
+}
 .button-cogitator {
     font-family: var(--font-gothic);
     color: var(--color-text-header-main);
