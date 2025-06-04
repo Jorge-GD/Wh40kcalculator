@@ -116,7 +116,9 @@ export class AttackerProfileComponent implements OnInit, OnDestroy {
     if (this.profile && this.profile.id) {
       this.attackerProfileService.setFocusOnField(this.profile.id, field);
     }
-  }  updateProfileName(event: Event): void {
+  }
+
+  updateProfileName(event: Event): void {
     const newName = (event.target as HTMLInputElement).value;
     if (this.profile) {
       this.profile.name = newName;
