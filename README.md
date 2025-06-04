@@ -1,8 +1,21 @@
-# MathhammerNg
+# Warhammer 40K Calculator (Wh40kcalculator)
+
+A comprehensive mathhammer calculator for Warhammer 40,000 designed to help players calculate combat probabilities and optimize their tactical decisions.
+
+## Features
+
+- **Attacker Profile Configuration**: Configure weapon stats including attacks, skill, strength, AP, and damage
+- **Combat Phase Modifiers**: Support for hit modifiers, wound modifiers, and special abilities
+- **Advanced Protocols**: Implementation of game rules like Sustained Hits, Lethal Hits, Critical Hit modifiers, and more
+- **Real-time Calculations**: Instant probability calculations as you modify parameters
+- **Multiple Profiles**: Support for multiple attacker and defender profiles
+- **Modern UI**: Clean, responsive Angular Material interface
+
+## Development
 
 This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 19.2.13.
 
-## Development server
+### Development server
 
 To start a local development server, run:
 
@@ -12,21 +25,7 @@ ng serve
 
 Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
 
-## Code scaffolding
-
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
-
-```bash
-ng generate component component-name
-```
-
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
-
-```bash
-ng generate --help
-```
-
-## Building
+### Building
 
 To build the project run:
 
@@ -36,7 +35,7 @@ ng build
 
 This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
 
-## Running unit tests
+### Running unit tests
 
 To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
 
@@ -44,15 +43,12 @@ To execute unit tests with the [Karma](https://karma-runner.github.io) test runn
 ng test
 ```
 
-## Running end-to-end tests
+## Project Structure
 
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+- `src/app/components/` - Angular components for UI
+- `src/app/models/` - TypeScript models for data structures
+- `src/app/services/` - Services for business logic and calculations
+- `src/app/styles/` - Shared styles and utilities
 
 ## Additional Resources
 
