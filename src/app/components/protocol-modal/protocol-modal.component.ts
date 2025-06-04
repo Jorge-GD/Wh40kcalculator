@@ -99,7 +99,8 @@ export interface ProtocolField {
         <button mat-button (click)="onCancel()" class="cancel-button">
           Cancelar
         </button>
-        <button mat-raised-button color="primary" (click)="onSave()" class="save-button">
+        <button mat-raised-button color="primary" (click)="onSave()" class="save-button"
+                [matRippleColor]="rippleColor" [matRippleAnimation]="rippleAnimation">
           Guardar
         </button>
       </div>
@@ -185,6 +186,10 @@ export interface ProtocolField {
 })
 export class ProtocolModalComponent {
   values: { [key: string]: any } = {};
+
+  // Custom ripple configuration reused in buttons
+  rippleColor = 'var(--color-accent-glow)';
+  rippleAnimation = { enterDuration: 250, exitDuration: 150 };
 
   constructor(
     public dialogRef: MatDialogRef<ProtocolModalComponent>,

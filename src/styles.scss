@@ -26,7 +26,7 @@ $mathhammer-ng-theme: mat.m2-define-dark-theme((
     warn: $mathhammer-ng-warn,
   ),
   typography: mat.m2-define-typography-config(
-    $font-family: '"Roboto", "Helvetica Neue", sans-serif'
+    $font-family: '"SF Pro Text", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif'
   ),
   density: 0
 ));
@@ -42,7 +42,7 @@ $mathhammer-ng-light-theme: mat.m2-define-light-theme((
     warn: $mathhammer-ng-warn,
   ),
   typography: mat.m2-define-typography-config(
-    $font-family: '"Roboto", "Helvetica Neue", sans-serif'
+    $font-family: '"SF Pro Text", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif'
   ),
   density: 0
 ));
@@ -200,7 +200,7 @@ $mathhammer-ng-light-theme: mat.m2-define-light-theme((
 html, body { height: 100%; }
 body {
   margin: 0;
-  font-family: var(--font-sans-condensed, \"Roboto\", \"Helvetica Neue\", sans-serif); // Fallback font
+  font-family: var(--font-sans-condensed, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif); // Fallback font
   background-color: var(--color-background-main); // Use CSS variable
   color: var(--color-primary-text); // Use CSS variable
   transition: background-color 0.3s ease, color 0.3s ease; // Smooth theme transition
@@ -1342,4 +1342,11 @@ body.light-theme {
   height: auto;
   width: auto;
   font-size: 14px;
+}
+/* Subtle Material ripple customization */
+.mat-mdc-button-base .mat-ripple-element,
+.mat-mdc-icon-button .mat-ripple-element {
+  background-color: var(--color-accent-glow, rgba(255, 255, 255, 0.3)) !important;
+  opacity: 0.2;
+  animation-duration: 300ms !important;
 }
