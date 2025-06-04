@@ -1371,3 +1371,10 @@ body.light-theme {
   width: auto;
   font-size: 14px;
 }
+/* Subtle Material ripple customization */
+.mat-mdc-button-base .mat-ripple-element,
+.mat-mdc-icon-button .mat-ripple-element {
+  background-color: var(--color-accent-glow, rgba(255, 255, 255, 0.3)) !important;
+  opacity: 0.2;
+  animation-duration: 300ms !important;
+}
