@@ -4,11 +4,18 @@ import { ThemeService } from './services/theme.service';
 import { MatSelectModule } from '@angular/material/select';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { CommonModule } from '@angular/common';
+import { ThemeToggleComponent } from './components/theme-toggle/theme-toggle.component';
 
 @Component({
   selector: 'app-root',
   standalone: true, // Added standalone: true
-  imports: [RouterOutlet, MatSelectModule, MatFormFieldModule, CommonModule],
+  imports: [
+    RouterOutlet,
+    MatSelectModule,
+    MatFormFieldModule,
+    CommonModule,
+    ThemeToggleComponent
+  ],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
