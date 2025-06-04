@@ -76,10 +76,18 @@ describe('ResultsComponent', () => {
       totalModelsKilled: 0,
       profileResults: []
     };
-    
+
     component.totalResults = emptyResults;
     fixture.detectChanges();
-    
+
     expect(component.totalResults.profileResults.length).toBe(0);
+  });
+
+  it('should format NaN and Infinity as 0', () => {
+    const resultNaN = component.formatNumber(NaN);
+    const resultInfinity = component.formatNumber(Infinity);
+
+    expect(resultNaN).toBe(0);
+    expect(resultInfinity).toBe(0);
   });
 });
