@@ -2,7 +2,10 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { DefenderProfileComponent } from './defender-profile.component';
-import { DefenderProfile, DEFAULT_DEFENDER_PROFILE } from '../../models/defender-profile.model';
+import {
+  DefenderProfile,
+  DEFAULT_DEFENDER_PROFILE,
+} from '../../models/defender-profile.model';
 import { DefenderProfileService } from '../../services/defender-profile.service';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -32,14 +35,16 @@ describe('DefenderProfileComponent', () => {
         MatSlideToggleModule,
         MatExpansionModule,
         MatTooltipModule,
-        DefenderProfileComponent // Import standalone component
+        DefenderProfileComponent, // Import standalone component
       ],
       providers: [
-        { provide: DefenderProfileService, useValue: mockDefenderProfileService }
+        {
+          provide: DefenderProfileService,
+          useValue: mockDefenderProfileService,
+        },
       ],
-      schemas: [NO_ERRORS_SCHEMA]
-    })
-    .compileComponents();
+      schemas: [NO_ERRORS_SCHEMA],
+    }).compileComponents();
 
     fixture = TestBed.createComponent(DefenderProfileComponent);
     component = fixture.componentInstance;
@@ -58,7 +63,6 @@ describe('DefenderProfileComponent', () => {
     expect(card).toBeTruthy();
   });
 
-
   it('should report active defensive abilities summary', () => {
     component.profile.defenderInCover = true;
     component.profile.defenderReduceAp = true;
@@ -70,6 +74,8 @@ describe('DefenderProfileComponent', () => {
   it('should emit profileChange when data updates', () => {
     spyOn(component.profileChange, 'emit');
     component.onProfileDataChange();
-    expect(component.profileChange.emit).toHaveBeenCalledWith(component.profile);
+    expect(component.profileChange.emit).toHaveBeenCalledWith(
+      component.profile
+    );
   });
 });

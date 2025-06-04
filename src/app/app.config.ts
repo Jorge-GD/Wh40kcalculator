@@ -21,7 +21,8 @@ export const appConfig: ApplicationConfig = {
     provideRouter(routes),
     provideClientHydration(),
     provideAnimations(), // Required for Angular Material animations
-    importProvidersFrom([ // Import Angular Material modules here
+    importProvidersFrom([
+      // Import Angular Material modules here
       MatButtonModule,
       MatInputModule,
       MatFormFieldModule,
@@ -30,7 +31,7 @@ export const appConfig: ApplicationConfig = {
       MatIconModule,
       MatTooltipModule,
       MatSlideToggleModule,
-      MatCardModule
-    ])
-  ]
+      MatCardModule,
+    ]),
+  ],
 };

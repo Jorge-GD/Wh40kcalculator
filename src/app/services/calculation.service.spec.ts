@@ -1,6 +1,12 @@
 import { CalculationService } from './calculation.service';
-import { AttackerProfile, DEFAULT_ATTACKER_PROFILE_DATA } from '../models/attacker-profile.model';
-import { DefenderProfile, DEFAULT_DEFENDER_PROFILE } from '../models/defender-profile.model';
+import {
+  AttackerProfile,
+  DEFAULT_ATTACKER_PROFILE_DATA,
+} from '../models/attacker-profile.model';
+import {
+  DefenderProfile,
+  DEFAULT_DEFENDER_PROFILE,
+} from '../models/defender-profile.model';
 
 describe('CalculationService', () => {
   let service: CalculationService;
@@ -28,7 +34,9 @@ describe('CalculationService', () => {
   it('getHitProbabilities should increase with rerolls', () => {
     const noReroll = service.getHitProbabilities(4, 6, 'none');
     const rerollAll = service.getHitProbabilities(4, 6, 'all');
-    expect(rerollAll.probTotalSuccess).toBeGreaterThan(noReroll.probTotalSuccess);
+    expect(rerollAll.probTotalSuccess).toBeGreaterThan(
+      noReroll.probTotalSuccess
+    );
   });
 
   it('calculateTotalDamage should return results for defaults', () => {

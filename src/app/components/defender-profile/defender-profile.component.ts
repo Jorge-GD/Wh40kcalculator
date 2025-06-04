@@ -1,4 +1,11 @@
-import { Component, OnInit, Input, Output, EventEmitter, ChangeDetectorRef } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  Input,
+  Output,
+  EventEmitter,
+  ChangeDetectorRef,
+} from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { DefenderProfile } from '../../models/defender-profile.model';
@@ -34,10 +41,10 @@ import { ThemeService } from '../../services/theme.service';
     MatCardModule,
     MatChipsModule,
     MatTabsModule, // Provides tab functionality
-    MatMenuModule   // Menu support
+    MatMenuModule, // Menu support
   ],
   templateUrl: './defender-profile.component.html',
-  styleUrls: ['./defender-profile.component.scss']
+  styleUrls: ['./defender-profile.component.scss'],
 })
 export class DefenderProfileComponent implements OnInit {
   @Input() profile!: DefenderProfile;
@@ -47,10 +54,10 @@ export class DefenderProfileComponent implements OnInit {
   @Output() profileChange = new EventEmitter<DefenderProfile>();
   @Output() removeProfile = new EventEmitter<number>();
   @Output() duplicateProfile = new EventEmitter<number>();
-  
+
   isEditingName = false;
   private profileSubscription!: Subscription;
-  
+
   currentTheme: string = '';
   private themeSubscription!: Subscription;
 
@@ -61,13 +68,17 @@ export class DefenderProfileComponent implements OnInit {
 
   ngOnInit(): void {
     if (!this.profile) {
-      console.error('Defender profile not provided to app-defender-profile component');
+      console.error(
+        'Defender profile not provided to app-defender-profile component'
+      );
     }
 
-    this.themeSubscription = this.themeService.currentTheme$.subscribe(theme => {
-      this.currentTheme = theme;
-      this.cdr.markForCheck();
-    });
+    this.themeSubscription = this.themeService.currentTheme$.subscribe(
+      (theme) => {
+        this.currentTheme = theme;
+        this.cdr.markForCheck();
+      }
+    );
   }
 
   ngOnDestroy(): void {
@@ -149,9 +160,9 @@ export class DefenderProfileComponent implements OnInit {
       this.reduceApSummary,
       this.halveDamageSummary,
       this.reduceDamageFlatSummary,
-      this.fnpSummary
+      this.fnpSummary,
     ];
-    return abilities.filter(ability => ability !== null) as string[];
+    return abilities.filter((ability) => ability !== null) as string[];
   }
 
   // Method to close mat-menu when Enter is pressed on an input inside it

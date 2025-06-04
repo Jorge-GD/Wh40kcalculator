@@ -1,9 +1,15 @@
-import { Injectable, Renderer2, RendererFactory2, Inject, PLATFORM_ID } from '@angular/core';
+import {
+  Injectable,
+  Renderer2,
+  RendererFactory2,
+  Inject,
+  PLATFORM_ID,
+} from '@angular/core';
 import { DOCUMENT, isPlatformBrowser } from '@angular/common';
 import { BehaviorSubject } from 'rxjs'; // Import BehaviorSubject
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class ThemeService {
   private renderer: Renderer2;
@@ -11,14 +17,16 @@ export class ThemeService {
   private readonly THEME_STORAGE_KEY = 'mathhammer-theme';
 
   // Observable for the current theme
-  private currentThemeSubject = new BehaviorSubject<string>(this.currentThemeClassName);
+  private currentThemeSubject = new BehaviorSubject<string>(
+    this.currentThemeClassName
+  );
   public currentTheme$ = this.currentThemeSubject.asObservable();
 
-  public readonly availableThemes: { name: string, value: string }[] = [
+  public readonly availableThemes: { name: string; value: string }[] = [
     { name: 'Imperium Dark', value: 'theme-imperium-dark' },
     { name: 'Ork Rust', value: 'theme-ork-rust' },
     { name: 'Necrontyr Green', value: 'theme-necrontyr-green' },
-    { name: 'Light Theme', value: 'light-theme' }
+    { name: 'Light Theme', value: 'light-theme' },
   ];
 
   constructor(
@@ -33,7 +41,10 @@ export class ThemeService {
   private loadTheme(): void {
     if (isPlatformBrowser(this.platformId)) {
       const storedTheme = localStorage.getItem(this.THEME_STORAGE_KEY);
-      if (storedTheme && this.availableThemes.some(t => t.value === storedTheme)) {
+      if (
+        storedTheme &&
+        this.availableThemes.some((t) => t.value === storedTheme)
+      ) {
         this.setThemeInternal(storedTheme, false);
       } else {
         this.setThemeInternal(this.currentThemeClassName); // Apply default
@@ -43,7 +54,10 @@ export class ThemeService {
     }
   }
 
-  private setThemeInternal(themeClassName: string, savePreference: boolean = true): void {
+  private setThemeInternal(
+    themeClassName: string,
+    savePreference: boolean = true
+  ): void {
     const oldTheme = this.currentThemeClassName;
     this.currentThemeClassName = themeClassName;
     this.currentThemeSubject.next(themeClassName); // Notify subscribers
@@ -67,7 +81,7 @@ export class ThemeService {
 
   private applyThemeClass(themeClassName: string): void {
     if (!this.document.body.classList.contains(themeClassName)) {
-      this.availableThemes.forEach(theme => {
+      this.availableThemes.forEach((theme) => {
         if (theme.value !== themeClassName) {
           this.renderer.removeClass(this.document.body, theme.value);
         }
@@ -80,11 +94,13 @@ export class ThemeService {
     return this.currentThemeClassName;
   }
 
-  getAvailableThemes(): { name: string, value: string }[] {
+  getAvailableThemes(): { name: string; value: string }[] {
     return this.availableThemes;
   }
 
-  getThemeByClassName(className: string): { name: string, value: string } | undefined {
-    return this.availableThemes.find(t => t.value === className);
+  getThemeByClassName(
+    className: string
+  ): { name: string; value: string } | undefined {
+    return this.availableThemes.find((t) => t.value === className);
   }
 }

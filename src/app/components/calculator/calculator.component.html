@@ -61,16 +61,12 @@
           (profileChange)="updateDefenderProfile($event, i)">
         </app-defender-profile>
       </div>
-    </section>
-
-    <div class="action-buttons-container">
+    </section>    <div class="action-buttons-container">
       <button
         type="button"
         class="button-cogitator button-calculate keyboard-focus-only"
         (click)="calculate()"
         mat-raised-button
-        [matRippleColor]="rippleColor"
-        [matRippleAnimation]="rippleAnimation"
         matTooltip="Iniciar análisis (⌘Enter)"
         aria-label="Iniciar análisis">
         INICIAR ANÁLISIS

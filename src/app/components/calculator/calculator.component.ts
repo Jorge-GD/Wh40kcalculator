@@ -1,18 +1,28 @@
-import { Component, OnInit, OnDestroy, ChangeDetectorRef, HostListener } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  OnDestroy,
+  ChangeDetectorRef,
+  HostListener,
+} from '@angular/core';
 import { AttackerProfileService } from '../../services/attacker-profile.service';
 import { DefenderProfileService } from '../../services/defender-profile.service';
 import { CalculationService } from '../../services/calculation.service';
-import { AttackerProfile, DEFAULT_ATTACKER_PROFILE_DATA } from '../../models/attacker-profile.model';
-import { DefenderProfile, DEFAULT_DEFENDER_PROFILE } from '../../models/defender-profile.model';
-import { CalculationResult, TotalResults } from '../../models/calculation-result.model';
+import {
+  AttackerProfile,
+  DEFAULT_ATTACKER_PROFILE_DATA,
+} from '../../models/attacker-profile.model';
+import {
+  DefenderProfile,
+  DEFAULT_DEFENDER_PROFILE,
+} from '../../models/defender-profile.model';
+import { TotalResults } from '../../models/calculation-result.model';
 import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
 import { CommonModule } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import { MatRippleModule } from '@angular/material/core';
 import { FormsModule } from '@angular/forms';
 import { AttackerProfileComponent } from '../attacker-profile/attacker-profile.component';
 import { DefenderProfileComponent } from '../defender-profile/defender-profile.component';
@@ -24,19 +34,18 @@ import { Observable } from 'rxjs';
   selector: 'app-calculator',
   standalone: true,
   imports: [
-    CommonModule, 
-    MatButtonModule, 
-    MatIconModule, 
+    CommonModule,
+    MatButtonModule,
+    MatIconModule,
     MatFormFieldModule,
     MatInputModule,
-    MatRippleModule,
     FormsModule,
-    AttackerProfileComponent, 
-    DefenderProfileComponent, 
-    ResultsComponent
+    AttackerProfileComponent,
+    DefenderProfileComponent,
+    ResultsComponent,
   ],
   templateUrl: './calculator.component.html',
-  styleUrls: ['./calculator.component.scss']
+  styleUrls: ['./calculator.component.scss'],
 })
 export class CalculatorComponent implements OnInit, OnDestroy {
   attackerProfiles: AttackerProfile[] = [];
@@ -84,7 +93,7 @@ export class CalculatorComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     // Initialize with one attacker profile
     this.addAttackerProfile();
-    
+
     // Initialize with one defender profile
     this.addDefenderProfile();
   }
@@ -99,7 +108,7 @@ export class CalculatorComponent implements OnInit, OnDestroy {
       const newProfile: AttackerProfile = {
         id: Date.now() + Math.random(),
         name: `Perfil de Atacante ${this.attackerProfiles.length + 1}`,
-        data: { ...DEFAULT_ATTACKER_PROFILE_DATA }
+        data: { ...DEFAULT_ATTACKER_PROFILE_DATA },
       };
       this.attackerProfiles.push(newProfile);
     }
@@ -118,7 +127,7 @@ export class CalculatorComponent implements OnInit, OnDestroy {
     this.attackerProfiles[index] = {
       id: Date.now() + Math.random(),
       name: `Perfil de Atacante ${index + 1}`,
-      data: { ...DEFAULT_ATTACKER_PROFILE_DATA }
+      data: { ...DEFAULT_ATTACKER_PROFILE_DATA },
     };
   }
 
@@ -133,9 +142,9 @@ export class CalculatorComponent implements OnInit, OnDestroy {
       const duplicatedProfile: AttackerProfile = {
         id: Date.now() + Math.random(),
         name: `${originalProfile.name} (Copia)`,
-        data: JSON.parse(JSON.stringify(originalProfile.data))
+        data: JSON.parse(JSON.stringify(originalProfile.data)),
       };
-      
+
       this.attackerProfiles.splice(index + 1, 0, duplicatedProfile);
     }
   }
@@ -152,7 +161,7 @@ export class CalculatorComponent implements OnInit, OnDestroy {
         ...DEFAULT_DEFENDER_PROFILE,
         id: `defender-${Date.now()}-${Math.random()}`,
         name: `Perfil de Defensor ${this.defenderProfiles.length + 1}`,
-        saveOrder: this.defenderProfiles.length + 1
+        saveOrder: this.defenderProfiles.length + 1,
       };
       this.defenderProfiles.push(newProfile);
     }
@@ -171,7 +180,7 @@ export class CalculatorComponent implements OnInit, OnDestroy {
       ...DEFAULT_DEFENDER_PROFILE,
       id: `defender-${Date.now()}-${Math.random()}`,
       name: `Perfil de Defensor ${index + 1}`,
-      saveOrder: index + 1
+      saveOrder: index + 1,
     };
   }
 
@@ -189,18 +198,24 @@ export class CalculatorComponent implements OnInit, OnDestroy {
         name: `${originalProfile.name} (Copia)`,
         // saveOrder will be copied, might need adjustment based on UI/UX for ordering
       };
-      
+
       this.defenderProfiles.splice(index + 1, 0, duplicatedProfile);
     }
   }
 
-  updateDefenderProfile(updatedProfile: DefenderProfile, index: number): void { // Added index parameter
-    if (index >= 0 && index < this.defenderProfiles.length) { // Check bounds
+  updateDefenderProfile(updatedProfile: DefenderProfile, index: number): void {
+    // Added index parameter
+    if (index >= 0 && index < this.defenderProfiles.length) {
+      // Check bounds
       this.defenderProfiles[index] = updatedProfile;
     }
   }
 
-  trackByProfileId(index: number, profile: AttackerProfile | DefenderProfile): string | number { // Changed return type
+  trackByProfileId(
+    index: number,
+    profile: AttackerProfile | DefenderProfile
+  ): string | number {
+    // Changed return type
     return profile.id;
   }
 
@@ -223,11 +238,14 @@ export class CalculatorComponent implements OnInit, OnDestroy {
     // Create copies of all profiles
     const copiesToAdd: AttackerProfile[] = [];
     for (const profile of this.attackerProfiles) {
-      if (this.attackerProfiles.length + copiesToAdd.length < this.maxAttackerProfiles) {
+      if (
+        this.attackerProfiles.length + copiesToAdd.length <
+        this.maxAttackerProfiles
+      ) {
         const copy: AttackerProfile = {
           id: Date.now() + Math.random(),
           name: `${profile.name} (Copia)`,
-          data: JSON.parse(JSON.stringify(profile.data))
+          data: JSON.parse(JSON.stringify(profile.data)),
         };
         copiesToAdd.push(copy);
       }
@@ -241,7 +259,8 @@ export class CalculatorComponent implements OnInit, OnDestroy {
   }
 
   calculate(): void {
-    if (this.attackerProfiles.length > 0 && this.defenderProfiles.length > 0) { // Check defenderProfiles length
+    if (this.attackerProfiles.length > 0 && this.defenderProfiles.length > 0) {
+      // Check defenderProfiles length
       this.calculationResults = this.calculationService.calculateTotalDamage(
         this.attackerProfiles,
         this.defenderProfiles // Pass the array of defender profiles

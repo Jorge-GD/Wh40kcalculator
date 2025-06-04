@@ -60,7 +60,7 @@ export interface AttackerProfileData {
     value: string;
     inRange: boolean;
   };
-  
+
   // Twin-linked (moved here for better organization)
   twinLinked: {
     active: boolean;
@@ -97,13 +97,13 @@ export interface AttackerProfileData {
 }
 
 export const DEFAULT_ATTACKER_PROFILE_DATA: AttackerProfileData = {
-  attacks: "10",
+  attacks: '10',
   skill: 3,
   strength: 5,
   ap: 1,
-  damage: "1",
+  damage: '1',
   // Protocolos de Impacto Avanzados
-  hitRerollType: "none",
+  hitRerollType: 'none',
   shootingModifier: { active: false, value: 0 },
   critHitMod: { active: false, value: 5 },
   sustainedHits: { active: false, value: 1 },
@@ -115,22 +115,22 @@ export const DEFAULT_ATTACKER_PROFILE_DATA: AttackerProfileData = {
   blast: false,
 
   // Protocolos de Herida Avanzados
-  woundModifiers: "none",
+  woundModifiers: 'none',
   lance: { active: false, charged: false },
   plusOneToWoundGeneral: false,
-  woundRerollType: "none",
+  woundRerollType: 'none',
   devastatingWounds: { active: false },
   anti: { active: false, keyword: 'INFANTRY', value: 4 },
-  melta: { active: false, value: "D3", inRange: false },
+  melta: { active: false, value: 'D3', inRange: false },
   twinLinked: { active: false },
   // Habilidades de Daño Adicional / Mortales
-  extraMortals: { active: false, on: 6, amount: "D3" },
+  extraMortals: { active: false, on: 6, amount: 'D3' },
   // Legacy properties
   hitModifier: 0,
   woundModifier: 0,
   extraMortalsActive: false,
   extraMortalsOn: 6,
-  extraMortalsAmount: "D3",
+  extraMortalsAmount: 'D3',
   // Template compatibility properties
   critHitModActive: false,
   critHitValue: 5,
@@ -142,9 +142,9 @@ export const DEFAULT_ATTACKER_PROFILE_DATA: AttackerProfileData = {
   blastActive: false,
   lanceCharged: false,
   antiActive: false,
-  antiKeyword: "INFANTRY", // Ensured this matches the main anti object structure
+  antiKeyword: 'INFANTRY', // Ensured this matches the main anti object structure
   antiThreshold: 4,
   meltaActive: false,
-  meltaDamage: "D3",
-  meltaInRange: false
+  meltaDamage: 'D3',
+  meltaInRange: false,
 };

@@ -1,4 +1,12 @@
-import { Component, EventEmitter, Input, OnInit, Output, OnDestroy, ChangeDetectorRef } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnInit,
+  Output,
+  OnDestroy,
+  ChangeDetectorRef,
+} from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { MatInputModule } from '@angular/material/input';
@@ -15,7 +23,11 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatMenuModule, MatMenuTrigger } from '@angular/material/menu'; // Import MatMenuTrigger
 
-import { AttackerProfile, AttackerProfileData, DEFAULT_ATTACKER_PROFILE_DATA } from '../../models/attacker-profile.model';
+import {
+  AttackerProfile,
+  AttackerProfileData,
+  DEFAULT_ATTACKER_PROFILE_DATA,
+} from '../../models/attacker-profile.model';
 import { AttackerProfileService } from '../../services/attacker-profile.service';
 import { ThemeService } from '../../services/theme.service'; // Import ThemeService
 import { Subscription } from 'rxjs'; // Import Subscription
@@ -38,10 +50,10 @@ import { Subscription } from 'rxjs'; // Import Subscription
     MatCardModule,
     MatToolbarModule,
     MatTabsModule, // Add MatTabsModule here
-    MatMenuModule // Add MatMenuModule here
+    MatMenuModule, // Add MatMenuModule here
   ],
   templateUrl: './attacker-profile.component.html',
-  styleUrls: ['./attacker-profile.component.scss']
+  styleUrls: ['./attacker-profile.component.scss'],
 })
 export class AttackerProfileComponent implements OnInit, OnDestroy {
   @Input() profile!: AttackerProfile;
@@ -74,15 +86,20 @@ export class AttackerProfileComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    this.profileData = this.profile ? { ...this.profile.data } : { ...DEFAULT_ATTACKER_PROFILE_DATA };
+    this.profileData = this.profile
+      ? { ...this.profile.data }
+      : { ...DEFAULT_ATTACKER_PROFILE_DATA };
     // Subscribe to theme changes
-    this.themeSubscription = this.themeService.currentTheme$.subscribe(theme => {
-      this.currentTheme = theme;
-      this.cdr.markForCheck(); // Trigger change detection if needed
-    });
+    this.themeSubscription = this.themeService.currentTheme$.subscribe(
+      (theme) => {
+        this.currentTheme = theme;
+        this.cdr.markForCheck(); // Trigger change detection if needed
+      }
+    );
   }
 
-  ngOnDestroy(): void { // Implement ngOnDestroy
+  ngOnDestroy(): void {
+    // Implement ngOnDestroy
     if (this.themeSubscription) {
       this.themeSubscription.unsubscribe();
     }
@@ -152,22 +169,39 @@ export class AttackerProfileComponent implements OnInit, OnDestroy {
     if (!this.profileData) return summary;
 
     if (this.profileData.hitRerollType !== 'none') {
-      summary.push(`Rep. Impacto: ${this.profileData.hitRerollType === 'ones' ? '1s' : 'Todos'}`);
+      summary.push(
+        `Rep. Impacto: ${this.profileData.hitRerollType === 'ones' ? '1s' : 'Todos'}`
+      );
     }
-    if (this.profileData.shootingModifier?.active && this.profileData.shootingModifier.value !== 0) {
-      const modValue = this.profileData.shootingModifier.value > 0 ? `+${this.profileData.shootingModifier.value}` : `${this.profileData.shootingModifier.value}`;
+    if (
+      this.profileData.shootingModifier?.active &&
+      this.profileData.shootingModifier.value !== 0
+    ) {
+      const modValue =
+        this.profileData.shootingModifier.value > 0
+          ? `+${this.profileData.shootingModifier.value}`
+          : `${this.profileData.shootingModifier.value}`;
       summary.push(`Mod. Disparo: ${modValue}`);
     }
-    if (this.profileData.critHitMod?.active && this.profileData.critHitMod.value) {
+    if (
+      this.profileData.critHitMod?.active &&
+      this.profileData.critHitMod.value
+    ) {
       summary.push(`Impacto Crít. ${this.profileData.critHitMod.value}+`);
     }
-    if (this.profileData.sustainedHits?.active && this.profileData.sustainedHits.value) {
+    if (
+      this.profileData.sustainedHits?.active &&
+      this.profileData.sustainedHits.value
+    ) {
       summary.push(`Sostenidos ${this.profileData.sustainedHits.value}`);
     }
     if (this.profileData.lethalHits?.active) {
       summary.push('Letales');
     }
-    if (this.profileData.rapidFire?.active && this.profileData.rapidFire.value) {
+    if (
+      this.profileData.rapidFire?.active &&
+      this.profileData.rapidFire.value
+    ) {
       summary.push(`Rápido ${this.profileData.rapidFire.value}`);
     }
     if (this.profileData.torrent) {
@@ -190,8 +224,13 @@ export class AttackerProfileComponent implements OnInit, OnDestroy {
       }
       summary.push(modText);
     }
-    if (this.profileData.woundRerollType !== 'none' && !this.profileData.twinLinked?.active) {
-      summary.push(`Rep. Herir: ${this.profileData.woundRerollType === 'ones' ? '1s' : this.profileData.woundRerollType === 'failures' ? 'Fallos' : 'Todos'}`);
+    if (
+      this.profileData.woundRerollType !== 'none' &&
+      !this.profileData.twinLinked?.active
+    ) {
+      summary.push(
+        `Rep. Herir: ${this.profileData.woundRerollType === 'ones' ? '1s' : this.profileData.woundRerollType === 'failures' ? 'Fallos' : 'Todos'}`
+      );
     }
     if (this.profileData.twinLinked?.active) {
       summary.push('Emparejado (Rep. Herir Fallos)');
@@ -200,10 +239,14 @@ export class AttackerProfileComponent implements OnInit, OnDestroy {
       summary.push('Devastadoras');
     }
     if (this.profileData.anti?.active && this.profileData.anti.value) {
-      summary.push(`Anti-${this.profileData.antiKeyword || 'X'} ${this.profileData.anti.value}+`);
+      summary.push(
+        `Anti-${this.profileData.antiKeyword || 'X'} ${this.profileData.anti.value}+`
+      );
     }
     if (this.profileData.melta?.active && this.profileData.melta.value) {
-      summary.push(`Fusión ${this.profileData.melta.value}${this.profileData.melta.inRange ? ' (Corto Alc.)' : ''}`);
+      summary.push(
+        `Fusión ${this.profileData.melta.value}${this.profileData.melta.inRange ? ' (Corto Alc.)' : ''}`
+      );
     }
     return summary;
   }
@@ -212,8 +255,14 @@ export class AttackerProfileComponent implements OnInit, OnDestroy {
     const summary: string[] = [];
     if (!this.profileData) return summary;
 
-    if (this.profileData.extraMortals?.active && this.profileData.extraMortals.amount && this.profileData.extraMortals.on) {
-      summary.push(`Mortales Adic.: ${this.profileData.extraMortals.amount} en ${this.profileData.extraMortals.on}+`);
+    if (
+      this.profileData.extraMortals?.active &&
+      this.profileData.extraMortals.amount &&
+      this.profileData.extraMortals.on
+    ) {
+      summary.push(
+        `Mortales Adic.: ${this.profileData.extraMortals.amount} en ${this.profileData.extraMortals.on}+`
+      );
     }
     return summary;
   }
@@ -221,7 +270,12 @@ export class AttackerProfileComponent implements OnInit, OnDestroy {
   // Helper to prevent non-numeric input, allowing "d" and "+"
   filterNumericDiceInput(event: KeyboardEvent): void {
     const allowedChars = /[0-9dD+]/;
-    if (!allowedChars.test(event.key) && !['Backspace', 'Delete', 'ArrowLeft', 'ArrowRight', 'Tab'].includes(event.key)) {
+    if (
+      !allowedChars.test(event.key) &&
+      !['Backspace', 'Delete', 'ArrowLeft', 'ArrowRight', 'Tab'].includes(
+        event.key
+      )
+    ) {
       event.preventDefault();
     }
   }
@@ -239,18 +293,21 @@ export class AttackerProfileComponent implements OnInit, OnDestroy {
         if (!this.profileData.critHitMod) {
           this.profileData.critHitMod = { active: false, value: 5 };
         }
-        this.profileData.critHitMod.active = !this.profileData.critHitMod.active;
+        this.profileData.critHitMod.active =
+          !this.profileData.critHitMod.active;
         break;
 
       case 'sustainedHits':
-        this.profileData.sustainedHits.active = !this.profileData.sustainedHits.active;
+        this.profileData.sustainedHits.active =
+          !this.profileData.sustainedHits.active;
         if (!this.profileData.sustainedHits.value) {
           this.profileData.sustainedHits.value = 1;
         }
         break;
 
       case 'lethalHits':
-        this.profileData.lethalHits.active = !this.profileData.lethalHits.active;
+        this.profileData.lethalHits.active =
+          !this.profileData.lethalHits.active;
         break;
 
       case 'rapidFire':
@@ -270,7 +327,7 @@ export class AttackerProfileComponent implements OnInit, OnDestroy {
       case 'blast':
         this.profileData.blast = !this.profileData.blast;
         break;
-      
+
       case 'lance':
         if (!this.profileData.lance) {
           this.profileData.lance = { active: false, charged: false };
@@ -279,11 +336,13 @@ export class AttackerProfileComponent implements OnInit, OnDestroy {
         break;
 
       case 'twinLinked':
-        this.profileData.twinLinked.active = !this.profileData.twinLinked.active;
+        this.profileData.twinLinked.active =
+          !this.profileData.twinLinked.active;
         break;
 
       case 'devastatingWounds':
-        this.profileData.devastatingWounds.active = !this.profileData.devastatingWounds.active;
+        this.profileData.devastatingWounds.active =
+          !this.profileData.devastatingWounds.active;
         break;
 
       case 'anti':
@@ -298,7 +357,11 @@ export class AttackerProfileComponent implements OnInit, OnDestroy {
 
       case 'melta':
         if (!this.profileData.melta) {
-          this.profileData.melta = { active: false, value: 'D3', inRange: false };
+          this.profileData.melta = {
+            active: false,
+            value: 'D3',
+            inRange: false,
+          };
         }
         this.profileData.melta.active = !this.profileData.melta.active;
         break;
@@ -311,9 +374,14 @@ export class AttackerProfileComponent implements OnInit, OnDestroy {
 
       case 'extraMortals':
         if (!this.profileData.extraMortals) {
-          this.profileData.extraMortals = { active: false, on: 6, amount: 'D3' };
+          this.profileData.extraMortals = {
+            active: false,
+            on: 6,
+            amount: 'D3',
+          };
         }
-        this.profileData.extraMortals.active = !this.profileData.extraMortals.active;
+        this.profileData.extraMortals.active =
+          !this.profileData.extraMortals.active;
         break;
 
       default:

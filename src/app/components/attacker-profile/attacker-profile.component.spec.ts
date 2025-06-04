@@ -1,7 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { By } from '@angular/platform-browser';
 import { AttackerProfileComponent } from './attacker-profile.component';
 import {
   AttackerProfile,
@@ -69,7 +68,9 @@ describe('AttackerProfileComponent', () => {
 
   it('should render the attacker profile card', () => {
     const compiled = fixture.nativeElement as HTMLElement;
-    const card = compiled.querySelector('.attacker-profile-card') as HTMLElement;
+    const card = compiled.querySelector(
+      '.attacker-profile-card'
+    ) as HTMLElement;
     expect(card).toBeTruthy();
   });
 

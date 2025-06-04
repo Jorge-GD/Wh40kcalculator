@@ -24,7 +24,7 @@ export interface DefenderProfile {
     vsMortalsActive: boolean;
     vsMortalsValue: number;
   };
-  
+
   // Shorthand alias for Feel No Pain vs Mortals
   fnpVsMortals?: {
     active: boolean;
@@ -50,19 +50,19 @@ export const DEFAULT_DEFENDER_PROFILE: DefenderProfile = {
   toughness: 4,
   saveSv: 4,
   invulnSave: 0,
-  
+
   defenderInCover: false,
   defenderModToBeHit: false,
   defenderModToBeWounded: false,
   defenderReduceAp: false,
   defenderHalveDamage: false,
   defenderReduceDamageFlat: false,
-  
+
   feelNoPain: {
     active: false,
     value: 0,
     vsMortalsActive: false,
-    vsMortalsValue: 0
+    vsMortalsValue: 0,
   },
 
   // Legacy properties
@@ -72,5 +72,5 @@ export const DEFAULT_DEFENDER_PROFILE: DefenderProfile = {
   reduceAP: false,
   damageReductionHalved: false,
   damageReductionFlat: 0,
-  saveModifier: 0
+  saveModifier: 0,
 };

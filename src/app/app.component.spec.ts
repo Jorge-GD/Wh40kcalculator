@@ -11,10 +11,10 @@ import { of } from 'rxjs';
 const mockThemeService = {
   getAvailableThemes: jasmine.createSpy('getAvailableThemes').and.returnValue([
     { name: 'Dark Theme', value: 'dark' },
-    { name: 'Light Theme', value: 'light' }
+    { name: 'Light Theme', value: 'light' },
   ]),
   currentTheme$: of('dark'),
-  setTheme: jasmine.createSpy('setTheme')
+  setTheme: jasmine.createSpy('setTheme'),
 };
 
 describe('AppComponent', () => {
@@ -25,11 +25,9 @@ describe('AppComponent', () => {
         NoopAnimationsModule,
         MatSelectModule,
         MatFormFieldModule,
-        RouterTestingModule
+        RouterTestingModule,
       ],
-      providers: [
-        { provide: ThemeService, useValue: mockThemeService }
-      ]
+      providers: [{ provide: ThemeService, useValue: mockThemeService }],
     }).compileComponents();
   });
 
@@ -49,7 +47,9 @@ describe('AppComponent', () => {
     fixture.detectChanges();
     const compiled = fixture.nativeElement as HTMLElement;
     expect(compiled.querySelector('mat-select')).toBeTruthy();
-    expect(compiled.querySelector('mat-label')?.textContent).toContain('Select Theme');
+    expect(compiled.querySelector('mat-label')?.textContent).toContain(
+      'Select Theme'
+    );
   });
 
   it('should initialize with available themes', () => {
@@ -58,7 +58,7 @@ describe('AppComponent', () => {
     fixture.detectChanges();
     expect(app.availableThemes).toEqual([
       { name: 'Dark Theme', value: 'dark' },
-      { name: 'Light Theme', value: 'light' }
+      { name: 'Light Theme', value: 'light' },
     ]);
     expect(app.currentTheme).toBe('dark');
   });

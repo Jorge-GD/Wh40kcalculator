@@ -13,7 +13,6 @@ import {
 } from '../../models/attacker-profile.model';
 import { TotalResults } from '../../models/calculation-result.model';
 import { ThemeService } from '../../services/theme.service';
-import { MatRippleModule } from '@angular/material/core';
 
 describe('CalculatorComponent', () => {
   let component: CalculatorComponent;
@@ -29,10 +28,9 @@ describe('CalculatorComponent', () => {
       .createSpy('calculateTotalDamage')
       .and.returnValue(dummyResults),
   };
-
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [CalculatorComponent, NoopAnimationsModule, MatRippleModule],
+      imports: [CalculatorComponent, NoopAnimationsModule],
       providers: [
         { provide: AttackerProfileService, useValue: {} },
         { provide: DefenderProfileService, useValue: {} },

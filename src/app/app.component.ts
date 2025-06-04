@@ -10,18 +10,19 @@ import { CommonModule } from '@angular/common';
   standalone: true, // Added standalone: true
   imports: [RouterOutlet, MatSelectModule, MatFormFieldModule, CommonModule],
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss']
+  styleUrls: ['./app.component.scss'],
 })
 export class AppComponent implements OnInit {
   title = 'mathhammer-ng';
-  availableThemes: { name: string, value: string }[] = [];
+  availableThemes: { name: string; value: string }[] = [];
   currentTheme: string = '';
 
   constructor(private themeService: ThemeService) {}
 
   ngOnInit(): void {
     this.availableThemes = this.themeService.getAvailableThemes();
-    this.themeService.currentTheme$.subscribe((theme: string) => { // Explicitly type theme
+    this.themeService.currentTheme$.subscribe((theme: string) => {
+      // Explicitly type theme
       this.currentTheme = theme;
     });
   }
