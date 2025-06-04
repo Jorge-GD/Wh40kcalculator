@@ -5,6 +5,7 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { MatSelectModule } from '@angular/material/select';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { RouterTestingModule } from '@angular/router/testing';
+import { ThemeToggleComponent } from './components/theme-toggle/theme-toggle.component';
 import { of } from 'rxjs';
 
 // Mock del ThemeService
@@ -25,7 +26,8 @@ describe('AppComponent', () => {
         NoopAnimationsModule,
         MatSelectModule,
         MatFormFieldModule,
-        RouterTestingModule
+        RouterTestingModule,
+        ThemeToggleComponent
       ],
       providers: [
         { provide: ThemeService, useValue: mockThemeService }
@@ -50,6 +52,13 @@ describe('AppComponent', () => {
     const compiled = fixture.nativeElement as HTMLElement;
     expect(compiled.querySelector('mat-select')).toBeTruthy();
     expect(compiled.querySelector('mat-label')?.textContent).toContain('Select Theme');
+  });
+
+  it('should render theme toggle component', () => {
+    const fixture = TestBed.createComponent(AppComponent);
+    fixture.detectChanges();
+    const compiled = fixture.nativeElement as HTMLElement;
+    expect(compiled.querySelector('app-theme-toggle')).toBeTruthy();
   });
 
   it('should initialize with available themes', () => {
