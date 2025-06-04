@@ -1,0 +1,14 @@
+<header class="app-header">
+  <h1 class="app-title">Wh40kcalculator</h1>
+  <div class="theme-controls">
+    <mat-form-field appearance="outline">
+      <mat-label>Select Theme</mat-label>
+      <mat-select [value]="currentTheme" (selectionChange)="onThemeChange($event.value)">
+        <mat-option *ngFor="let theme of availableThemes" [value]="theme.value">
+          {{ theme.name }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <app-theme-toggle></app-theme-toggle>
+  </div>
+</header>
