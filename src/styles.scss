@@ -1101,28 +1101,17 @@ body.theme-imperium-light {
 }
 .button-cogitator {
     font-family: var(--font-gothic);
-    color: var(--color-text-header-main);
-    border: 2px solid var(--color-metal-panel-border);
-    padding: 0.85rem 1.75rem; border-radius: 4px;
-    text-transform: uppercase; letter-spacing: 1.5px;
-    font-size: 1.25rem; cursor: pointer; transition: all 0.2s ease-in-out;
-    box-shadow: 3px 3px 6px rgba(0,0,0,0.6), inset 0 0 0px rgba(255,255,255,0);
-    width: 100%; // sm:w-auto; (Tailwind class)
-}
-.button-calculate {
-    background-color: var(--color-accent-red-dark);
-    border-color: var(--color-accent-red);
-    color: var(--color-text-parchment);
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    font-size: 1.25rem;
+    width: 100%; // sm:w-auto
+    @include shared.flat-button(var(--color-accent-red-dark), var(--color-text-parchment), 2px solid var(--color-metal-panel-border));
     text-shadow: 1px 1px 1px var(--color-black);
 }
-.button-calculate:hover {
-    background-color: var(--color-accent-red); border-color: var(--color-text-title); color: var(--color-white); // Consider variables for hover states too
-    box-shadow: 4px 6px 8px rgba(0,0,0,0.7), inset 1px 1px 3px rgba(0,0,0,0.2), 0 0 10px var(--color-accent-red);
-    transform: translateY(-2px);
-}
-.button-calculate:active {
-    background-color: var(--color-accent-red-dark); transform: translateY(1px);
-    box-shadow: inset 3px 3px 6px rgba(0,0,0,0.7);
+
+.button-calculate {
+    @include shared.flat-button(var(--color-accent-red-dark), var(--color-text-parchment), 2px solid var(--color-accent-red));
+    text-shadow: 1px 1px 1px var(--color-black);
 }
 
 /* ===== MEJORAS ADICIONALES UX/UI ===== */
