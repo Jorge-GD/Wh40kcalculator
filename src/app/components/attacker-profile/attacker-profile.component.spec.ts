@@ -24,32 +24,7 @@ describe('AttackerProfileComponent', () => {
   const initialProfileData: AttackerProfile = {
     id: 1,
     name: 'Test Profile 1',
-    data: {
-      attacks: 10,
-      skill: 3,
-      strength: 5,
-      ap: 1,
-      damage: '1',
-      hitRerollType: 'none',
-      critHitMod: { active: false, value: 5 },
-      sustainedHits: { active: false, value: 1 },
-      lethalHits: { active: false },
-      rapidFire: { active: false, value: 1 },
-      heavy: false,
-      attackerStationary: false,
-      torrent: false,
-      blast: false,
-      twinLinked: { active: false },
-      hitModifier: 0,
-      woundRerollType: 'none',
-      devastatingWounds: { active: false },
-      anti: { active: false, keyword: 'INFANTRY', value: 4 },
-      melta: { active: false, value: 'D3', inRange: false },
-      lance: { active: false, charged: false },
-      plusOneToWoundGeneral: false,
-      woundModifier: 0,
-      extraMortals: { active: false, on: 6, amount: 'D3' },
-    },
+    data: { ...DEFAULT_ATTACKER_PROFILE_DATA },
   };
 
   beforeEach(async () => {
@@ -85,21 +60,17 @@ describe('AttackerProfileComponent', () => {
   it('should display the profile name', () => {
     fixture.detectChanges();
     const compiled = fixture.nativeElement as HTMLElement;
-    // Verificar que se muestra el nombre del perfil en el input correspondiente
-    const profileNameInput = compiled.querySelector(
-      '.profile-name-input input'
-    ) as HTMLInputElement;
-    expect(profileNameInput).toBeTruthy();
-    expect(profileNameInput.value).toBe('Test Profile 1');
+    const profileNameText = compiled.querySelector(
+      '.profile-name-text'
+    ) as HTMLElement;
+    expect(profileNameText).toBeTruthy();
+    expect(profileNameText.textContent?.trim()).toBe('Test Profile 1');
   });
 
-  it('should render basic input fields with initial values from profile', () => {
+  it('should render the attacker profile card', () => {
     const compiled = fixture.nativeElement as HTMLElement;
-    // Verificar que los campos numéricos aparecen en el template
-    const attacksInput = compiled.querySelector(
-      'input[type="number"]'
-    ) as HTMLInputElement;
-    expect(attacksInput).toBeTruthy();
+    const card = compiled.querySelector('.attacker-profile-card') as HTMLElement;
+    expect(card).toBeTruthy();
   });
 
   it('should enable remove button when not only profile', () => {
