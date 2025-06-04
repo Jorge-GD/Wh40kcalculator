@@ -6,7 +6,8 @@
       <mat-select
         aria-label="Selector de tema"
         [value]="currentTheme"
-        (selectionChange)="onThemeChange($event.value)">
+        (selectionChange)="onThemeChange($event.value)"
+      >
         <mat-option *ngFor="let theme of availableThemes" [value]="theme.value">
           {{ theme.name }}
         </mat-option>

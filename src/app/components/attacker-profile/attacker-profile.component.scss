@@ -36,18 +36,18 @@
     font-weight: 600;
     border-radius: 16px;
     padding: 4px 12px;
-    
+
     .attacks-label {
       font-size: 0.85rem;
       margin-right: 4px;
     }
-    
+
     .attacks-value {
       font-size: 0.9rem;
       font-weight: 700;
     }
   }
-  
+
   .attacks-visibility-btn {
     min-width: 32px;
     width: 32px;
@@ -80,15 +80,15 @@
 
   .profile-name-input {
     max-width: 300px;
-    
+
     .mat-mdc-form-field-wrapper {
       padding-bottom: 0;
     }
-    
+
     .mat-mdc-text-field-wrapper {
       padding: 8px 12px;
     }
-    
+
     input {
       font-size: 1.1rem;
       font-weight: 600;
@@ -168,8 +168,14 @@
       border-radius: 4px; // Subtle rounding
       transition: background-color 0.2s ease-in-out; // Smooth hover effect
 
-      &:hover, &:focus {
-        background-color: rgba(0,0,0,0.05); // Subtle background on hover/focus
+      &:hover,
+      &:focus {
+        background-color: rgba(
+          0,
+          0,
+          0,
+          0.05
+        ); // Subtle background on hover/focus
       }
     }
 
@@ -178,17 +184,17 @@
       // Align input text baseline with h3 text.
       // Standard appearance for mat-form-field is generally less intrusive in a toolbar.
       .mat-mdc-form-field-infix {
-        padding-top: 6px; 
+        padding-top: 6px;
         padding-bottom: 6px;
         min-height: auto; // Override default min-height if too large
       }
       input.mat-mdc-input-element {
         font-size: 1.15rem; // Match h3
-        font-weight: 500;   // Match h3
+        font-weight: 500; // Match h3
       }
       // Hide subscript wrapper to save space if no errors/hints are shown here
       .mat-mdc-form-field-subscript-wrapper {
-         display: none; 
+        display: none;
       }
     }
   }
@@ -229,16 +235,16 @@
     font-weight: 500;
   }
   // Note: expansion-panel styles removed since we moved to tab structure
-  
+
   // Styles for .base-stats-grid, .ability-toggle-group, etc.,
   // should primarily rely on Angular Material defaults and utility classes (u-*).
-  // Ensure utility classes like u-display-grid, u-grid-cols-responsive, u-gap-lg, 
-  // u-padding-sm, u-margin-bottom-xl, u-width-full, u-margin-bottom-sm, 
+  // Ensure utility classes like u-display-grid, u-grid-cols-responsive, u-gap-lg,
+  // u-padding-sm, u-margin-bottom-xl, u-width-full, u-margin-bottom-sm,
   // u-margin-top-xs, u-margin-left-lg, u-width-auto are defined globally or imported.
 
   .tooltip-icon {
     cursor: help; // Indicates a tooltip is available
-    color: rgba(0,0,0,0.54); // Standard icon color for tooltips
+    color: rgba(0, 0, 0, 0.54); // Standard icon color for tooltips
   }
 
   // Example for a utility class if not globally defined:
@@ -248,7 +254,8 @@
 }
 
 // Responsive adjustments
-@media (max-width: 768px) { // Tablet and smaller
+@media (max-width: 768px) {
+  // Tablet and smaller
   .attacker-profile-toolbar {
     height: auto; // Allow toolbar to grow in height
     flex-wrap: wrap; // Allow items to wrap to the next line
@@ -268,7 +275,7 @@
       margin-right: 0; // Reset margin
       margin-bottom: 8px; // Space below name when wrapped
     }
-    
+
     .toolbar-spacer {
       display: none; // Not needed when items are full width and ordered
     }
@@ -284,10 +291,11 @@
   // Grid and layout changes handled by new tab structure
 }
 
-@media (max-width: 480px) { // Mobile phones
+@media (max-width: 480px) {
+  // Mobile phones
   .attacker-profile-toolbar {
     padding: 8px; // Further reduce padding
-    
+
     .attacks-display {
       justify-content: space-between; // Spread chip and button
       .attacks-chip {
@@ -299,17 +307,19 @@
 
   .attacker-profile-content {
     padding: 12px; // Reduce padding for content on mobile
-    
+
     .base-stats-grid {
       // Stack form fields vertically on very small screens
-      grid-template-columns: 1fr; 
+      grid-template-columns: 1fr;
       gap: 12px; // Adjust gap
     }
   }
 }
 
 .base-stats-grid {
-  @include u.grid-cols-responsive-mixin(140px); // Adjust minmax for 5-6 items comfortably
+  @include u.grid-cols-responsive-mixin(
+    140px
+  ); // Adjust minmax for 5-6 items comfortably
   gap: var(--spacing-md); // Consistent gap from utilities
   padding-top: var(--spacing-md);
   padding-bottom: var(--spacing-lg);
@@ -350,17 +360,17 @@
   @include shared.tooltip-icon-base;
 }
 
-  // Note: attacker-profile-content styles moved to tab structure section
+// Note: attacker-profile-content styles moved to tab structure section
 
 // Remove redundant margin settings from previous implementation
 // .base-stats-grid {
-//   margin-top: 1rem; 
-//   margin-bottom: 1rem; 
+//   margin-top: 1rem;
+//   margin-bottom: 1rem;
 // }
 
 // .stat-card-icon-display {
-//   margin: 0.5rem; 
-//   cursor: pointer; 
+//   margin: 0.5rem;
+//   cursor: pointer;
 // }
 
 /* ================== TAB STRUCTURE STYLES ================== */
@@ -380,20 +390,20 @@
         align-items: center;
         gap: 8px;
         font-weight: 500;
-        
+
         .tab-icon {
           font-size: 20px;
           width: 20px;
           height: 20px;
         }
-        
+
         .tab-label-text {
           font-size: 0.95rem;
           white-space: nowrap;
         }
       }
     }
-    
+
     // Active tab styling
     &.mat-mdc-tab-active {
       .mat-mdc-tab-link .mat-mdc-tab-label-content {
@@ -420,14 +430,14 @@
   background: rgba(0, 0, 0, 0.02);
   border-radius: 8px;
   margin-bottom: 24px;
-  
+
   .tab-title {
     font-size: 1.5rem;
     font-weight: 600;
     margin: 0 0 8px 0;
     color: var(--mat-primary-text, #333);
   }
-  
+
   .tab-description {
     font-size: 0.95rem;
     margin: 0;
@@ -449,32 +459,36 @@
   border-radius: 12px;
   transition: all 0.3s ease;
   overflow: hidden;
-  
+
   &:hover {
     @include mat.elevation(6);
     transform: translateY(-2px);
   }
-  
+
   &.placeholder-card {
     background: rgba(0, 0, 0, 0.02);
     border: 2px dashed rgba(0, 0, 0, 0.1);
-    
+
     .protocol-card-title,
     .protocol-description {
       opacity: 0.6;
     }
   }
-  
+
   .mat-mdc-card-header {
     padding: 16px 16px 8px 16px;
-    background: linear-gradient(135deg, rgba(25, 118, 210, 0.05), rgba(25, 118, 210, 0.02));
+    background: linear-gradient(
+      135deg,
+      rgba(25, 118, 210, 0.05),
+      rgba(25, 118, 210, 0.02)
+    );
   }
-  
+
   .protocol-card-title {
     font-size: 1.1rem;
     font-weight: 600;
     margin: 0;
-    
+
     .protocol-icon {
       font-size: 24px;
       width: 24px;
@@ -482,19 +496,19 @@
       color: var(--mat-primary-500, #1976d2);
     }
   }
-  
+
   .mat-mdc-card-content {
     padding: 16px;
   }
-  
+
   .protocol-description {
     line-height: 1.4;
     margin-bottom: 16px;
   }
-  
+
   .protocol-toggle {
     margin-bottom: 12px;
-    
+
     .mat-mdc-slide-toggle {
       .mdc-form-field {
         .mdc-form-field__label {
@@ -502,14 +516,14 @@
         }
       }
     }
-    
+
     .switch-text {
       display: block;
       margin-top: 4px;
       margin-left: 24px;
     }
   }
-  
+
   // Sub-fields styling
   .anti-fields,
   .melta-fields,
@@ -520,7 +534,7 @@
     border-radius: 8px;
     border-left: 3px solid var(--mat-primary-500, #1976d2);
   }
-  
+
   .sub-option {
     margin-top: 8px;
     margin-left: 16px;
@@ -533,16 +547,20 @@
 /* ================== ENHANCED PROTOCOL SUMMARY STYLES ================== */
 
 .active-protocols-summary {
-  background: linear-gradient(135deg, rgba(76, 175, 80, 0.05), rgba(76, 175, 80, 0.02));
+  background: linear-gradient(
+    135deg,
+    rgba(76, 175, 80, 0.05),
+    rgba(76, 175, 80, 0.02)
+  );
   border-radius: 12px;
   border-left: 4px solid #4caf50;
-  
+
   .summary-header {
     .summary-title {
       font-size: 1.2rem;
       font-weight: 600;
       color: var(--mat-primary-text, #333);
-      
+
       mat-icon {
         color: #4caf50;
         font-size: 22px;
@@ -550,70 +568,70 @@
         height: 22px;
       }
     }
-    
+
     .summary-subtitle {
       margin: 0;
       opacity: 0.7;
     }
   }
-  
+
   .no-active-protocols-message {
     text-align: center;
-    
+
     mat-icon {
       font-size: 48px;
       width: 48px;
       height: 48px;
       opacity: 0.3;
     }
-    
+
     p {
       margin: 8px 0 0 0;
       font-style: italic;
     }
   }
-  
+
   .protocol-category {
     .category-title {
       font-size: 1rem;
       font-weight: 600;
       margin: 0 0 8px 0;
-      
+
       .category-icon {
         font-size: 18px;
         width: 18px;
         height: 18px;
       }
     }
-    
+
     .protocol-chips {
       display: flex;
       flex-wrap: wrap;
       gap: 8px;
-      
+
       .summary-chip {
         border-radius: 16px;
         font-size: 0.85rem;
         font-weight: 500;
-        
+
         mat-icon[matChipAvatar] {
           font-size: 16px;
           width: 16px;
           height: 16px;
         }
-        
+
         &.hit-chip {
           background-color: rgba(255, 152, 0, 0.1);
           color: #ff9800;
           border: 1px solid rgba(255, 152, 0, 0.3);
         }
-        
+
         &.wound-chip {
           background-color: rgba(244, 67, 54, 0.1);
           color: #f44336;
           border: 1px solid rgba(244, 67, 54, 0.3);
         }
-        
+
         &.damage-chip {
           background-color: rgba(156, 39, 176, 0.1);
           color: #9c27b0;
@@ -633,7 +651,7 @@
         .tab-label-text {
           font-size: 0.8rem;
         }
-        
+
         .tab-icon {
           font-size: 18px;
           width: 18px;
@@ -642,52 +660,52 @@
       }
     }
   }
-  
+
   .tab-header {
     padding: 12px 16px;
-    
+
     .tab-title {
       font-size: 1.3rem;
     }
-    
+
     .tab-description {
       font-size: 0.9rem;
     }
   }
-  
+
   .protocols-grid {
     grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
     gap: 16px;
     padding: 4px;
   }
-  
+
   .protocol-card {
     .mat-mdc-card-header {
       padding: 12px 12px 6px 12px;
     }
-    
+
     .protocol-card-title {
       font-size: 1rem;
-      
+
       .protocol-icon {
         font-size: 20px;
         width: 20px;
         height: 20px;
       }
     }
-    
+
     .mat-mdc-card-content {
       padding: 12px;
     }
   }
-  
+
   .active-protocols-summary {
     .protocol-category .protocol-chips {
       gap: 6px;
-      
+
       .summary-chip {
         font-size: 0.8rem;
-        
+
         mat-icon[matChipAvatar] {
           font-size: 14px;
           width: 14px;
@@ -704,13 +722,13 @@
       .mat-mdc-tab-link .mat-mdc-tab-label-content {
         flex-direction: column;
         gap: 2px;
-        
+
         .tab-label-text {
           font-size: 0.75rem;
           line-height: 1.1;
           text-align: center;
         }
-        
+
         .tab-icon {
           font-size: 16px;
           width: 16px;
@@ -719,12 +737,12 @@
       }
     }
   }
-  
+
   .protocols-grid {
     grid-template-columns: 1fr;
     gap: 12px;
   }
-  
+
   .tab-header {
     .tab-title {
       font-size: 1.2rem;
@@ -764,12 +782,12 @@
 @media (prefers-contrast: high) {
   .protocol-card {
     border: 2px solid currentColor;
-    
+
     &.placeholder-card {
       border-style: dashed;
     }
   }
-  
+
   .active-protocols-summary {
     border-left-width: 6px;
   }
@@ -780,10 +798,10 @@
   .tab-content {
     animation: none;
   }
-  
+
   .protocol-card {
     transition: none;
-    
+
     &:hover {
       transform: none;
     }
@@ -797,21 +815,21 @@
   // Tab headers
   .mat-mdc-tab-label {
     color: var(--color-text-title) !important;
-    
+
     &.mdc-tab--active {
       color: var(--color-accent-green-cogitator) !important;
     }
   }
-  
+
   // Tab content text
   .tab-content {
     color: var(--color-primary-text);
-    
+
     .tab-title {
       color: var(--color-text-title);
       font-family: var(--font-gothic);
     }
-    
+
     .tab-description {
       color: var(--color-secondary-text);
       font-family: var(--font-sans-condensed);
@@ -824,24 +842,24 @@
   background-color: var(--color-protocol-card-bg) !important;
   border: 1px solid var(--color-protocol-card-border) !important;
   color: var(--color-primary-text) !important;
-  
+
   .protocol-card-title {
     color: var(--color-protocol-card-title) !important;
     font-family: var(--font-gothic) !important;
   }
-  
+
   .protocol-description {
     color: var(--color-protocol-card-description) !important;
     font-family: var(--font-sans-condensed) !important;
   }
-  
+
   .protocol-icon {
     color: var(--color-accent-green-cogitator) !important;
   }
-  
+
   &:hover {
     border-color: var(--color-accent-green-cogitator) !important;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.3) !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3) !important;
   }
 }
 
@@ -850,16 +868,16 @@
   background-color: var(--color-protocol-card-bg) !important;
   border: 1px solid var(--color-protocol-card-border) !important;
   border-left: 4px solid var(--color-accent-green-cogitator) !important;
-  
+
   .summary-title {
     color: var(--color-text-title) !important;
     font-family: var(--font-gothic) !important;
   }
-  
+
   .summary-subtitle {
     color: var(--color-secondary-text) !important;
   }
-  
+
   .category-title {
     color: var(--color-protocol-card-title) !important;
     font-family: var(--font-sans-condensed) !important;
@@ -887,7 +905,8 @@
   margin-bottom: var(--spacing-xs);
 }
 
-.custom-input, .custom-select {
+.custom-input,
+.custom-select {
   background-color: var(--color-input-bg);
   border: 1px solid var(--color-metal-interactive);
   border-radius: var(--border-radius-sm);
@@ -897,18 +916,20 @@
   padding: var(--spacing-sm) var(--spacing-md);
   width: 100%;
   min-height: 36px;
-  transition: border-color 0.2s ease, box-shadow 0.2s ease;
-  
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+
   &:focus {
     outline: none;
     border-color: var(--color-accent-green-cogitator);
     box-shadow: 0 0 0 2px rgba(var(--color-accent-green-glow), 0.2);
   }
-  
+
   &:hover {
     border-color: var(--color-metal-interactive-hover);
   }
-  
+
   &::placeholder {
     color: var(--color-secondary-text);
     opacity: 0.7;
@@ -923,7 +944,7 @@
   padding-right: 32px;
   appearance: none;
   cursor: pointer;
-  
+
   option {
     background-color: var(--color-background-dropdown);
     color: var(--color-text-dropdown-item);
@@ -942,7 +963,7 @@
   color: var(--color-secondary-text);
   cursor: help;
   margin-left: var(--spacing-xs);
-  
+
   &:hover {
     color: var(--color-accent-green-cogitator);
   }
@@ -954,7 +975,7 @@
   align-items: center;
   gap: var(--spacing-md);
   margin: var(--spacing-md) 0;
-  
+
   .custom-toggle-label {
     font-family: var(--font-sans-condensed);
     font-size: 0.85rem;
@@ -962,7 +983,7 @@
     color: var(--color-primary-text);
     cursor: pointer;
     user-select: none;
-    
+
     &.active {
       color: var(--color-accent-green-cogitator);
       font-weight: 600;
@@ -977,8 +998,10 @@
   opacity: 0;
   max-height: 0;
   overflow: hidden;
-  transition: opacity 0.3s ease, max-height 0.3s ease;
-  
+  transition:
+    opacity 0.3s ease,
+    max-height 0.3s ease;
+
   &.active {
     opacity: 1;
     max-height: 80px;
@@ -995,21 +1018,21 @@
   overflow: hidden;
   cursor: pointer;
   position: relative;
-  
+
   // Base inactive state
   &.inactive {
     background-color: var(--color-protocol-card-bg) !important;
     border: 1px solid var(--color-protocol-card-border) !important;
     opacity: 0.7;
-    
+
     .protocol-card-title {
       color: var(--color-protocol-card-title) !important;
     }
-    
+
     .protocol-description {
       color: var(--color-protocol-card-description) !important;
     }
-    
+
     &:hover {
       @include mat.elevation(4);
       opacity: 0.85;
@@ -1017,26 +1040,29 @@
       border-color: var(--color-metal-interactive-hover);
     }
   }
-  
+
   // Active state with theme colors
   &.active {
-    background: linear-gradient(135deg, 
-      rgba(var(--color-accent-green-glow-rgb, 105, 240, 174), 0.15), 
+    background: linear-gradient(
+      135deg,
+      rgba(var(--color-accent-green-glow-rgb, 105, 240, 174), 0.15),
       rgba(var(--color-accent-green-cogitator-rgb, 46, 160, 67), 0.08)
     ) !important;
     border: 2px solid var(--color-accent-green-cogitator) !important;
-    box-shadow: 0 0 12px rgba(var(--color-accent-green-glow-rgb, 105, 240, 174), 0.3);
-    
+    box-shadow: 0 0 12px
+      rgba(var(--color-accent-green-glow-rgb, 105, 240, 174), 0.3);
+
     .protocol-card-title {
       color: var(--color-accent-green-cogitator) !important;
       font-weight: 600;
-      text-shadow: 0 0 4px rgba(var(--color-accent-green-glow-rgb, 105, 240, 174), 0.4);
+      text-shadow: 0 0 4px
+        rgba(var(--color-accent-green-glow-rgb, 105, 240, 174), 0.4);
     }
-    
+
     .protocol-description {
       color: var(--color-primary-text) !important;
     }
-    
+
     // Active state indicator
     &::before {
       content: '';
@@ -1047,41 +1073,44 @@
       height: 12px;
       background-color: var(--color-accent-green-cogitator);
       border-radius: 50%;
-      box-shadow: 0 0 8px rgba(var(--color-accent-green-glow-rgb, 105, 240, 174), 0.6);
+      box-shadow: 0 0 8px
+        rgba(var(--color-accent-green-glow-rgb, 105, 240, 174), 0.6);
       z-index: 10;
     }
-    
+
     &:hover {
       @include mat.elevation(8);
       transform: translateY(-3px);
-      box-shadow: 0 0 20px rgba(var(--color-accent-green-glow-rgb, 105, 240, 174), 0.5);
+      box-shadow: 0 0 20px
+        rgba(var(--color-accent-green-glow-rgb, 105, 240, 174), 0.5);
     }
   }
-  
+
   // Disabled state for protocol cards that can't be activated
   &.disabled {
     opacity: 0.4;
     cursor: not-allowed;
-    
+
     &:hover {
       transform: none;
       box-shadow: none;
       opacity: 0.4;
     }
   }
-  
+
   // Special state for protocol cards requiring configuration
   &.needs-config {
-    background: linear-gradient(135deg, 
-      rgba(var(--color-accent-orange-rgb, 255, 152, 0), 0.1), 
+    background: linear-gradient(
+      135deg,
+      rgba(var(--color-accent-orange-rgb, 255, 152, 0), 0.1),
       rgba(var(--color-accent-orange-rgb, 255, 152, 0), 0.05)
     ) !important;
     border: 1px solid var(--color-accent-orange, #ff9800) !important;
-    
+
     .protocol-card-title {
       color: var(--color-accent-orange, #ff9800) !important;
     }
-    
+
     &::after {
       content: 'CONFIGURAR';
       position: absolute;
@@ -1106,15 +1135,15 @@
     color: var(--color-accent-green-cogitator);
     margin: var(--spacing-sm) 0;
     text-align: center;
-    
+
     &.positive {
       color: var(--color-accent-green-cogitator);
     }
-    
+
     &.negative {
       color: var(--color-accent-red, #f44336);
     }
-    
+
     &.neutral {
       color: var(--color-secondary-text);
     }
@@ -1132,17 +1161,17 @@
   background: var(--surface-variant);
   cursor: pointer;
   transition: all 0.2s ease;
-  
+
   &:hover {
     background: var(--surface-variant-hover);
     transform: translateY(-1px);
   }
-  
+
   .protocol-icon {
     font-size: 1.25rem;
     transition: color 0.2s ease;
   }
-  
+
   span {
     font-weight: 500;
     font-size: 0.875rem;
@@ -1154,7 +1183,7 @@
 .custom-protocol-toggle.active .range-indicator {
   background: var(--primary-container);
   color: var(--on-primary-container);
-  
+
   .protocol-icon {
     color: var(--primary);
   }
@@ -1163,7 +1192,7 @@
 .custom-dependent-input.inactive .lance-charge-indicator,
 .custom-protocol-toggle.inactive .range-indicator {
   opacity: 0.6;
-  
+
   .protocol-icon {
     color: var(--outline);
   }

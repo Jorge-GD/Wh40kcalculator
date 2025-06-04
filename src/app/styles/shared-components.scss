@@ -38,16 +38,16 @@
 
 @mixin profile-actions {
   color: var(--icon-color-interactive);
-  
+
   &:hover {
     background-color: var(--surface-color-hover);
   }
-  
+
   &.remove-profile-btn:hover {
     background-color: var(--state-color-danger-bg-hover);
     color: var(--state-color-danger-text);
   }
-  
+
   &.duplicate-profile-btn:hover {
     background-color: var(--state-color-success-bg-hover);
     color: var(--state-color-success-text);
@@ -65,16 +65,21 @@
   padding: var(--spacing-md); // Add padding to the card itself
   border-radius: var(--border-radius-md);
   background-color: var(--color-background-panel); // Use theme variable
-  border: 1px solid var(--color-border-panel);   // Use theme variable
-  transition: box-shadow 0.2s ease-in-out, transform 0.1s ease-in-out;
+  border: 1px solid var(--color-border-panel); // Use theme variable
+  transition:
+    box-shadow 0.2s ease-in-out,
+    transform 0.1s ease-in-out;
 
   &:hover,
   &:focus,
   &.cdk-keyboard-focused, // For keyboard navigation focus
-  &.mat-mdc-menu-trigger.mat-menu-open { // When menu is open
+  &.mat-mdc-menu-trigger.mat-menu-open {
+    // When menu is open
     box-shadow: var(--shadow-medium);
     transform: translateY(-2px);
-    border-color: var(--color-metal-interactive-hover); // Highlight border on interaction
+    border-color: var(
+      --color-metal-interactive-hover
+    ); // Highlight border on interaction
   }
 }
 
@@ -169,11 +174,16 @@
 
   .mat-expansion-panel-header {
     color: var(--color-text-title);
-    font-family: var(--font-sans-condensed); // Example: Consistent font for headers
+    font-family: var(
+      --font-sans-condensed
+    ); // Example: Consistent font for headers
   }
 
   .mat-expansion-panel-header:hover {
-    background-color: rgba(var(--color-metal-interactive-rgb, 80, 80, 80), 0.1); // Use RGB for opacity
+    background-color: rgba(
+      var(--color-metal-interactive-rgb, 80, 80, 80),
+      0.1
+    ); // Use RGB for opacity
   }
 }
 
@@ -184,14 +194,14 @@
   // margin-bottom: 1rem; // Example, adjust as needed
 
   // mat-slide-toggle {
-    // Common styling for slide toggles within these groups
-    // e.g., margin-right: 1rem;
+  // Common styling for slide toggles within these groups
+  // e.g., margin-right: 1rem;
   // }
 
   // .sub-input-field,
   // .sub-option {
-    // Common styling for nested form fields or options
-    // e.g., margin-left: 2rem; // Indentation
+  // Common styling for nested form fields or options
+  // e.g., margin-left: 2rem; // Indentation
   // }
 }
 
@@ -238,14 +248,20 @@
 }
 
 // Flat button mixin for a simple design with hover and active feedback
-@mixin flat-button($bg, $text: var(--color-white), $border: 1px solid transparent) {
+@mixin flat-button(
+  $bg,
+  $text: var(--color-white),
+  $border: 1px solid transparent
+) {
   background-color: $bg;
   color: $text;
   border: $border;
   border-radius: var(--border-radius-md);
   padding: var(--spacing-sm) var(--spacing-lg);
   cursor: pointer;
-  transition: filter 0.2s ease, transform 0.1s ease;
+  transition:
+    filter 0.2s ease,
+    transform 0.1s ease;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -280,11 +296,11 @@
 
 .profile-header {
   @include profile-header;
-  
+
   .profile-name-input input.mat-mdc-input-element {
     @include profile-name-input;
   }
-  
+
   .profile-actions .icon-button {
     @include profile-actions;
   }

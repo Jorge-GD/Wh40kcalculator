@@ -82,6 +82,7 @@ Sigue estos pasos para desplegar la aplicación usando GitHub Pages:
    ```
 
    Esto generará los archivos estáticos en la carpeta `dist/wh40kcalculator`.
+
 2. Entra a la sección **Settings** del repositorio en GitHub y abre la pestaña **Pages**.
 3. Selecciona la rama principal (por ejemplo `main`) y la carpeta `/dist/wh40kcalculator` como origen del sitio.
 4. Guarda la configuración para activar la publicación.

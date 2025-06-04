@@ -8,7 +8,9 @@
 
 /* Styles for Stat Cards */
 .base-stats-grid {
-  @include u.grid-cols-responsive-mixin(140px); // Adjust minmax for 5-6 items comfortably
+  @include u.grid-cols-responsive-mixin(
+    140px
+  ); // Adjust minmax for 5-6 items comfortably
   gap: var(--spacing-md); // Consistent gap from utilities
   padding-top: var(--spacing-md);
   padding-bottom: var(--spacing-lg);
@@ -44,9 +46,9 @@
   // Add a subtle hover/focus effect if desired
   // &:hover,
   // &:focus-within { // focus-within to apply style when menu is open as well
-    // Example:
-    // box-shadow: 0 4px 10px rgba(0,0,0,0.25);
-    // border-color: mat.get-color-from-palette(mat.$indigo-palette, 300); // Example border color
+  // Example:
+  // box-shadow: 0 4px 10px rgba(0,0,0,0.25);
+  // border-color: mat.get-color-from-palette(mat.$indigo-palette, 300); // Example border color
   // }
 }
 
@@ -54,7 +56,7 @@
 .edit-stat-popover {
   @include shared.edit-stat-popover-base; // Use shared mixin
   // u-padding-md is expected to be provided by utility classes in HTML.
-  
+
   // Ensure the popover doesn't get too wide
   // min-width: 250px; // Minimum width for better layout of form field - handled by mixin
   // max-width: 300px; // Handled by mixin
@@ -76,11 +78,11 @@
 
 // Remove redundant margin settings from previous implementation
 // .base-stats-grid {
-//   margin-top: 1rem; 
-//   margin-bottom: 1rem; 
+//   margin-top: 1rem;
+//   margin-bottom: 1rem;
 // }
 
 // .stat-card-icon-display {
-//   margin: 0.5rem; 
+//   margin: 0.5rem;
 //   cursor: pointer;
 // }
