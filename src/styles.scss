@@ -1199,13 +1199,14 @@ body.light-theme {
 @media (max-width: 768px) {
     // Mejorar espaciado en móvil
     :root {
-        --spacing-xs: 0.375rem;    // 6px
-        --spacing-sm: 0.75rem;     // 12px
-        --spacing-md: 1rem;        // 16px
-        --spacing-lg: 1.25rem;     // 20px
-        --spacing-xl: 1.5rem;      // 24px
-        --spacing-xxl: 2rem;       // 32px
-        --spacing-xxxl: 2.5rem;    // 40px
+        // Ajustado a una grilla de 4px
+        --spacing-xs: 0.25rem;    // 4px
+        --spacing-sm: 0.5rem;     // 8px
+        --spacing-md: 0.75rem;    // 12px
+        --spacing-lg: 1rem;       // 16px
+        --spacing-xl: 1.25rem;    // 20px
+        --spacing-xxl: 1.5rem;    // 24px
+        --spacing-xxxl: 2rem;     // 32px
     }
     
     // Hacer inputs más grandes en móvil
