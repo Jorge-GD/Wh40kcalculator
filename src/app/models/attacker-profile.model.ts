@@ -32,6 +32,10 @@ export interface AttackerProfileData {
     active: boolean;
     value: number;
   };
+  /** Indicates the weapon has the Heavy ability */
+  heavy?: boolean;
+  /** Indicates the attacker remained stationary this phase */
+  attackerStationary?: boolean;
   torrent?: boolean;
   blast?: boolean;
 
@@ -105,6 +109,8 @@ export const DEFAULT_ATTACKER_PROFILE_DATA: AttackerProfileData = {
   sustainedHits: { active: false, value: 1 },
   lethalHits: { active: false },
   rapidFire: { active: false, value: 1 },
+  heavy: false,
+  attackerStationary: false,
   torrent: false,
   blast: false,
 
