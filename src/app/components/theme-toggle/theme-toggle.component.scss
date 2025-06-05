@@ -1,11 +1,413 @@
+/* Chaos Floating Component - Dark Side Corruption */
+
 :host {
-  display: inline-block;
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 9999;
+  display: block;
 }
 
-mat-slide-toggle {
-  transition: transform 0.2s ease;
+.chaos-floating-container {
+  position: relative;
+  width: 60px;
+  height: 60px;
 }
 
-mat-slide-toggle:hover {
-  transform: scale(1.05);
+.chaos-toggle-btn {
+  position: relative;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: radial-gradient(
+    circle,
+    rgba(139, 0, 0, 0.1) 0%,
+    rgba(0, 0, 0, 0.3) 70%,
+    rgba(0, 0, 0, 0.6) 100%
+  );
+  box-shadow:
+    0 0 20px rgba(139, 0, 0, 0.3),
+    inset 0 0 10px rgba(0, 0, 0, 0.5);
+
+  &:hover {
+    transform: scale(1.1) rotate(5deg);
+    background: radial-gradient(
+      circle,
+      rgba(220, 20, 60, 0.2) 0%,
+      rgba(139, 0, 0, 0.4) 50%,
+      rgba(0, 0, 0, 0.8) 100%
+    );
+    box-shadow:
+      0 0 40px rgba(220, 20, 60, 0.6),
+      0 0 80px rgba(139, 0, 0, 0.4),
+      inset 0 0 15px rgba(0, 0, 0, 0.7);
+
+    .chaos-icon {
+      filter: drop-shadow(0 0 15px rgba(220, 20, 60, 0.8))
+        drop-shadow(0 0 30px rgba(139, 0, 0, 0.6));
+      animation: chaosCorruption 1.5s ease-in-out infinite alternate;
+    }
+
+    .chaos-tooltip {
+      opacity: 1;
+      transform: translateY(-50%) translateX(0) scale(1) rotateZ(0deg);
+      visibility: visible;
+    }
+
+    .dark-corruption-overlay {
+      opacity: 0.7;
+      transform: scale(1);
+    }
+  }
+
+  &:active {
+    transform: scale(0.9) rotate(-5deg);
+  }
+
+  &:focus {
+    outline: 2px solid rgba(220, 20, 60, 0.5);
+    outline-offset: 4px;
+  }
+}
+
+.chaos-icon {
+  width: 100%;
+  height: 100%;
+  transition: all 0.4s ease;
+  filter: drop-shadow(0 0 15px rgba(0, 0, 0, 0.9));
+  /* Ensure no white background shows through with heavy shadowing */
+  background: transparent;
+  border-radius: 50%;
+  object-fit: contain;
+  /* Heavy shadow to mask white background */
+  box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.8);
+
+  /* Light mode - icon dimmed and heavily shadowed */
+  :host:not(.dark-mode) & {
+    opacity: 0.8;
+    filter: grayscale(30%) drop-shadow(0 0 20px rgba(0, 0, 0, 0.9))
+      drop-shadow(0 0 40px rgba(0, 0, 0, 0.7)) contrast(1.3) brightness(0.7);
+  }
+
+  /* Dark mode - icon fully illuminated */
+  :host.dark-mode & {
+    opacity: 1;
+    filter: drop-shadow(0 0 12px rgba(220, 20, 60, 0.7))
+      drop-shadow(0 0 25px rgba(139, 0, 0, 0.8))
+      drop-shadow(0 0 40px rgba(0, 0, 0, 0.9)) contrast(1.4) brightness(1.2);
+    animation: chaosGlow 3s ease-in-out infinite alternate;
+  }
+}
+
+/* Chaos Tooltip - "PÁSATE AL CAOS" - TERRORÍFICO */
+.chaos-tooltip {
+  position: absolute;
+  left: -120px;
+  top: 50%;
+  transform: translateY(-50%) translateX(-20px) scale(0.7) rotateZ(-2deg);
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  background: linear-gradient(
+    135deg,
+    rgba(0, 0, 0, 0.98) 0%,
+    rgba(139, 0, 0, 0.95) 30%,
+    rgba(0, 0, 0, 0.98) 70%,
+    rgba(75, 0, 0, 0.95) 100%
+  );
+  border: 3px solid rgba(220, 20, 60, 0.8);
+  border-radius: 12px;
+  padding: 16px 20px;
+  box-shadow:
+    0 0 30px rgba(220, 20, 60, 0.6),
+    0 0 60px rgba(139, 0, 0, 0.4),
+    inset 0 0 15px rgba(0, 0, 0, 0.9),
+    0 5px 20px rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(15px);
+  white-space: nowrap;
+  /* Creepy animation */
+  animation: chaosWhisper 4s ease-in-out infinite;
+
+  &::after {
+    content: '';
+    position: absolute;
+    right: -12px;
+    top: 50%;
+    transform: translateY(-50%);
+    border: 12px solid transparent;
+    border-left-color: rgba(220, 20, 60, 0.8);
+    filter: drop-shadow(2px 0 5px rgba(0, 0, 0, 0.5));
+  }
+
+  /* Creepy glow effect */
+  &::before {
+    content: '';
+    position: absolute;
+    top: -5px;
+    left: -5px;
+    right: -5px;
+    bottom: -5px;
+    background: linear-gradient(
+      45deg,
+      transparent,
+      rgba(220, 20, 60, 0.3),
+      transparent,
+      rgba(139, 0, 0, 0.2)
+    );
+    border-radius: 15px;
+    z-index: -1;
+    animation: chaosAura 3s linear infinite;
+  }
+}
+
+.chaos-text {
+  display: block;
+  font-family: var(--font-gothic);
+  font-size: 0.85rem;
+  color: rgba(220, 20, 60, 0.95);
+  text-shadow:
+    0 0 8px rgba(220, 20, 60, 0.8),
+    0 0 16px rgba(255, 0, 0, 0.6);
+  letter-spacing: 0.15em;
+  margin-bottom: 4px;
+  animation: chaosTextFlicker 2s ease-in-out infinite alternate;
+}
+
+.chaos-text-main {
+  display: block;
+  font-family: var(--font-gothic);
+  font-size: 1.6rem;
+  font-weight: bold;
+  color: #ff0000;
+  text-shadow:
+    0 0 15px rgba(255, 0, 0, 1),
+    0 0 30px rgba(255, 0, 0, 0.8),
+    0 0 45px rgba(139, 0, 0, 0.6),
+    3px 3px 6px rgba(0, 0, 0, 0.9);
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  animation: chaosTextCorruption 1.5s ease-in-out infinite alternate;
+  /* Creepy text distortion */
+  filter: drop-shadow(0 0 10px rgba(255, 0, 0, 0.8));
+}
+
+/* Dark Corruption Overlay - Envelops the entire page */
+.dark-corruption-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: radial-gradient(
+    circle at bottom right,
+    rgba(0, 0, 0, 0.4) 0%,
+    rgba(139, 0, 0, 0.15) 25%,
+    rgba(0, 0, 0, 0.25) 50%,
+    transparent 75%
+  );
+  opacity: 0;
+  transform: scale(0.8);
+  transition: all 0.6s ease-out;
+  pointer-events: none;
+  z-index: -1;
+}
+
+/* Animations */
+@keyframes chaosGlow {
+  0% {
+    filter: drop-shadow(0 0 12px rgba(220, 20, 60, 0.7))
+      drop-shadow(2px 2px 8px rgba(0, 0, 0, 0.8));
+  }
+  100% {
+    filter: drop-shadow(0 0 20px rgba(220, 20, 60, 0.9))
+      drop-shadow(0 0 40px rgba(139, 0, 0, 0.5))
+      drop-shadow(2px 2px 12px rgba(0, 0, 0, 0.9));
+  }
+}
+
+@keyframes chaosCorruption {
+  0% {
+    filter: drop-shadow(0 0 15px rgba(220, 20, 60, 0.8))
+      drop-shadow(0 0 30px rgba(139, 0, 0, 0.6));
+    transform: rotate(0deg);
+  }
+  100% {
+    filter: drop-shadow(0 0 25px rgba(255, 0, 0, 1))
+      drop-shadow(0 0 50px rgba(139, 0, 0, 0.8));
+    transform: rotate(2deg);
+  }
+}
+
+@keyframes chaosTextPulse {
+  0% {
+    text-shadow:
+      0 0 10px rgba(255, 0, 0, 0.8),
+      0 0 20px rgba(139, 0, 0, 0.6),
+      2px 2px 4px rgba(0, 0, 0, 0.8);
+  }
+  100% {
+    text-shadow:
+      0 0 15px rgba(255, 0, 0, 1),
+      0 0 30px rgba(255, 0, 0, 0.8),
+      0 0 40px rgba(139, 0, 0, 0.6),
+      2px 2px 6px rgba(0, 0, 0, 0.9);
+  }
+}
+
+/* New Creepy Animations */
+@keyframes chaosWhisper {
+  0%,
+  100% {
+    transform: translateY(-50%) translateX(-20px) scale(0.7) rotateZ(-2deg);
+  }
+  50% {
+    transform: translateY(-50%) translateX(-20px) scale(0.72) rotateZ(-1deg);
+  }
+}
+
+@keyframes chaosAura {
+  0% {
+    background: linear-gradient(
+      45deg,
+      transparent,
+      rgba(220, 20, 60, 0.3),
+      transparent,
+      rgba(139, 0, 0, 0.2)
+    );
+  }
+  25% {
+    background: linear-gradient(
+      135deg,
+      rgba(139, 0, 0, 0.2),
+      transparent,
+      rgba(220, 20, 60, 0.3),
+      transparent
+    );
+  }
+  50% {
+    background: linear-gradient(
+      225deg,
+      transparent,
+      rgba(139, 0, 0, 0.2),
+      transparent,
+      rgba(220, 20, 60, 0.3)
+    );
+  }
+  75% {
+    background: linear-gradient(
+      315deg,
+      rgba(220, 20, 60, 0.3),
+      transparent,
+      rgba(139, 0, 0, 0.2),
+      transparent
+    );
+  }
+  100% {
+    background: linear-gradient(
+      45deg,
+      transparent,
+      rgba(220, 20, 60, 0.3),
+      transparent,
+      rgba(139, 0, 0, 0.2)
+    );
+  }
+}
+
+@keyframes chaosTextFlicker {
+  0%,
+  100% {
+    opacity: 0.95;
+    text-shadow:
+      0 0 8px rgba(220, 20, 60, 0.8),
+      0 0 16px rgba(255, 0, 0, 0.6);
+  }
+  50% {
+    opacity: 0.85;
+    text-shadow:
+      0 0 12px rgba(220, 20, 60, 0.9),
+      0 0 20px rgba(255, 0, 0, 0.7);
+  }
+}
+
+@keyframes chaosTextCorruption {
+  0% {
+    text-shadow:
+      0 0 15px rgba(255, 0, 0, 1),
+      0 0 30px rgba(255, 0, 0, 0.8),
+      0 0 45px rgba(139, 0, 0, 0.6),
+      3px 3px 6px rgba(0, 0, 0, 0.9);
+    transform: skewX(0deg);
+  }
+  100% {
+    text-shadow:
+      0 0 20px rgba(255, 0, 0, 1),
+      0 0 40px rgba(255, 0, 0, 0.9),
+      0 0 60px rgba(139, 0, 0, 0.7),
+      4px 4px 8px rgba(0, 0, 0, 0.9);
+    transform: skewX(-1deg);
+  }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  :host {
+    bottom: 15px;
+    right: 15px;
+  }
+
+  .chaos-floating-container {
+    width: 50px;
+    height: 50px;
+  }
+
+  .chaos-toggle-btn {
+    width: 50px;
+    height: 50px;
+  }
+
+  .chaos-icon {
+    width: 100%;
+    height: 100%;
+  }
+
+  .chaos-tooltip {
+    left: -100px;
+    padding: 12px 16px;
+  }
+
+  .chaos-text {
+    font-size: 0.75rem;
+  }
+
+  .chaos-text-main {
+    font-size: 1.3rem;
+  }
+}
+
+@media (max-width: 480px) {
+  :host {
+    bottom: 10px;
+    right: 10px;
+  }
+
+  .chaos-tooltip {
+    left: -85px;
+    padding: 10px 14px;
+  }
+
+  .chaos-text {
+    font-size: 0.7rem;
+  }
+
+  .chaos-text-main {
+    font-size: 1.1rem;
+  }
 }

@@ -1,47 +1,208 @@
+@use '../../../styles/mixins' as mixins;
+
 :host {
   display: block;
-  border-bottom: 1px solid var(--color-border-panel);
-  background-color: var(--color-background-panel);
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  animation: headerSlideIn 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
 }
 
-.app-header {
+.imperial-header {
+  background: var(--color-background-panel);
+  border-bottom: 1px solid var(--color-border-panel);
+  height: 60px;
+  position: relative;
+  @include mixins.elevation(1);
+
+  // Better adaptation to theme changes
+  transition:
+    background-color 0.3s ease,
+    border-color 0.3s ease;
+}
+
+.header-frame {
+  position: relative;
+  height: 100%;
+
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      90deg,
+      transparent 0%,
+      var(--color-accent-green-cogitator) 50%,
+      transparent 100%
+    );
+    pointer-events: none;
+    opacity: 0.05;
+  }
+}
+
+.rivet {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle at 30% 30%,
+    var(--color-accent-green-cogitator) 0%,
+    var(--color-secondary-text) 40%,
+    var(--color-border-panel) 100%
+  );
+  border: 1px solid var(--color-border-panel);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.2),
+    var(--shadow-subtle);
+  transition: all 0.3s ease;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: var(--color-accent-green-cogitator);
+    opacity: 0.7;
+  }
+}
+
+.rivet-left {
+  left: 20px;
+}
+.rivet-right {
+  right: 20px;
+}
+
+.header-content {
   display: flex;
   align-items: center;
-  padding: var(--spacing-sm) var(--spacing-md);
+  justify-content: center;
+  height: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 50px;
+  position: relative;
+  z-index: 1;
+}
+.app-info {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
 }
 
 .app-title {
-  margin: 0;
   font-family: var(--font-gothic);
-  color: var(--color-text-header-main);
-  font-size: 1.4rem;
-}
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  color: var(--color-primary-text);
+  margin: 0;
+  line-height: 1;
+  transition:
+    color 0.3s ease,
+    text-shadow 0.3s ease;
 
-.theme-controls {
-  margin-left: auto;
-  display: flex;
-  align-items: center;
-  gap: var(--spacing-md);
-}
-
-mat-form-field {
-  min-width: 150px;
-}
-
-@media (max-width: 600px) {
-  .app-header {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: var(--spacing-sm);
+  // Adaptive text shadow based on theme
+  html.theme-light & {
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
   }
 
-  .theme-controls {
-    width: 100%;
-    margin-left: 0;
-    justify-content: space-between;
+  html.theme-dark &,
+  html:not(.theme-light) & {
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+  }
+}
+
+.app-subtitle {
+  font-family: var(--font-gothic);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 1.8px;
+  color: var(--color-secondary-text);
+  margin: 4px 0 0 0;
+  line-height: 1;
+  text-transform: uppercase;
+  transition: color 0.3s ease;
+}
+
+// Responsive design
+@media (max-width: 768px) {
+  .header-content {
+    padding: 0 24px;
   }
 
-  mat-form-field {
-    width: 100%;
+  .rivet-left {
+    left: 12px;
+  }
+
+  .rivet-right {
+    right: 12px;
+  }
+
+  .app-title {
+    font-size: 18px;
+    letter-spacing: 1.2px;
+  }
+
+  .app-subtitle {
+    font-size: 10px;
+    letter-spacing: 1.5px;
+  }
+}
+
+@media (max-width: 480px) {
+  .imperial-header {
+    height: 56px;
+  }
+
+  .header-content {
+    padding: 0 16px;
+  }
+
+  .app-subtitle {
+    display: none;
+  }
+
+  .rivet {
+    width: 8px;
+    height: 8px;
+
+    &::before {
+      width: 3px;
+      height: 3px;
+    }
+  }
+}
+
+@media (max-width: 350px) {
+  .header-content {
+    padding: 0 12px;
+  }
+
+  .app-title {
+    font-size: 16px;
+    letter-spacing: 1px;
+  }
+}
+
+@keyframes headerSlideIn {
+  from {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
   }
 }

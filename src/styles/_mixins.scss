@@ -13,6 +13,22 @@
   box-shadow: var(--shadow-strong);
 }
 
+// Elevation mixin that uses the existing shadow mixins based on level
+@mixin elevation($level: 0) {
+  @if $level == 0 {
+    box-shadow: none; // No shadow for base sections
+  } @else if $level == 1 {
+    @include subtle-shadow; // Level 1: Statistics cards
+  } @else if $level == 2 {
+    @include medium-shadow; // Level 2: Interactive elements
+  } @else if $level == 3 {
+    @include strong-shadow; // Level 3: Dialogs and modals
+  } @else {
+    // Fallback for any other level, use medium shadow
+    @include medium-shadow;
+  }
+}
+
 // Generic transition mixin
 @mixin transition($properties...) {
   transition: join($properties, ', ') 0.3s ease-in-out;

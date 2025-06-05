@@ -1,88 +1,41 @@
 @use '../../styles/utilities' as u;
 @use '../../styles/shared-components' as shared;
 
-/* Defender-specific customizations only */
 .ability-toggle-group .sub-input-field {
-  max-width: 200px; // Slightly narrower for defender profile
+  max-width: 200px;
 }
-
-/* Styles for Stat Cards */
 .base-stats-grid {
-  @include u.grid-cols-responsive-mixin(
-    140px
-  ); // Adjust minmax for 5-6 items comfortably
-  gap: var(--spacing-md); // Consistent gap from utilities
+  @include u.grid-cols-responsive-mixin(140px);
+  gap: var(--spacing-md);
   padding-top: var(--spacing-md);
   padding-bottom: var(--spacing-lg);
-  // u-display-grid, u-grid-cols-responsive, u-gap-lg, u-padding-sm, u-margin-bottom-xl, u-margin-top-md
-  // are expected to be provided by utility classes.
 }
 
 .stat-card-icon-display {
-  @include shared.stat-card-icon-display-base; // Use shared mixin
-  // No margin here, gap is handled by the grid
-
+  @include shared.stat-card-icon-display-base;
   .stat-card-header-content {
-    @include shared.stat-card-header-content-base; // Use shared mixin
+    @include shared.stat-card-header-content-base;
   }
-
   .stat-card-icon {
-    @include shared.stat-card-icon-base; // Use shared mixin
+    @include shared.stat-card-icon-base;
   }
-
   .stat-card-title {
-    @include shared.stat-card-title-base; // Use shared mixin
+    @include shared.stat-card-title-base;
   }
-
   mat-card-content {
-    @include shared.stat-card-content-base; // Use shared mixin
-    // padding-bottom is handled by u-padding-bottom-sm on the element in HTML
+    @include shared.stat-card-content-base;
   }
-
   .stat-card-value {
-    @include shared.stat-card-value-base; // Use shared mixin
+    @include shared.stat-card-value-base;
   }
-
-  // Add a subtle hover/focus effect if desired
-  // &:hover,
-  // &:focus-within { // focus-within to apply style when menu is open as well
-  // Example:
-  // box-shadow: 0 4px 10px rgba(0,0,0,0.25);
-  // border-color: mat.get-color-from-palette(mat.$indigo-palette, 300); // Example border color
-  // }
 }
 
-/* Styles for the popover content within mat-menu */
 .edit-stat-popover {
-  @include shared.edit-stat-popover-base; // Use shared mixin
-  // u-padding-md is expected to be provided by utility classes in HTML.
-
-  // Ensure the popover doesn't get too wide
-  // min-width: 250px; // Minimum width for better layout of form field - handled by mixin
-  // max-width: 300px; // Handled by mixin
+  @include shared.edit-stat-popover-base;
 }
-
-// Ensure profile-content has some padding if not already applied by a utility class
 .profile-content {
-  // If u-padding-md or similar is not on the mat-card-content in HTML, add it here.
-  // Example: padding: u.$spacing-md;
-  // Adding a dummy rule to satisfy the linter for now if it complains about empty rulesets.
-  // Consider removing if no specific overrides are added here.
   --dummy-variable-to-avoid-empty-ruleset: 1;
 }
-
-// Ensure tooltip icons are styled if not globally
 .tooltip-icon {
-  @include shared.tooltip-icon-base; // Use shared mixin
+  @include shared.tooltip-icon-base;
 }
-
-// Remove redundant margin settings from previous implementation
-// .base-stats-grid {
-//   margin-top: 1rem;
-//   margin-bottom: 1rem;
-// }
-
-// .stat-card-icon-display {
-//   margin: 0.5rem;
-//   cursor: pointer;
-// }

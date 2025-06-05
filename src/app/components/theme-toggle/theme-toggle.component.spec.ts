@@ -12,6 +12,12 @@ class MockThemeService {
     this.theme = theme;
     localStorage.setItem('mathhammer-theme', theme);
   }
+  setLightTheme() {
+    this.setTheme('theme-imperium-light');
+  }
+  setDarkTheme() {
+    this.setTheme('theme-chaos-dark');
+  }
 }
 
 describe('ThemeToggleComponent', () => {

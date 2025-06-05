@@ -1,480 +1,342 @@
 @use '@angular/material' as mat;
 @use '../../styles/utilities' as u;
 @use '../../styles/shared-components' as shared;
-
-/* Attacker-specific customizations only */
+@use '../../../styles/mixins' as mixins;
 .ability-toggle-group .sub-input-field {
-  max-width: 220px; // Slightly wider for attacker profile
+  max-width: 220px;
 }
 
-/* Profile action buttons */
-.profile-action-buttons {
-  .icon-button {
-    min-width: 32px;
-    width: 32px;
-    height: 32px;
-    opacity: 0.8;
-    transition: opacity 0.2s ease;
-
-    &:hover {
-      opacity: 1;
-    }
-
-    .mat-icon {
-      font-size: 18px;
-      width: 18px;
-      height: 18px;
-    }
+.profile-action-buttons .icon-button {
+  min-width: 32px;
+  width: 32px;
+  height: 32px;
+  opacity: 0.8;
+  transition: opacity 0.2s ease;
+  &:hover {
+    opacity: 1;
+  }
+  .mat-icon {
+    font-size: 18px;
+    width: 18px;
+    height: 18px;
   }
 }
-
-/* Attacks display styling */
-.attacks-display {
-  .attacks-chip {
-    background-color: #556b2f !important; // Olive green background
-    color: #ffffff !important;
-    font-weight: 600;
-    border-radius: 16px;
-    padding: 4px 12px;
-
-    .attacks-label {
-      font-size: 0.85rem;
-      margin-right: 4px;
-    }
-
-    .attacks-value {
-      font-size: 0.9rem;
-      font-weight: 700;
-    }
+.attacks-display .attacks-chip {
+  background-color: #556b2f !important;
+  color: #fff !important;
+  font-weight: 600;
+  border-radius: 16px;
+  padding: 4px 12px;
+  .attacks-label {
+    font-size: 0.85rem;
+    margin-right: 4px;
   }
-
-  .attacks-visibility-btn {
-    min-width: 32px;
-    width: 32px;
-    height: 32px;
-    opacity: 0.7;
-    transition: opacity 0.2s ease;
-
-    &:hover {
-      opacity: 1;
-    }
-
-    .mat-icon {
-      font-size: 18px;
-      width: 18px;
-      height: 18px;
-    }
+  .attacks-value {
+    font-size: 0.9rem;
+    font-weight: 700;
   }
 }
-
-/* Profile header specific styles */
+.attacks-display .attacks-visibility-btn {
+  min-width: 32px;
+  width: 32px;
+  height: 32px;
+  opacity: 0.7;
+  transition: opacity 0.2s ease;
+  &:hover {
+    opacity: 1;
+  }
+  .mat-icon {
+    font-size: 18px;
+    width: 18px;
+    height: 18px;
+  }
+}
 .profile-title-section {
-  min-height: 40px; // Ensure consistent height
-
+  min-height: 40px;
   h3 {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
     max-width: 300px;
   }
-
   .profile-name-input {
     max-width: 300px;
-
     .mat-mdc-form-field-wrapper {
       padding-bottom: 0;
     }
-
     .mat-mdc-text-field-wrapper {
       padding: 8px 12px;
     }
-
     input {
       font-size: 1.1rem;
       font-weight: 600;
     }
   }
-
   .edit-name-btn {
     min-width: 32px;
     width: 32px;
     height: 32px;
     opacity: 0.7;
     transition: opacity 0.2s ease;
-
     &:hover {
       opacity: 1;
     }
-
     .mat-icon {
-      font-size: 18px;
-      width: 18px;
-      height: 18px;
+      font-size: 16px;
+      width: 16px;
+      height: 16px;
     }
   }
 }
-
 .profile-actions {
-  flex-shrink: 0; // Prevent buttons from shrinking
+  flex-shrink: 0;
 }
-
-// Component-specific styles
 :host {
-  display: block; // Ensures the component takes up block space
+  display: block;
 }
-
 .profile-card {
-  @include mat.elevation(2); // Standard Material card elevation
-  margin-bottom: 20px; // Space below the card
+  @include mixins.elevation(0);
+  margin-bottom: 20px;
   transition: box-shadow 0.3s ease-in-out;
-
   &:hover {
-    @include mat.elevation(6); // Increased elevation on hover for interactivity
+    @include mixins.elevation(1);
   }
 }
-
 .attacker-profile-toolbar {
   display: flex;
   align-items: center;
-  padding: 0 8px 0 16px; // Asymmetrical padding: more on left for actions, less on right for attack display
-  height: 56px; // Slightly more compact toolbar height
-  // Use theme color for toolbar background if desired, e.g. background-color: mat.get-color-from-palette(mat.$indigo-palette, 500);
-  // color: mat.get-color-from-palette(mat.$indigo-palette, 'default-contrast');
-
+  padding: 0 8px 0 16px;
+  height: 56px;
   .toolbar-section {
     display: flex;
     align-items: center;
   }
-
-  .profile-actions {
-    .action-button {
-      margin-right: 4px; // Small gap between action buttons
-      // mat-icon-button provides good default sizing and hitbox
-    }
+  .profile-actions .action-button {
+    margin-right: 4px;
   }
-
   .profile-name-container {
-    flex-grow: 1; // Allows the name container to take available space
-    margin-left: 16px; // Space between action buttons and name
-    margin-right: 16px; // Space before the spacer or attacks display
-    min-width: 120px; // Prevents extreme collapse of the name field
-    overflow: hidden; // Essential for text-truncate to work
-
+    flex-grow: 1;
+    margin-left: 16px;
+    margin-right: 16px;
+    min-width: 120px;
+    overflow: hidden;
     .profile-name-text {
-      font-size: 1.15rem; // Clear, readable font size for profile name
-      font-weight: 500; // Standard weight for titles
-      cursor: pointer; // Indicates clickability to edit
-      padding: 6px 2px; // Vertical padding for easier clicking, minimal horizontal
-      border-radius: 4px; // Subtle rounding
-      transition: background-color 0.2s ease-in-out; // Smooth hover effect
-
+      font-size: 1.15rem;
+      font-weight: 500;
+      cursor: pointer;
+      padding: 6px 2px;
+      border-radius: 4px;
+      transition: background-color 0.2s ease-in-out;
       &:hover,
       &:focus {
-        background-color: rgba(
-          0,
-          0,
-          0,
-          0.05
-        ); // Subtle background on hover/focus
+        background-color: rgba(0, 0, 0, 0.05);
       }
     }
-
     .profile-name-input.mat-mdc-form-field {
       width: 100%;
-      // Align input text baseline with h3 text.
-      // Standard appearance for mat-form-field is generally less intrusive in a toolbar.
       .mat-mdc-form-field-infix {
         padding-top: 6px;
         padding-bottom: 6px;
-        min-height: auto; // Override default min-height if too large
+        min-height: auto;
       }
       input.mat-mdc-input-element {
-        font-size: 1.15rem; // Match h3
-        font-weight: 500; // Match h3
+        font-size: 1.15rem;
+        font-weight: 500;
       }
-      // Hide subscript wrapper to save space if no errors/hints are shown here
       .mat-mdc-form-field-subscript-wrapper {
         display: none;
       }
     }
   }
-
   .toolbar-spacer {
-    flex-grow: 1; // Pushes subsequent items to the right
+    flex-grow: 1;
   }
-
-  .attacks-display {
-    .attacks-chip {
-      // Standard mat-chip styling is usually sufficient
-      // Customize if needed, e.g., background, text color
-      .attacks-label {
-        font-weight: normal;
-        opacity: 0.8;
-        margin-right: 6px;
-      }
-      .attacks-value {
-        font-weight: bold;
-      }
+  .attacks-display .attacks-chip {
+    .attacks-label {
+      font-weight: normal;
+      opacity: 0.8;
+      margin-right: 6px;
     }
-    .attacks-visibility-btn {
-      margin-left: 8px; // Space between chip and visibility toggle button
+    .attacks-value {
+      font-weight: bold;
     }
+  }
+  .attacks-display .attacks-visibility-btn {
+    margin-left: 8px;
   }
 }
-
 .attacker-profile-content {
-  padding: 16px; // Standard padding for card content
-
+  padding: 16px;
   .section-title-font {
-    font-size: 1.2rem; // Consistent title font size
+    font-size: 1.2rem;
     font-weight: 500;
-    // u-margin-bottom-md should provide margin, e.g., 16px
   }
   .section-subtitle-font {
-    font-size: 1rem; // Consistent subtitle font size
+    font-size: 1rem;
     font-weight: 500;
   }
-  // Note: expansion-panel styles removed since we moved to tab structure
-
-  // Styles for .base-stats-grid, .ability-toggle-group, etc.,
-  // should primarily rely on Angular Material defaults and utility classes (u-*).
-  // Ensure utility classes like u-display-grid, u-grid-cols-responsive, u-gap-lg,
-  // u-padding-sm, u-margin-bottom-xl, u-width-full, u-margin-bottom-sm,
-  // u-margin-top-xs, u-margin-left-lg, u-width-auto are defined globally or imported.
-
   .tooltip-icon {
-    cursor: help; // Indicates a tooltip is available
-    color: rgba(0, 0, 0, 0.54); // Standard icon color for tooltips
+    cursor: help;
+    color: rgba(0, 0, 0, 0.54);
   }
-
-  // Example for a utility class if not globally defined:
-  // .u-grid-cols-responsive {
-  //   grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-  // }
 }
-
-// Responsive adjustments
 @media (max-width: 768px) {
-  // Tablet and smaller
   .attacker-profile-toolbar {
-    height: auto; // Allow toolbar to grow in height
-    flex-wrap: wrap; // Allow items to wrap to the next line
-    padding: 8px 12px; // Adjust padding for smaller screens
-
+    height: auto;
+    flex-wrap: wrap;
+    padding: 8px 12px;
     .profile-actions {
-      order: 1; // Actions appear first
-      width: 100%; // Take full width
-      margin-bottom: 8px; // Space below actions when wrapped
-      justify-content: flex-start; // Align to the start
+      order: 1;
+      width: 100%;
+      margin-bottom: 8px;
+      justify-content: flex-start;
     }
-
     .profile-name-container {
-      order: 2; // Profile name appears second
-      width: 100%; // Take full width
-      margin-left: 0; // Reset margin
-      margin-right: 0; // Reset margin
-      margin-bottom: 8px; // Space below name when wrapped
+      order: 2;
+      width: 100%;
+      margin-left: 0;
+      margin-right: 0;
+      margin-bottom: 8px;
     }
-
     .toolbar-spacer {
-      display: none; // Not needed when items are full width and ordered
+      display: none;
     }
-
     .attacks-display {
-      order: 3; // Attacks display appears last
-      width: 100%; // Take full width
-      justify-content: flex-end; // Align to the end (right)
-      margin-top: 4px; // Small space above when wrapped
+      order: 3;
+      width: 100%;
+      justify-content: flex-end;
+      margin-top: 4px;
     }
   }
-  // Note: responsive adjustments for smaller screens
-  // Grid and layout changes handled by new tab structure
 }
-
 @media (max-width: 480px) {
-  // Mobile phones
   .attacker-profile-toolbar {
-    padding: 8px; // Further reduce padding
-
+    padding: 8px;
     .attacks-display {
-      justify-content: space-between; // Spread chip and button
+      justify-content: space-between;
       .attacks-chip {
-        flex-grow: 1; // Allow chip to take more space if needed
+        flex-grow: 1;
         margin-right: 8px;
       }
     }
   }
-
   .attacker-profile-content {
-    padding: 12px; // Reduce padding for content on mobile
-
+    padding: 12px;
     .base-stats-grid {
-      // Stack form fields vertically on very small screens
       grid-template-columns: 1fr;
-      gap: 12px; // Adjust gap
+      gap: 12px;
     }
   }
 }
-
 .base-stats-grid {
-  @include u.grid-cols-responsive-mixin(
-    140px
-  ); // Adjust minmax for 5-6 items comfortably
-  gap: var(--spacing-md); // Consistent gap from utilities
+  @include u.grid-cols-responsive-mixin(140px);
+  gap: var(--spacing-md);
   padding-top: var(--spacing-md);
   padding-bottom: var(--spacing-lg);
 }
-
 .stat-card-icon-display {
   @include shared.stat-card-icon-display-base;
-  // No margin here, gap is handled by the grid
-
+  @include mixins.elevation(1);
+  transition: all 0.3s ease;
+  &:hover {
+    @include mixins.elevation(2);
+  }
   .stat-card-header-content {
     @include shared.stat-card-header-content-base;
   }
-
   .stat-card-icon {
     @include shared.stat-card-icon-base;
   }
-
   .stat-card-title {
     @include shared.stat-card-title-base;
   }
-
   mat-card-content.u-text-align-center.u-padding-bottom-sm {
     @include shared.stat-card-content-base;
-    // u-text-align-center and u-padding-bottom-sm are applied in HTML
   }
-
   .stat-card-value {
     @include shared.stat-card-value-base;
   }
 }
-
 .edit-stat-popover {
   @include shared.edit-stat-popover-base;
-  // u-padding-md is applied in HTML, mixin handles internal padding if needed
+  @include mixins.elevation(3);
 }
-
 .tooltip-icon {
   @include shared.tooltip-icon-base;
 }
-
-// Note: attacker-profile-content styles moved to tab structure section
-
-// Remove redundant margin settings from previous implementation
-// .base-stats-grid {
-//   margin-top: 1rem;
-//   margin-bottom: 1rem;
-// }
-
-// .stat-card-icon-display {
-//   margin: 0.5rem;
-//   cursor: pointer;
-// }
-
-/* ================== TAB STRUCTURE STYLES ================== */
-
-/* Tab Group and Tab Labels */
 .attacker-tabs {
   .mat-mdc-tab-group {
-    // Override Angular Material defaults for better spacing
     --mdc-secondary-navigation-tab-container-height: 56px;
   }
-
-  .mat-mdc-tab {
-    .mat-mdc-tab-link {
-      // Custom styling for tab labels with icons
-      .mat-mdc-tab-label-content {
-        display: flex;
-        align-items: center;
-        gap: 8px;
-        font-weight: 500;
-
-        .tab-icon {
-          font-size: 20px;
-          width: 20px;
-          height: 20px;
-        }
-
-        .tab-label-text {
-          font-size: 0.95rem;
-          white-space: nowrap;
-        }
-      }
+  .mat-mdc-tab .mat-mdc-tab-link .mat-mdc-tab-label-content {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 500;
+    .tab-icon {
+      font-size: 20px;
+      width: 20px;
+      height: 20px;
     }
-
-    // Active tab styling
-    &.mat-mdc-tab-active {
-      .mat-mdc-tab-link .mat-mdc-tab-label-content {
-        .tab-icon {
-          color: var(--mat-tab-header-active-label-text-color, #1976d2);
-        }
-        .tab-label-text {
-          font-weight: 600;
-        }
-      }
+    .tab-label-text {
+      font-size: 0.95rem;
+      white-space: nowrap;
+    }
+  }
+  &.mat-mdc-tab-active .mat-mdc-tab-link .mat-mdc-tab-label-content {
+    .tab-icon {
+      color: var(--mat-tab-header-active-label-text-color, #1976d2);
+    }
+    .tab-label-text {
+      font-weight: 600;
     }
   }
 }
-
-/* Tab Content Structure */
 .tab-content {
   min-height: 400px;
   animation: fadeIn 0.3s ease-in-out;
 }
-
 .tab-header {
   text-align: center;
   padding: 16px 24px;
   background: rgba(0, 0, 0, 0.02);
   border-radius: 8px;
   margin-bottom: 24px;
-
   .tab-title {
     font-size: 1.5rem;
     font-weight: 600;
     margin: 0 0 8px 0;
     color: var(--mat-primary-text, #333);
   }
-
   .tab-description {
     font-size: 0.95rem;
     margin: 0;
     line-height: 1.4;
   }
 }
-
-/* ================== PROTOCOL CARDS STYLES ================== */
-
 .protocols-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
   gap: 20px;
   padding: 8px;
 }
-
 .protocol-card {
-  @include mat.elevation(3);
+  @include mixins.elevation(1);
   border-radius: 12px;
   transition: all 0.3s ease;
   overflow: hidden;
-
   &:hover {
-    @include mat.elevation(6);
+    @include mixins.elevation(2);
     transform: translateY(-2px);
   }
-
   &.placeholder-card {
     background: rgba(0, 0, 0, 0.02);
     border: 2px dashed rgba(0, 0, 0, 0.1);
-
     .protocol-card-title,
     .protocol-description {
       opacity: 0.6;
     }
   }
-
   .mat-mdc-card-header {
     padding: 16px 16px 8px 16px;
     background: linear-gradient(
@@ -483,12 +345,10 @@
       rgba(25, 118, 210, 0.02)
     );
   }
-
   .protocol-card-title {
     font-size: 1.1rem;
     font-weight: 600;
     margin: 0;
-
     .protocol-icon {
       font-size: 24px;
       width: 24px;
@@ -496,35 +356,24 @@
       color: var(--mat-primary-500, #1976d2);
     }
   }
-
   .mat-mdc-card-content {
     padding: 16px;
   }
-
   .protocol-description {
     line-height: 1.4;
     margin-bottom: 16px;
   }
-
   .protocol-toggle {
     margin-bottom: 12px;
-
-    .mat-mdc-slide-toggle {
-      .mdc-form-field {
-        .mdc-form-field__label {
-          font-weight: 500;
-        }
-      }
+    .mat-mdc-slide-toggle .mdc-form-field .mdc-form-field__label {
+      font-weight: 500;
     }
-
     .switch-text {
       display: block;
       margin-top: 4px;
       margin-left: 24px;
     }
   }
-
-  // Sub-fields styling
   .anti-fields,
   .melta-fields,
   .extra-mortals-fields {
@@ -534,7 +383,6 @@
     border-radius: 8px;
     border-left: 3px solid var(--mat-primary-500, #1976d2);
   }
-
   .sub-option {
     margin-top: 8px;
     margin-left: 16px;
@@ -543,9 +391,6 @@
     border-radius: 6px;
   }
 }
-
-/* ================== ENHANCED PROTOCOL SUMMARY STYLES ================== */
-
 .active-protocols-summary {
   background: linear-gradient(
     135deg,
@@ -554,13 +399,11 @@
   );
   border-radius: 12px;
   border-left: 4px solid #4caf50;
-
   .summary-header {
     .summary-title {
       font-size: 1.2rem;
       font-weight: 600;
       color: var(--mat-primary-text, #333);
-
       mat-icon {
         color: #4caf50;
         font-size: 22px;
@@ -568,70 +411,58 @@
         height: 22px;
       }
     }
-
     .summary-subtitle {
       margin: 0;
       opacity: 0.7;
     }
   }
-
   .no-active-protocols-message {
     text-align: center;
-
     mat-icon {
       font-size: 48px;
       width: 48px;
       height: 48px;
       opacity: 0.3;
     }
-
     p {
       margin: 8px 0 0 0;
       font-style: italic;
     }
   }
-
   .protocol-category {
     .category-title {
       font-size: 1rem;
       font-weight: 600;
       margin: 0 0 8px 0;
-
       .category-icon {
         font-size: 18px;
         width: 18px;
         height: 18px;
       }
     }
-
     .protocol-chips {
       display: flex;
       flex-wrap: wrap;
       gap: 8px;
-
       .summary-chip {
         border-radius: 16px;
         font-size: 0.85rem;
         font-weight: 500;
-
         mat-icon[matChipAvatar] {
           font-size: 16px;
           width: 16px;
           height: 16px;
         }
-
         &.hit-chip {
           background-color: rgba(255, 152, 0, 0.1);
           color: #ff9800;
           border: 1px solid rgba(255, 152, 0, 0.3);
         }
-
         &.wound-chip {
           background-color: rgba(244, 67, 54, 0.1);
           color: #f44336;
           border: 1px solid rgba(244, 67, 54, 0.3);
         }
-
         &.damage-chip {
           background-color: rgba(156, 39, 176, 0.1);
           color: #9c27b0;
@@ -641,117 +472,6 @@
     }
   }
 }
-
-/* ================== RESPONSIVE DESIGN FOR TABS ================== */
-
-@media (max-width: 768px) {
-  .attacker-tabs {
-    .mat-mdc-tab {
-      .mat-mdc-tab-link .mat-mdc-tab-label-content {
-        .tab-label-text {
-          font-size: 0.8rem;
-        }
-
-        .tab-icon {
-          font-size: 18px;
-          width: 18px;
-          height: 18px;
-        }
-      }
-    }
-  }
-
-  .tab-header {
-    padding: 12px 16px;
-
-    .tab-title {
-      font-size: 1.3rem;
-    }
-
-    .tab-description {
-      font-size: 0.9rem;
-    }
-  }
-
-  .protocols-grid {
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    gap: 16px;
-    padding: 4px;
-  }
-
-  .protocol-card {
-    .mat-mdc-card-header {
-      padding: 12px 12px 6px 12px;
-    }
-
-    .protocol-card-title {
-      font-size: 1rem;
-
-      .protocol-icon {
-        font-size: 20px;
-        width: 20px;
-        height: 20px;
-      }
-    }
-
-    .mat-mdc-card-content {
-      padding: 12px;
-    }
-  }
-
-  .active-protocols-summary {
-    .protocol-category .protocol-chips {
-      gap: 6px;
-
-      .summary-chip {
-        font-size: 0.8rem;
-
-        mat-icon[matChipAvatar] {
-          font-size: 14px;
-          width: 14px;
-          height: 14px;
-        }
-      }
-    }
-  }
-}
-
-@media (max-width: 480px) {
-  .attacker-tabs {
-    .mat-mdc-tab {
-      .mat-mdc-tab-link .mat-mdc-tab-label-content {
-        flex-direction: column;
-        gap: 2px;
-
-        .tab-label-text {
-          font-size: 0.75rem;
-          line-height: 1.1;
-          text-align: center;
-        }
-
-        .tab-icon {
-          font-size: 16px;
-          width: 16px;
-          height: 16px;
-        }
-      }
-    }
-  }
-
-  .protocols-grid {
-    grid-template-columns: 1fr;
-    gap: 12px;
-  }
-
-  .tab-header {
-    .tab-title {
-      font-size: 1.2rem;
-    }
-  }
-}
-
-/* ================== ANIMATION KEYFRAMES ================== */
-
 @keyframes fadeIn {
   from {
     opacity: 0;
@@ -762,438 +482,165 @@
     transform: translateY(0);
   }
 }
-
-/* ================== ACCESSIBILITY IMPROVEMENTS ================== */
-
-.protocol-card {
-  &:focus-within {
-    @include mat.elevation(6);
-    outline: 2px solid var(--mat-primary-500, #1976d2);
-    outline-offset: 2px;
-  }
+.protocol-card:focus-within {
+  @include mixins.elevation(2);
+  outline: 2px solid var(--mat-primary-500, #1976d2);
+  outline-offset: 2px;
 }
-
 .tab-content {
-  // Ensure sufficient color contrast
   color: var(--mat-primary-text, #333);
 }
-
-// High contrast mode support
 @media (prefers-contrast: high) {
   .protocol-card {
     border: 2px solid currentColor;
-
     &.placeholder-card {
       border-style: dashed;
     }
   }
-
   .active-protocols-summary {
     border-left-width: 6px;
   }
 }
-
-// Reduced motion support
 @media (prefers-reduced-motion: reduce) {
   .tab-content {
     animation: none;
   }
-
   .protocol-card {
     transition: none;
-
     &:hover {
       transform: none;
     }
   }
 }
-
-/* ================== TAB & PROTOCOL CARD THEMING FIX ================== */
-
-// Corregir theming de tabs y contenido
 .attacker-tabs {
-  // Tab headers
   .mat-mdc-tab-label {
     color: var(--color-text-title) !important;
-
     &.mdc-tab--active {
       color: var(--color-accent-green-cogitator) !important;
     }
   }
-
-  // Tab content text
   .tab-content {
     color: var(--color-primary-text);
-
     .tab-title {
       color: var(--color-text-title);
       font-family: var(--font-gothic);
     }
-
     .tab-description {
       color: var(--color-secondary-text);
       font-family: var(--font-sans-condensed);
     }
   }
 }
-
-// Protocol cards theming
 .protocol-card {
   background-color: var(--color-protocol-card-bg) !important;
   border: 1px solid var(--color-protocol-card-border) !important;
   color: var(--color-primary-text) !important;
-
   .protocol-card-title {
     color: var(--color-protocol-card-title) !important;
     font-family: var(--font-gothic) !important;
   }
-
   .protocol-description {
     color: var(--color-protocol-card-description) !important;
     font-family: var(--font-sans-condensed) !important;
   }
-
   .protocol-icon {
     color: var(--color-accent-green-cogitator) !important;
   }
-
   &:hover {
     border-color: var(--color-accent-green-cogitator) !important;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3) !important;
+    @include mixins.elevation(2);
   }
 }
-
-// Protocol summary theming
 .active-protocols-summary {
   background-color: var(--color-protocol-card-bg) !important;
   border: 1px solid var(--color-protocol-card-border) !important;
   border-left: 4px solid var(--color-accent-green-cogitator) !important;
-
   .summary-title {
     color: var(--color-text-title) !important;
     font-family: var(--font-gothic) !important;
   }
-
   .summary-subtitle {
     color: var(--color-secondary-text) !important;
   }
-
   .category-title {
     color: var(--color-protocol-card-title) !important;
     font-family: var(--font-sans-condensed) !important;
     font-weight: 600 !important;
   }
 }
-
-/* ================== CUSTOM FORM INPUTS (ENFOQUE 3) ================== */
-
-// Custom Input Styling (para reemplazar mat-form-field en protocol cards)
-.custom-input-container {
-  display: flex;
-  flex-direction: column;
-  gap: var(--spacing-xs);
-  width: 100%;
-}
-
-.custom-input-label {
-  font-family: var(--font-sans-condensed);
-  font-size: 0.75rem;
-  font-weight: 600;
-  color: var(--color-secondary-text);
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  margin-bottom: var(--spacing-xs);
-}
-
-.custom-input,
-.custom-select {
-  background-color: var(--color-input-bg);
-  border: 1px solid var(--color-metal-interactive);
-  border-radius: var(--border-radius-sm);
-  color: var(--color-text-screen);
-  font-family: var(--font-sans-condensed);
-  font-size: 0.9rem;
-  padding: var(--spacing-sm) var(--spacing-md);
-  width: 100%;
-  min-height: 36px;
-  transition:
-    border-color 0.2s ease,
-    box-shadow 0.2s ease;
-
-  &:focus {
-    outline: none;
-    border-color: var(--color-accent-green-cogitator);
-    box-shadow: 0 0 0 2px rgba(var(--color-accent-green-glow), 0.2);
-  }
-
-  &:hover {
-    border-color: var(--color-metal-interactive-hover);
-  }
-
-  &::placeholder {
-    color: var(--color-secondary-text);
-    opacity: 0.7;
-  }
-}
-
-.custom-select {
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23ffffff'%3E%3Cpath d='M7 10l5 5 5-5H7z'/%3E%3C/svg%3E");
-  background-repeat: no-repeat;
-  background-position: right 8px center;
-  background-size: 16px;
-  padding-right: 32px;
-  appearance: none;
-  cursor: pointer;
-
-  option {
-    background-color: var(--color-background-dropdown);
-    color: var(--color-text-dropdown-item);
-    padding: var(--spacing-sm);
-  }
-}
-
-// Icono de ayuda personalizado
-.custom-help-icon {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 16px;
-  height: 16px;
-  font-size: 12px;
-  color: var(--color-secondary-text);
-  cursor: help;
-  margin-left: var(--spacing-xs);
-
-  &:hover {
-    color: var(--color-accent-green-cogitator);
-  }
-}
-
-// Protocol toggle personalizado (mejorado)
-.custom-protocol-toggle {
-  display: flex;
-  align-items: center;
-  gap: var(--spacing-md);
-  margin: var(--spacing-md) 0;
-
-  .custom-toggle-label {
-    font-family: var(--font-sans-condensed);
-    font-size: 0.85rem;
-    font-weight: 500;
-    color: var(--color-primary-text);
-    cursor: pointer;
-    user-select: none;
-
-    &.active {
-      color: var(--color-accent-green-cogitator);
-      font-weight: 600;
+@media (max-width: 768px) {
+  .attacker-tabs .mat-mdc-tab .mat-mdc-tab-link .mat-mdc-tab-label-content {
+    .tab-label-text {
+      font-size: 0.8rem;
+    }
+    .tab-icon {
+      font-size: 18px;
+      width: 18px;
+      height: 18px;
     }
   }
-}
-
-// Contenedor de input dependiente (cuando un toggle está activo)
-.custom-dependent-input {
-  margin-top: var(--spacing-sm);
-  padding-left: var(--spacing-lg);
-  opacity: 0;
-  max-height: 0;
-  overflow: hidden;
-  transition:
-    opacity 0.3s ease,
-    max-height 0.3s ease;
-
-  &.active {
-    opacity: 1;
-    max-height: 80px;
+  .tab-header {
+    padding: 12px 16px;
+    .tab-title {
+      font-size: 1.3rem;
+    }
+    .tab-description {
+      font-size: 0.9rem;
+    }
   }
-}
-
-/* ================== PROTOCOL CARD ACTIVATION STATES ================== */
-
-// Protocol card activation states with visual feedback
-.protocol-card {
-  @include mat.elevation(3);
-  border-radius: 12px;
-  transition: all 0.3s ease;
-  overflow: hidden;
-  cursor: pointer;
-  position: relative;
-
-  // Base inactive state
-  &.inactive {
-    background-color: var(--color-protocol-card-bg) !important;
-    border: 1px solid var(--color-protocol-card-border) !important;
-    opacity: 0.7;
-
+  .protocols-grid {
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 16px;
+    padding: 4px;
+  }
+  .protocol-card {
+    .mat-mdc-card-header {
+      padding: 12px 12px 6px 12px;
+    }
     .protocol-card-title {
-      color: var(--color-protocol-card-title) !important;
+      font-size: 1rem;
+      .protocol-icon {
+        font-size: 20px;
+        width: 20px;
+        height: 20px;
+      }
     }
-
-    .protocol-description {
-      color: var(--color-protocol-card-description) !important;
-    }
-
-    &:hover {
-      @include mat.elevation(4);
-      opacity: 0.85;
-      transform: translateY(-1px);
-      border-color: var(--color-metal-interactive-hover);
+    .mat-mdc-card-content {
+      padding: 12px;
     }
   }
-
-  // Active state with theme colors
-  &.active {
-    background: linear-gradient(
-      135deg,
-      rgba(var(--color-accent-green-glow-rgb, 105, 240, 174), 0.15),
-      rgba(var(--color-accent-green-cogitator-rgb, 46, 160, 67), 0.08)
-    ) !important;
-    border: 2px solid var(--color-accent-green-cogitator) !important;
-    box-shadow: 0 0 12px
-      rgba(var(--color-accent-green-glow-rgb, 105, 240, 174), 0.3);
-
-    .protocol-card-title {
-      color: var(--color-accent-green-cogitator) !important;
-      font-weight: 600;
-      text-shadow: 0 0 4px
-        rgba(var(--color-accent-green-glow-rgb, 105, 240, 174), 0.4);
-    }
-
-    .protocol-description {
-      color: var(--color-primary-text) !important;
-    }
-
-    // Active state indicator
-    &::before {
-      content: '';
-      position: absolute;
-      top: 8px;
-      right: 8px;
-      width: 12px;
-      height: 12px;
-      background-color: var(--color-accent-green-cogitator);
-      border-radius: 50%;
-      box-shadow: 0 0 8px
-        rgba(var(--color-accent-green-glow-rgb, 105, 240, 174), 0.6);
-      z-index: 10;
-    }
-
-    &:hover {
-      @include mat.elevation(8);
-      transform: translateY(-3px);
-      box-shadow: 0 0 20px
-        rgba(var(--color-accent-green-glow-rgb, 105, 240, 174), 0.5);
-    }
-  }
-
-  // Disabled state for protocol cards that can't be activated
-  &.disabled {
-    opacity: 0.4;
-    cursor: not-allowed;
-
-    &:hover {
-      transform: none;
-      box-shadow: none;
-      opacity: 0.4;
-    }
-  }
-
-  // Special state for protocol cards requiring configuration
-  &.needs-config {
-    background: linear-gradient(
-      135deg,
-      rgba(var(--color-accent-orange-rgb, 255, 152, 0), 0.1),
-      rgba(var(--color-accent-orange-rgb, 255, 152, 0), 0.05)
-    ) !important;
-    border: 1px solid var(--color-accent-orange, #ff9800) !important;
-
-    .protocol-card-title {
-      color: var(--color-accent-orange, #ff9800) !important;
-    }
-
-    &::after {
-      content: 'CONFIGURAR';
-      position: absolute;
-      bottom: 8px;
-      right: 8px;
-      font-size: 0.65rem;
-      font-weight: 600;
-      color: var(--color-accent-orange, #ff9800);
-      background-color: rgba(var(--color-accent-orange-rgb, 255, 152, 0), 0.2);
-      padding: 2px 6px;
-      border-radius: 4px;
-      letter-spacing: 0.5px;
+  .active-protocols-summary .protocol-category .protocol-chips {
+    gap: 6px;
+    .summary-chip {
+      font-size: 0.8rem;
+      mat-icon[matChipAvatar] {
+        font-size: 14px;
+        width: 14px;
+        height: 14px;
+      }
     }
   }
 }
-
-// Shooting modifier specific styling
-.protocol-card.shooting-modifier {
-  .modifier-value {
+@media (max-width: 480px) {
+  .attacker-tabs .mat-mdc-tab .mat-mdc-tab-link .mat-mdc-tab-label-content {
+    flex-direction: column;
+    gap: 2px;
+    .tab-label-text {
+      font-size: 0.75rem;
+      line-height: 1.1;
+      text-align: center;
+    }
+    .tab-icon {
+      font-size: 16px;
+      width: 16px;
+      height: 16px;
+    }
+  }
+  .protocols-grid {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+  .tab-header .tab-title {
     font-size: 1.2rem;
-    font-weight: 700;
-    color: var(--color-accent-green-cogitator);
-    margin: var(--spacing-sm) 0;
-    text-align: center;
-
-    &.positive {
-      color: var(--color-accent-green-cogitator);
-    }
-
-    &.negative {
-      color: var(--color-accent-red, #f44336);
-    }
-
-    &.neutral {
-      color: var(--color-secondary-text);
-    }
-  }
-}
-
-// Special protocol card interaction elements
-.lance-charge-indicator,
-.range-indicator {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  padding: 0.75rem;
-  border-radius: 8px;
-  background: var(--surface-variant);
-  cursor: pointer;
-  transition: all 0.2s ease;
-
-  &:hover {
-    background: var(--surface-variant-hover);
-    transform: translateY(-1px);
-  }
-
-  .protocol-icon {
-    font-size: 1.25rem;
-    transition: color 0.2s ease;
-  }
-
-  span {
-    font-weight: 500;
-    font-size: 0.875rem;
-  }
-}
-
-// Active state styling for special indicators
-.custom-dependent-input.active .lance-charge-indicator,
-.custom-protocol-toggle.active .range-indicator {
-  background: var(--primary-container);
-  color: var(--on-primary-container);
-
-  .protocol-icon {
-    color: var(--primary);
-  }
-}
-
-.custom-dependent-input.inactive .lance-charge-indicator,
-.custom-protocol-toggle.inactive .range-indicator {
-  opacity: 0.6;
-
-  .protocol-icon {
-    color: var(--outline);
   }
 }

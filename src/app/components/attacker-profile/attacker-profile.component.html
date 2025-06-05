@@ -372,6 +372,11 @@
 
             <!-- Enhanced Active Protocols Summary -->
             <div
+              *ngIf="
+                activeHitProtocolsSummary.length > 0 ||
+                activeWoundProtocolsSummary.length > 0 ||
+                activeDamageProtocolsSummary.length > 0
+              "
               class="active-protocols-summary u-padding-lg u-margin-bottom-md"
             >
               <div class="summary-header u-margin-bottom-md">

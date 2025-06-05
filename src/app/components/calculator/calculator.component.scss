@@ -1,42 +1,19 @@
 /* Main container styling */
 .cogitator-panel {
-  background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 50%, #1a1a1a 100%);
-  border: 2px solid #4a4a4a;
-  border-radius: 15px;
+  background-color: var(--color-metal-panel);
+  border: 3px solid var(--color-metal-panel-border);
+  border-radius: 8px;
   padding: 20px;
   margin: 20px auto;
   max-width: 1200px;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
-  color: #e0e0e0;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  box-shadow:
+    0 0 25px rgba(0, 0, 0, 0.6),
+    inset 0 0 15px rgba(0, 0, 0, 0.4);
+  color: var(--color-primary-text);
+  font-family: var(--font-serif-main);
 }
 
-/* Header styling */
-.cogitator-header {
-  text-align: center;
-  margin-bottom: 30px;
-  padding: 15px;
-  background: linear-gradient(90deg, #333 0%, #555 50%, #333 100%);
-  border-radius: 10px;
-  border: 1px solid #666;
-}
-
-.cogitator-header h1 {
-  color: #ff6b35;
-  font-size: 2.5em;
-  margin: 0;
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
-  font-weight: bold;
-  letter-spacing: 2px;
-}
-
-.cogitator-header h2 {
-  color: #ccc;
-  font-size: 1.2em;
-  margin: 10px 0 0 0;
-  font-weight: normal;
-  font-style: italic;
-}
+/* Header styling removed - now handled by app-header component */
 
 /* Content area styling */
 .cogitator-content {
@@ -57,9 +34,25 @@
 .profile-management {
   margin-bottom: 20px;
   padding: 15px;
-  background: rgba(255, 255, 255, 0.05);
+  background-color: var(--color-background-panel);
   border-radius: 8px;
-  border: 1px solid #555;
+  border: 1px solid var(--color-border-panel);
+}
+
+/* Main content area styling */
+.main-content-area {
+  padding: var(--spacing-lg);
+  background-color: var(--color-background-main);
+  color: var(--color-primary-text);
+}
+
+.data-section {
+  margin-bottom: var(--spacing-xl);
+
+  .section-title-font {
+    color: var(--color-text-title);
+    font-family: var(--font-gothic);
+  }
 }
 
 .profile-tabs {
@@ -134,10 +127,12 @@
 }
 
 .add-profile-inline-button {
-  // Inherit from cogitator-btn or define specific styles
-  // For now, let's assume it uses mat-icon-button styling primarily
-  // If specific cogitator styles are needed, they can be added here.
-  // Example: color: var(--color-text-title);
+  color: var(--color-text-title);
+  transition: color 0.2s ease;
+
+  &:hover {
+    color: var(--color-accent-green-cogitator);
+  }
 }
 
 .cogitator-btn:hover {
@@ -220,6 +215,24 @@
 
 /* Responsive design */
 @media (max-width: 768px) {
+  .header-content {
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .spacer {
+    display: none;
+  }
+
+  .title-container {
+    order: 1;
+  }
+
+  .theme-toggle-container {
+    order: 2;
+    justify-content: center;
+  }
+
   .cogitator-content {
     flex-direction: column;
   }
@@ -230,10 +243,6 @@
 
   .profile-tabs {
     justify-content: center;
-  }
-
-  .cogitator-header h1 {
-    font-size: 2em;
   }
 
   .calculate-btn {

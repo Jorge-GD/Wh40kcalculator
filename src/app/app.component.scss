@@ -1,1 +1,25 @@
 /* App-level component styles */
+
+:host {
+  display: block;
+  min-height: 100vh;
+}
+
+main {
+  padding-top: 60px; /* Match the new header height */
+  min-height: calc(100vh - 60px);
+  transition: padding-top 0.3s ease;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  main {
+    padding-top: 60px; /* Keep consistent with header height */
+  }
+}
+
+@media (max-width: 480px) {
+  main {
+    padding-top: 56px; /* Match smaller mobile header height */
+  }
+}

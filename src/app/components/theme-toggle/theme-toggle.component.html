@@ -1,7 +1,14 @@
-<mat-slide-toggle
-  aria-label="Alternar modo oscuro"
-  [checked]="isDarkMode"
-  (change)="toggleTheme($event.checked)"
->
-  Dark Mode
-</mat-slide-toggle>
+<div class="chaos-floating-container">
+  <button
+    class="chaos-toggle-btn"
+    (click)="toggleTheme()"
+    aria-label="Cambiar tema a modo oscuro"
+  >
+    <img src="assets/caos.png" alt="Icono del Caos" class="chaos-icon" />
+    <div class="chaos-tooltip">
+      <span class="chaos-text">PÁSATE AL</span>
+      <span class="chaos-text-main">CAOS</span>
+    </div>
+  </button>
+  <div class="dark-corruption-overlay"></div>
+</div>

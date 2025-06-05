@@ -3,11 +3,12 @@ import { RouterOutlet } from '@angular/router';
 import { trigger, transition, style, animate } from '@angular/animations';
 import { CommonModule } from '@angular/common';
 import { HeaderComponent } from './components/header/header.component';
+import { ThemeToggleComponent } from './components/theme-toggle/theme-toggle.component';
 
 @Component({
   selector: 'app-root',
   standalone: true, // Added standalone: true
-  imports: [RouterOutlet, CommonModule, HeaderComponent],
+  imports: [RouterOutlet, CommonModule, HeaderComponent, ThemeToggleComponent],
   animations: [
     trigger('routeAnimations', [
       transition('* <=> *', [

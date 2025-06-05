@@ -78,57 +78,63 @@
             class="base-stats-grid u-display-grid u-grid-cols-responsive u-gap-lg u-padding-sm u-margin-bottom-xl u-margin-top-md"
           >
             <!-- ORDEN DE SALVACIÓN Card -->
-            <mat-card
-              class="stat-card-icon-display"
-              [matMenuTriggerFor]="saveOrderMenu"
-              #saveOrderMenuTrigger="matMenuTrigger"
-              tabindex="0"
-              (click)="saveOrderMenuTrigger.openMenu()"
-              (keydown.enter)="
-                $event.preventDefault(); saveOrderMenuTrigger.openMenu()
-              "
-              matTooltip="Editar Orden de Salvación"
-              aria-label="Editar Orden de Salvación"
-            >
-              <div
-                class="stat-card-header-content u-text-align-center u-padding-sm"
+            <div *ngIf="!isOnlyProfile">
+              <mat-card
+                class="stat-card-icon-display"
+                [matMenuTriggerFor]="saveOrderMenu"
+                #saveOrderMenuTrigger="matMenuTrigger"
+                tabindex="0"
+                (click)="saveOrderMenuTrigger.openMenu()"
+                (keydown.enter)="
+                  $event.preventDefault(); saveOrderMenuTrigger.openMenu()
+                "
+                matTooltip="Editar Orden de Salvación"
+                aria-label="Editar Orden de Salvación"
               >
-                <mat-icon class="stat-card-icon u-margin-bottom-xs"
-                  >swap_vert</mat-icon
+                <div
+                  class="stat-card-header-content u-text-align-center u-padding-sm"
                 >
-                <div class="stat-card-title u-font-sm">ORDEN SALV.</div>
-              </div>
-              <mat-card-content class="u-text-align-center u-padding-bottom-sm">
-                <span class="stat-card-value u-font-lg">{{
-                  profile.saveOrder || 'N/A'
-                }}</span>
-              </mat-card-content>
-            </mat-card>
-            <mat-menu #saveOrderMenu="matMenu">
-              <div
-                class="edit-stat-popover u-padding-md"
-                (click)="$event.stopPropagation()"
-              >
-                <mat-form-field appearance="outline" class="u-width-full">
-                  <mat-label>ORDEN DE SALVACIÓN</mat-label>
-                  <input
-                    matInput
-                    type="number"
-                    [(ngModel)]="profile.saveOrder"
-                    (ngModelChange)="onProfileDataChange()"
-                    min="1"
-                    (keydown.enter)="handleInputEnterKey(saveOrderMenuTrigger)"
-                    appAutofocus
-                  />
-                  <mat-icon
-                    matSuffix
-                    matTooltip="Define el orden en que este perfil intentará salvar heridas."
-                    class="tooltip-icon"
-                    >help_outline</mat-icon
+                  <mat-icon class="stat-card-icon u-margin-bottom-xs"
+                    >swap_vert</mat-icon
                   >
-                </mat-form-field>
-              </div>
-            </mat-menu>
+                  <div class="stat-card-title u-font-sm">ORDEN SALV.</div>
+                </div>
+                <mat-card-content
+                  class="u-text-align-center u-padding-bottom-sm"
+                >
+                  <span class="stat-card-value u-font-lg">{{
+                    profile.saveOrder || 'N/A'
+                  }}</span>
+                </mat-card-content>
+              </mat-card>
+              <mat-menu #saveOrderMenu="matMenu">
+                <div
+                  class="edit-stat-popover u-padding-md"
+                  (click)="$event.stopPropagation()"
+                >
+                  <mat-form-field appearance="outline" class="u-width-full">
+                    <mat-label>ORDEN DE SALVACIÓN</mat-label>
+                    <input
+                      matInput
+                      type="number"
+                      [(ngModel)]="profile.saveOrder"
+                      (ngModelChange)="onProfileDataChange()"
+                      min="1"
+                      (keydown.enter)="
+                        handleInputEnterKey(saveOrderMenuTrigger)
+                      "
+                      appAutofocus
+                    />
+                    <mat-icon
+                      matSuffix
+                      matTooltip="Define el orden en que este perfil intentará salvar heridas."
+                      class="tooltip-icon"
+                      >help_outline</mat-icon
+                    >
+                  </mat-form-field>
+                </div>
+              </mat-menu>
+            </div>
 
             <!-- Nº MINIATURAS Card -->
             <mat-card
@@ -401,7 +407,10 @@
           </div>
 
           <!-- Summary View for Advanced Defensive Protocols -->
-          <div class="summary-view u-padding-bottom-md">
+          <div
+            *ngIf="activeDefensiveAbilities.length > 0"
+            class="summary-view u-padding-bottom-md"
+          >
             <h4 class="summary-title u-margin-bottom-xs">
               Protocolos Defensivos Activos:
             </h4>
